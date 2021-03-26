@@ -30,7 +30,7 @@ exception Malformed
     of [str] becomes the verb. The rest of the words, if any, become the
     object phrase. Examples:
 
-    - [parse "    go   left  "] is [Go \["left"\]]
+    - [parse "    w  "] is [Go \["left"\]]
     - [parse "quit"] is [Quit].
 
     Requires: [str] contains only alphanumeric (A-Z, a-z, 0-9) and space
@@ -41,8 +41,6 @@ exception Malformed
     spaces.
 
     Raises: [Malformed] if the command is malformed. A command is
-    {i malformed} 1. if the verb is not one of "quit", "start", and "go"
-    2. if the verb is "quit" and there is a non-empty object phrase 3.
-    if the verb is "start" and there is a non-empty object phrase 4. if
-    the verb is "go" and there is an empty object phrase.*)
+    {i malformed} if the verb is not one of "quit", "start", "w", "a",
+    "s", "d"*)
 val parse : string -> command
