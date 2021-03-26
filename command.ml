@@ -1,5 +1,4 @@
 (* Note: You may introduce new code anywhere in this file. *)
-
 type step = int
 
 type object_phrase = string list
@@ -7,12 +6,15 @@ type object_phrase = string list
 type direction =
   | Left
   | Right
-  | Around
+  | Up
+  | Down
+  | None
 
 type command =
-  | Turn of direction
-  | Go of step (* steps *)
+  | Start
+  | Go of direction (* steps *)
   | Quit
+  | Stay
 
 exception Empty
 
@@ -32,7 +34,11 @@ let is_empty str = split str = []
 (** [is_invalid_verb str_list] is true only if [str_list]'s first
     element is neigther "go" nor "quit". *)
 let is_invalid_verb str_list =
-  if List.hd str_list = "go" || List.hd str_list = "quit" then false
+  if
+    List.hd str_list = "go"
+    || List.hd str_list = "quit"
+    || List.hd str_list = "start"
+  then false
   else true
 
 (** [is_invalid_quit str_list] is true only if [str_list] is string list
@@ -40,6 +46,11 @@ let is_invalid_verb str_list =
 let is_invalid_quit str_list =
   match str_list with
   | "quit" :: t -> if t != [] then true else false
+  | _ -> false
+
+let is_invalid_start str_list =
+  match str_list with
+  | "start" :: t -> if t != [] then true else false
   | _ -> false
 
 (** [is_invalid_go str_list] is true only if [str_list] only contains
@@ -55,14 +66,24 @@ let is_invalid_go str_list =
 let is_malformed str =
   let str = split str in
   is_invalid_verb str || is_invalid_quit str || is_invalid_go str
+  || is_invalid_start str
+
+let list_to_dir str_list =
+  match str_list with
+  | [ "a" ] -> Left
+  | [ "d" ] -> Right
+  | [ "w" ] -> Up
+  | [ "d" ] -> Down
+  | _ -> None
 
 (** [form_go_command str_list] generates a command given [str_list].
     Requires: str_list is a valid object phrase starting with go. *)
-let form_go_command str_list : command =
-  match str_list with "go" :: t -> Turn Right | _ -> Quit
+let form_go_command str_list =
+  match str_list with "go" :: t -> Go (list_to_dir t) | _ -> Stay
 
 let parse str : command =
   if is_empty str then raise Empty
   else if is_malformed str then raise Malformed
   else if List.hd (split str) = "quit" then Quit
+  else if List.hd (split str) = "start" then Start
   else form_go_command (split str)
