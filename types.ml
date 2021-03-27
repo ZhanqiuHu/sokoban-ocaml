@@ -12,6 +12,7 @@ type ttypes =
   | Hor_bound
   | Ver_bound
   | Normal of normal
+  | Exit
 
 type tile = {
   position : int * int;
@@ -22,9 +23,9 @@ type room = {
   room_id : string;
   width : float;
   height : float;
-  mutable tile_list : tile list list;
+  mutable map_tile_list : tile list list;
   blocks : block list;
-  holes : int * int list;
+  holes : (int * int) list;
 }
 
 type state = {
@@ -33,9 +34,14 @@ type state = {
   mutable player_pos : int * int;
 }
 
-type command = {
-  up : bool;
-  down : bool;
-  left : bool;
-  right : bool;
-}
+type direction =
+  | Left
+  | Right
+  | Up
+  | Down
+  | None
+
+type command =
+  | Start
+  | Go of direction
+  | Quit

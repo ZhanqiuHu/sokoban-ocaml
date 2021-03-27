@@ -36,9 +36,9 @@ type room = {
   room_id : string;
   width : float;
   height : float;
-  mutable tile_list : tile list list;
+  mutable map_tile_list : tile list list;
   blocks : block list;
-  holes : int * int list;
+  holes : (int * int) list;
 }
 
 (** Represents the current room, all_rooms, and the current player
@@ -49,16 +49,15 @@ type state = {
   mutable player_pos : int * int;
 }
 
-(** Represents the types of movements a player can issue.*)
-type command = {
-  up : bool;
-  down : bool;
-  left : bool;
-  right : bool;
-}
+type direction =
+  | Left
+  | Right
+  | Up
+  | Down
+  | None
 
 (** Represents player commands: moving, starting/stopping the game.*)
-type player_action =
+type command =
   | Start
+  | Go of direction
   | Quit
-  | Step
