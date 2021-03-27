@@ -1,87 +1,64 @@
 (** Representation of the obstacles, player, and tiles.*)
 
-(** Represents the player *)
-type player = {
-  position : int * int;
-  on_exit : bool;
-}
+(** Represents the player. on_exit is true when the player is on the
+    exit *)
+type player = { on_exit : bool }
 
-(** Represents a block*)
-type block = {
-  position : int * int;
-  in_hole : bool;
-}
+(** Represents a block. in_hole is true when it overlaps a hole
+    coordinate*)
+type block = { in_hole : bool }
 
-(** Represents a tile in the map*)
+(** Represents a normal tile in the game. When is_hole is true,
+    represents a hole*)
+type normal = { is_hole : bool }
 
-(** Represents a horizontal or vertical boundary*)
-type boundary = {
-  position : int * int;
-  orientation : string;
-}
-
-(** Represents a hole in the map*)
-type hole
-
-(** Represents the types of actions a player can take*)
-type player_action
-
-(** Represents a map in the game*)
-
-(** Represents a command in game*)
-type command
-
-(** Represents the current state*)
-type state
-
-type tiles =
+(** Represents the possible types of objects in the game. Player is the
+    player, Block is a block, Hor_bound is a horizontal boundary,
+    Ver_boundary is a vertical boundary, Normal is a normal tile, and
+    Exit is the exit.*)
+type ttypes =
   | Player of player
   | Block of block
-  | Hole of hole
-  | Boundary of boundary
-  | Normal
+  | Hor_bound
+  | Ver_bound
+  | Normal of normal
+  | Exit
 
+(** Represents an object in the game.*)
 type tile = {
-  (* position : int * int; *)
-  (* is_player : bool; is_block : bool; is_boundary : bool; is_hole :
-     bool; is_norm : bool; *)
-  mutable ttype : tiles;
+  position : int * int;
+  mutable ttype : ttypes;
 }
 
+(** Represents a "level" in the game. blocks is the list of blocks in
+    the room. holes represents the coordinates of all holes in the game. *)
 type room = {
   room_id : string;
   width : float;
   height : float;
-  mutable tile_list : tiles list;
+  mutable tile_list : tile list list;
   blocks : block list;
-  holes : hole list;
+  holes : int * int list;
 }
 
-(* val make_tile : int * int -> tiles -> tile *)
+(** Represents the current room, all_rooms, and the current player
+    position.*)
+type state = {
+  mutable current_room_id : string;
+  all_rooms : room list;
+  mutable player_pos : int * int;
+}
 
-val make_bound : int * int -> string -> boundary
+(** Represents the types of movements a player can issue.*)
+type command = {
+  up : bool;
+  down : bool;
+  left : bool;
+  right : bool;
+}
 
-(* (** [init_state a] is the initial state of the game when playing map
-   [a]. In that state the player is currently located in the starting
-   position (left side center), and they have not placed any puzzle
-   pieces. *) val init_state : Map.t -> t
-
-   (** [current_player_position st] is the position in which the player
-   currently is located in state [st]. *) val current_player_position :
-   t -> Map.position
-
-   (** [completed_puzzles st] is a set-like list of the room identifiers
-   the adventurer has visited in state [st]. The adventurer has visited
-   a room [rm] if their current room location is or has ever been [rm].
-   *) val completed_puzzles : t -> Adventure.room_id list
-
-   (** The type representing the result of an attempted movement. *)
-   type result = | Legal of t | Illegal
-
-   (** [go exit adv st] is [r] if attempting to go through exit [exit]
-   in state [st] and adventure [adv] results in [r]. If [exit] is an
-   exit from the adventurer's current room, then [r] is [Legal st'],
-   where in [st'] the adventurer is now located in the room to which
-   [exit] leads. Otherwise, the result is [Illegal]. Effects: none. [go]
-   is not permitted to do any printing. *) val go : Adventure.exit_name
-   -> Adventure.t -> t -> result *)
+(** Represents player commands: moving, starting/stopping the game.*)
+type player_action =
+  | Start
+  | Quit
+  | Step

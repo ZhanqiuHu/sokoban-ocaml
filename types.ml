@@ -1,79 +1,36 @@
-type player = {
-  position : int * int;
-  on_exit : bool;
-}
+type player = { on_exit : bool }
 
-let get_player_pos player = player.position
+type block = { in_hole : bool }
 
-type block = {
-  position : int * int;
-  in_hole : bool;
-}
-
-let get_block_pos block = block.position
-
-(*Where ttype is the tile type*)
-(*I was thinking that if, for example, the player was on the tile, we
-  could just update the tile and store the player's position in player*)
-(*Instead of checking is_something maybe just pattern match against tile
-  type?*)
-
-(*where orientation is horizontal or vertical*)
-type boundary = {
-  position : int * int;
-  orientation : string;
-}
-
-let get_boundary_type boundary = boundary.orientation
-
-let make_bound pos orientation = { position = pos; orientation }
-
-(*where active is whether the hole is filled or not*)
-type hole = {
-  position : int * int;
-  active : bool;
-}
+type normal = { is_hole : bool }
 
 (* maybe use variant to represent type of tile...? *)
-type tiles =
+
+type ttypes =
   | Player of player
   | Block of block
-  | Hole of hole
-  | Boundary of boundary
-  | Normal
+  | Hor_bound
+  | Ver_bound
+  | Normal of normal
 
 type tile = {
-  (* position : int * int; *)
-  (* is_player : bool; is_block : bool; is_boundary : bool; is_hole :
-     bool; is_norm : bool; *)
-  mutable ttype : tiles;
+  position : int * int;
+  mutable ttype : ttypes;
 }
-
-(* let make_tile pos ttype = { position = pos; ttype } *)
-
-let get_tile_type tile = tile.ttype
-
-type player_action =
-  | Start
-  | Quit
-  | Step
 
 type room = {
   room_id : string;
   width : float;
   height : float;
-  mutable tile_list : tiles list;
+  mutable tile_list : tile list list;
   blocks : block list;
-  holes : hole list;
+  holes : int * int list;
 }
 
 type state = {
   mutable current_room_id : string;
   all_rooms : room list;
-  mutable player : player;
-  mutable tiles : tiles list;
-  mutable blocks : block list;
-  mutable hole : hole list;
+  mutable player_pos : int * int;
 }
 
 type command = {
@@ -82,9 +39,3 @@ type command = {
   left : bool;
   right : bool;
 }
-
-(* let rec return_ttype tile_list acc= match tile_list with | [] -> acc
-   | x::xs -> match x with | Boundary _-> let map1 = [] *)
-
-(* let make_map1 map1 = for i = 0 to 10 do make_tile (i, 0) (Boundary
-   (make_bound (i, 0) "horizontal"))::[] done *)
