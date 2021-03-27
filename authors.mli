@@ -5,7 +5,12 @@
    or use it for commercial purposes.
  ************************************************************)
 
-(** CS 3110 Spring 2021 Assignment Final Project @author *)
+(** CS 3110 Spring 2021 Assignment Final Project
+
+    @author Han Xia (hx76)
+    @author Sophia Tan (slt83)
+    @author Zhanqiu Hu (zh338)
+    @author Kristi Zhang (kz226) *)
 
 (************************************************************ 
 
@@ -31,4 +36,10 @@
  ************************************************************)
 
 (** [hours_worked] is the number of hours you worked on this assignment. *)
-val hours_worked : int
+val hx_hours_worked : int
+
+val slt_hours_worked : int
+
+val zh_hours_worked : int
+
+val kz_hours_worked : int
