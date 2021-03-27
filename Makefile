@@ -1,9 +1,11 @@
-MODULES=author main command state
+
+MODULES= map types command state main authors
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=test.byte
 MAIN=main.byte
+
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -12,14 +14,15 @@ default: build
 build:
 	$(OCAMLBUILD) $(OBJECTS)
 
+play:
+	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
+
 clean:
 	ocamlbuild -clean
 
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
-play:
-	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
 	
 # clean:
 # 	ocamlbuild -clean
