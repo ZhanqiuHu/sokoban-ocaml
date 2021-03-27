@@ -1,4 +1,5 @@
 (** Parsing of player commands. *)
+open Types
 
 type step = int
 
@@ -15,7 +16,7 @@ exception Malformed
     of [str] becomes the verb. The rest of the words, if any, become the
     object phrase. Examples:
 
-    - [parse "    w  "] is [Go \["left"\]]
+    - [parse " w "] is [Go \["left"\]]
     - [parse "quit"] is [Quit].
 
     Requires: [str] contains only alphanumeric (A-Z, a-z, 0-9) and space

@@ -3,8 +3,8 @@ open Types
 let map1 =
   {
     room_id = "beginning";
-    width = 10.0;
-    height = 10.0;
+    width = 10;
+    height = 10;
     map_tile_list =
       [
         (*First row*)
