@@ -9,7 +9,7 @@ open Command
     state. *)
 let change_state st direction =
   let state_of_result st = function Legal t -> t | Illegal -> st in
-  state_of_result st (move direction st)
+  state_of_result st (move st direction)
 
 (** [prompt_command st] prompts the user for a command while in state
     [st] and returns the new state given the command.
@@ -48,7 +48,7 @@ let prompt_command st =
 let rec print_gline (line : tile list) =
   let rec print_tile (tile : tile) =
     match tile.ttype with
-    | Hor_bound -> print_string "-'"
+    | Hor_bound -> print_string "-"
     | Ver_bound -> print_string "|"
     | Player _ -> ANSITerminal.print_string [ ANSITerminal.blue ] "X"
     | Normal normal ->
@@ -67,7 +67,7 @@ let rec print_gline (line : tile list) =
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
 let print_game (st : state) =
-  let map = tile_list st in
+  let map = get_tile_list st in
   let rec print_map = function
     | [] -> print_string "\n"
     | h :: t ->

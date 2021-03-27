@@ -34,8 +34,8 @@ type tile = {
     the room. holes represents the coordinates of all holes in the game. *)
 type room = {
   room_id : string;
-  width : float;
-  height : float;
+  width : int;
+  height : int;
   mutable map_tile_list : tile list list;
   blocks : block list;
   holes : (int * int) list;
@@ -54,7 +54,6 @@ type direction =
   | Right
   | Up
   | Down
-  | None
 
 (** Represents player commands: moving, starting/stopping the game.*)
 type command =

@@ -31,3 +31,14 @@
    [exit] leads. Otherwise, the result is [Illegal]. Effects: none. [go]
    is not permitted to do any printing. *) val go : Adventure.exit_name
    -> Adventure.t -> t -> result *)
+open Types
+
+type result =
+  | Legal of state
+  | Illegal
+
+val init_state : state
+
+val get_tile_list : state -> tile list list
+
+val move : state -> direction -> result

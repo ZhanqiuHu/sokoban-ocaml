@@ -46,7 +46,8 @@ let map1 =
         ];
         [
           { position = (0, 3); ttype = Ver_bound };
-          { position = (1, 3); ttype = Normal { is_hole = false } };
+          (* { position = (1, 3); ttype = Normal { is_hole = false } }; *)
+          { position = (1, 3); ttype = Player { on_exit = false } };
           { position = (2, 3); ttype = Normal { is_hole = false } };
           { position = (3, 3); ttype = Normal { is_hole = false } };
           { position = (4, 3); ttype = Normal { is_hole = false } };

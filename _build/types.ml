@@ -21,8 +21,8 @@ type tile = {
 
 type room = {
   room_id : string;
-  width : float;
-  height : float;
+  width : int;
+  height : int;
   mutable map_tile_list : tile list list;
   blocks : block list;
   holes : (int * int) list;
@@ -39,7 +39,6 @@ type direction =
   | Right
   | Up
   | Down
-  | None
 
 type command =
   | Start

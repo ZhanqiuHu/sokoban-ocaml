@@ -1,5 +1,5 @@
 
-MODULES= types command state main author
+MODULES= types command state main authors
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

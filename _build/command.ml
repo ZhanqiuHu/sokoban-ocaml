@@ -1,19 +1,13 @@
 (* Note: You may introduce new code anywhere in this file. *)
+open Types
+
 type step = int
 
 type object_phrase = string list
 
-type direction =
-  | Left
-  | Right
-  | Up
-  | Down
-  | None
+(* type direction = | Left | Right | Up | Down
 
-type command =
-  | Start
-  | Go of direction
-  | Quit
+   type command = | Start | Go of direction | Quit *)
 
 exception Empty
 
@@ -57,8 +51,7 @@ let form_go_command str_list =
   | [ "a" ] -> Go Left
   | [ "d" ] -> Go Right
   | [ "w" ] -> Go Up
-  | [ "s" ] -> Go Down
-  | _ -> Go None
+  | _ -> Go Down
 
 let parse str : command =
   if is_empty str then raise Empty
