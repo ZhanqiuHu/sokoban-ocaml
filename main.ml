@@ -1,10 +1,20 @@
 open Types
 open State
 
+(** [change_state st direction] returns a new state given the current
+    state [st] and the direction of movement [direction].
+
+    If the movement is [Illegal] then this function returns the old
+    state. *)
 let change_state st direction =
   let state_of_result st = function Legal t -> t | Illegal -> st in
   state_of_result st (move direction st)
 
+(** [prompt_command st] prompts the user for a command while in state
+    [st] and returns the new state given the command.
+
+    If the player enters an [Empty] or [Malformed] command then a
+    message is printed to the screen and the old state is returned. *)
 let prompt_command st =
   print_endline "Where do you go next?";
   try
@@ -29,7 +39,7 @@ let prompt_command st =
 
 (** [print_gline line] prints one row of the map which is given by
     [line]. *)
-let rec print_gline line =
+let rec print_gline (line : tile list) =
   match line with
   | [] -> print_string "\n"
   | Hor_bound :: t ->
@@ -51,7 +61,7 @@ let rec print_gline line =
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
-let print_game st =
+let print_game (st : state) =
   let map = st.map_tile_list in
   let rec print_map = function
     | [] -> print_string "\n"
