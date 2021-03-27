@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 MODULES=command author state try
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
 TEST=MAIN=main.byte
+=======
+MODULES=author main command state
+OBJECTS=$(MODULES:=.cmo)
+MLS=$(MODULES:=.ml)
+MLIS=$(MODULES:=.mli)
+TEST=test.byte
+MAIN=main.byte
+>>>>>>> 302399b76c465c0dc75eaa82ca2a0846154d6dab
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -12,9 +21,12 @@ build:
 	$(OCAMLBUILD) $(OBJECTS)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
 
+=======
+>>>>>>> 302399b76c465c0dc75eaa82ca2a0846154d6dab
 =======
 >>>>>>> 302399b76c465c0dc75eaa82ca2a0846154d6dab
 clean:
