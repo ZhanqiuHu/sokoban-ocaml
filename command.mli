@@ -4,22 +4,6 @@ type step = int
 
 type object_phrase = string list
 
-type direction =
-  | Left (* A *)
-  | Right (* D *)
-  | Up (* W *)
-  | Down
-(* S *)
-
-(* Does not move *)
-
-(** The type [command] represents a player command that is decomposed
-    into a verb and possibly a direction or steps. *)
-type command =
-  | Start
-  | Go of direction
-  | Quit
-
 (** Raised when an empty command is parsed. *)
 exception Empty
 
