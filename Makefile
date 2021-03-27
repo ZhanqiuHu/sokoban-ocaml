@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-MODULES=types author main command state
-=======
 
 MODULES= types command state main author
->>>>>>> b048ece7eaeb8a0285d5dd4c00a8ff8c2b4551ee
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

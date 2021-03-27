@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-(* * [main ()] prompts for the game to play, then starts it. open Map
-   let play_game f = Stdlib.print_endline "Starting your adventure... ";
-
-   let main () = ANSITerminal.print_string [ ANSITerminal.red ]
-   "\n\nWelcome to the 3110 Text Adventure Game engine.\n";
-   print_endline "Please enter the name of the game file you want to\n
-   load.\n"; print_string "> "; match read_line () with | exception
-   End_of_file -> () | file_name -> play_game file_name
-
-   (* Execute the game engine. *)
-
-   let () = main () *)
-=======
 open Types
 open State
 
@@ -68,10 +54,10 @@ let rec print_gline (line : tile list) =
   | Normal normal :: t ->
       if normal.is_hole then (
         ANSITerminal.print_string [ ANSITerminal.red ] "O";
-        print_gline t )
+        print_gline t)
       else (
         print_string " ";
-        print_gline t )
+        print_gline t)
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
@@ -107,10 +93,9 @@ let main () =
     | s -> (
         match parse s with
         | Start -> play_game init_state
-        | _ -> start_game )
+        | _ -> start_game)
   in
   start_game
 
 (* Execute the game engine. *)
 let () = main ()
->>>>>>> b048ece7eaeb8a0285d5dd4c00a8ff8c2b4551ee
