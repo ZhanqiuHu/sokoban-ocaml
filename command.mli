@@ -8,8 +8,9 @@ type direction =
   | Left (* A *)
   | Right (* D *)
   | Up (* W *)
-  | Down (* S *)
-  | None
+  | Down
+(* S *)
+
 (* Does not move *)
 
 (** The type [command] represents a player command that is decomposed
