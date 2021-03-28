@@ -97,10 +97,5 @@ let main () =
   in
   start_game
 
-(* let update_map st = let map = get_tile_list st in let ppos =
-   get_player_pos room(*insert function we just wrote that gets a
-   room*)in match map with | [] -> [] | x::xs -> if x.position = ppos
-   then | *)
-
 (* Execute the game engine. *)
 let () = main ()
