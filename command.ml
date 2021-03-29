@@ -1,13 +1,8 @@
-(* Note: You may introduce new code anywhere in this file. *)
 open Types
 
 type step = int
 
 type object_phrase = string list
-
-(* type direction = | Left | Right | Up | Down
-
-   type command = | Start | Go of direction | Quit *)
 
 exception Empty
 

@@ -5,10 +5,6 @@ type step = int
 
 type object_phrase = string list
 
-(* type direction = | Left | Right | Up | Down
-
-   type command = | Start | Go of direction | Quit *)
-
 (** Raised when an empty command is parsed. *)
 exception Empty
 
