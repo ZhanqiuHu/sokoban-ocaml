@@ -26,6 +26,7 @@ open Map
 
 (* [get_player_pos room] is the pos of tile in [room] that is of ttype
    Player. *)
+
 let get_player_pos room =
   let player_tile =
     room.map_tile_list |> List.flatten
@@ -43,10 +44,8 @@ let get_room_by_id room_id st =
 let init_state =
   {
     current_room_id = "beginning";
-    (* should be [map1] *)
-    all_rooms = [ map1 ];
-    (* in map1, should initialize player position *)
-    player_pos = (1, 1);
+    (* should be [map1] *) all_rooms = [ map1 ];
+    (* in map1, should initialize player position *) player_pos = (1, 1);
   }
 
 let get_tile_list st =

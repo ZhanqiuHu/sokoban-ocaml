@@ -23,7 +23,7 @@ type room = {
   room_id : string;
   width : int;
   height : int;
-  mutable map_tile_list : tile list array;
+  mutable map_tile_list : tile list list;
   blocks : block list;
   holes : (int * int) list;
 }
