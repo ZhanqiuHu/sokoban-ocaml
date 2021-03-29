@@ -5,3 +5,4 @@
 #load "adventure.cmo";;
 #load "command.cmo";;
 #load "state.cmo";;
+#load "map.cmo";;

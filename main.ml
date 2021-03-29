@@ -99,20 +99,20 @@ let rec start_game s =
         print_string "> ";
         match read_line () with
         | exception End_of_file -> ()
-        | s -> start_game s )
+        | s -> start_game s)
   with
   | Empty -> (
       print_endline "Please type 'start' to begin the game.\n";
       print_string "> ";
       match read_line () with
       | exception End_of_file -> ()
-      | s -> start_game s )
+      | s -> start_game s)
   | Malformed -> (
       print_endline "Please type 'start' to begin the game.\n";
       print_string "> ";
       match read_line () with
       | exception End_of_file -> ()
-      | s -> start_game s )
+      | s -> start_game s)
 
 (** [main ()] prompts the user to start the game, then starts it.
 

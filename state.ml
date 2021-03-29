@@ -73,18 +73,18 @@ let update_loc_tile_to_player loc tile_list : tile list =
   match tile_list with
   | [] -> []
   | h :: t ->
-      ( if h.position = loc then
-        { h with ttype = Player { on_exit = false } }
-      else h )
+      (if h.position = loc then
+       { h with ttype = Player { on_exit = false } }
+      else h)
       :: t
 
 let update_loc_tile_to_normal loc tile_list : tile list =
   match tile_list with
   | [] -> []
   | h :: t ->
-      ( if h.position = loc then
-        { h with ttype = Normal { is_hole = false } }
-      else h )
+      (if h.position = loc then
+       { h with ttype = Normal { is_hole = false } }
+      else h)
       :: t
 
 let list_to_nested_list room_width room_height lst =
