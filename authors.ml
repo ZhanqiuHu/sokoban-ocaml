@@ -1,4 +1,4 @@
-let hx_hours_worked = -1
+let hx_hours_worked = 12
 
 let slt_hours_worked = -1
 
