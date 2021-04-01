@@ -68,23 +68,23 @@ let reach_boundary loc room =
   | Ver_bound -> true
   | _ -> false
 
-let update_loc_tile_to_player loc tile_list : tile list =
+let rec update_loc_tile_to_player loc tile_list : tile list =
   match tile_list with
   | [] -> []
   | h :: t ->
       (if h.position = loc then
        { h with ttype = Player { on_exit = false } }
       else h)
-      :: t
+      :: update_loc_tile_to_player loc t
 
-let update_loc_tile_to_normal loc tile_list : tile list =
+let rec update_loc_tile_to_normal loc tile_list : tile list =
   match tile_list with
   | [] -> []
   | h :: t ->
       (if h.position = loc then
        { h with ttype = Normal { is_hole = false } }
       else h)
-      :: t
+      :: update_loc_tile_to_normal loc t
 
 let list_to_nested_list room_width room_height lst =
   let rec loop_helper lst room_width n =
@@ -98,11 +98,12 @@ let list_to_nested_list room_width room_height lst =
   in
   loop_helper lst room_width room_height
 
-let update_room_in_rm_list updated_room st : room list =
-  match st.all_rooms with
+let rec update_room_in_rm_list updated_room rm_id rm_list : room list =
+  match rm_list with
   | [] -> []
   | h :: t ->
-      (if h.room_id = st.current_room_id then updated_room else h) :: t
+      (if h.room_id = rm_id then updated_room else h)
+      :: update_room_in_rm_list updated_room rm_id t
 
 let update_location loc (dir : direction) =
   match dir with
@@ -134,6 +135,8 @@ let move (st : state) (dir : direction) : result =
     Legal
       {
         st with
-        all_rooms = update_room_in_rm_list updated_room st;
+        all_rooms =
+          update_room_in_rm_list updated_room st.current_room_id
+            st.all_rooms;
         player_pos = new_loc;
       }

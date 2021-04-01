@@ -22,7 +22,7 @@ let map1 =
         ];
         [
           { position = (0, 1); ttype = Ver_bound };
-          { position = (1, 1); ttype = Normal { is_hole = false } };
+          { position = (1, 1); ttype = Player { on_exit = false } };
           { position = (2, 1); ttype = Normal { is_hole = false } };
           { position = (3, 1); ttype = Normal { is_hole = false } };
           { position = (4, 1); ttype = Normal { is_hole = false } };
