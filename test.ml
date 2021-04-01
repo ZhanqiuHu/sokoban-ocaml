@@ -87,7 +87,8 @@ let command_tests =
     compare_command "Start command: start" (parse "start") Start;
     compare_command "Start command: start (with spaces)"
       (parse "   start   ") Start;
-    compare_exception "Malformed Command 1" malformed1 Malformed;
+    compare_exception "Malformed Command 1 (check case sensitivity)"
+      malformed1 Malformed;
     compare_exception "Malformed Command 2" malformed2 Malformed;
     compare_exception "Malformed Command 3" malformed3 Malformed;
     compare_exception "Malformed Command 4" malformed4 Malformed;
