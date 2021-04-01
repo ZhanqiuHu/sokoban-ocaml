@@ -99,6 +99,6 @@ let command_tests =
 
 let suite =
   "test suite for project"
-  >::: List.flatten [ get_tile_list_tests; move_tests ]
+  >::: List.flatten [ get_tile_list_tests; move_tests; command_tests ]
 
 let _ = run_test_tt_main suite
