@@ -19,3 +19,20 @@ Also if the input command is anything other than the above characters, a
 warnning will be printed and asks you to retype an input. 
 
 - Step 4: Type in "quit" to quit the game. 
+
+# Modules implemented
+## Main:
+Call functions in other modules to run the game.
+
+## Types: 
+Contains all types used in other modules.
+
+## Map:
+Contains the maps used for the game.
+
+## State:
+Contains functions that store game's current states and update states.
+
+## Command:
+Contain functions that parse command line input to a command type.
+
