@@ -49,6 +49,54 @@ let move_tests =
     move_test_fail "init (1, 1) move up reach boundary" init_state Up;
   ]
 
+let compare_command
+    (name : string)
+    (result : command)
+    (expected_output : command) : test =
+  name >:: fun _ -> assert_equal expected_output result
+
+(** [compare_exception name result expected_except] is a test of name
+    [name] that compares two exceptions [result] and [expected_except]. *)
+let compare_exception (name : string) result (expected_except : exn) :
+    test =
+  name >:: fun _ -> assert_raises expected_except result
+
+let malformed1 () = parse "Start"
+
+let malformed2 () = parse "quiT"
+
+let malformed3 () = parse "hello world"
+
+let malformed4 () = parse "quit 1"
+
+let malformed5 () = parse "start 1234"
+
+let empty1 () = parse ""
+
+let empty2 () = parse "     "
+
+let command_tests =
+  [
+    compare_command "Go Left command: a" (parse "a") (Go Left);
+    compare_command "Go Left command: a (with spaces)" (parse "  a   ")
+      (Go Left);
+    compare_command "Go Right command: d" (parse "d") (Go Right);
+    compare_command "Go Up command: w" (parse "w") (Go Up);
+    compare_command "Go Down command: s" (parse "s") (Go Down);
+    compare_command "Quit command: quit" (parse "quit") Quit;
+    compare_command "Start command: start" (parse "start") Start;
+    compare_command "Start command: start (with spaces)"
+      (parse "   start   ") Start;
+    compare_exception "Malformed Command 1 (check case sensitivity)"
+      malformed1 Malformed;
+    compare_exception "Malformed Command 2" malformed2 Malformed;
+    compare_exception "Malformed Command 3" malformed3 Malformed;
+    compare_exception "Malformed Command 4" malformed4 Malformed;
+    compare_exception "Malformed Command 5" malformed5 Malformed;
+    compare_exception "Empty Command 1" empty1 Empty;
+    compare_exception "Empty Command 2" empty2 Empty;
+  ]
+
 let suite =
   "test suite for project"
   >::: List.flatten [ get_tile_list_tests; move_tests ]

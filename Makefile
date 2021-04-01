@@ -23,8 +23,7 @@ clean:
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
+zip:
+	zip MS1.zip *.ml* *.sh *.txt *.md _tags .merlin .ocamlformat .ocamlinit Makefile	
 	
-# clean:
-# 	ocamlbuild -clean
-# 	rm -rf _doc.public _doc.private adventure.zip
 
