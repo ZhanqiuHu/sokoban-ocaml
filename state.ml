@@ -92,8 +92,10 @@ let list_to_nested_list room_width room_height lst =
     match n with
     | 0 -> []
     | _ ->
-        List.filteri
-          (fun i item -> i / room_width = room_height - n)
+        List.filter
+          (fun item ->
+            ((10 * snd item.position) + fst item.position) / room_width
+            = room_height - n)
           lst
         :: loop_helper lst room_width (n - 1)
   in
