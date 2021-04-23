@@ -73,18 +73,18 @@ let rec update_loc_tile_to_player loc tile_list : tile list =
   match tile_list with
   | [] -> []
   | h :: t ->
-      ( if h.position = loc then
-        { h with ttype = Player { on_exit = false } }
-      else h )
+      (if h.position = loc then
+       { h with ttype = Player { on_exit = false } }
+      else h)
       :: update_loc_tile_to_player loc t
 
 let rec update_loc_tile_to_normal loc tile_list : tile list =
   match tile_list with
   | [] -> []
   | h :: t ->
-      ( if h.position = loc then
-        { h with ttype = Normal { is_hole = false } }
-      else h )
+      (if h.position = loc then
+       { h with ttype = Normal { is_hole = false } }
+      else h)
       :: update_loc_tile_to_normal loc t
 
 let list_to_nested_list room_width room_height lst =
@@ -112,8 +112,8 @@ let update_location loc (dir : direction) =
   match dir with
   | Left -> (fst loc - 1, snd loc)
   | Right -> (fst loc + 1, snd loc)
-  | Up -> (fst loc, snd loc - 1)
-  | Down -> (fst loc, snd loc + 1)
+  | Up -> (fst loc, snd loc + 1)
+  | Down -> (fst loc, snd loc - 1)
 
 type result =
   | Legal of state

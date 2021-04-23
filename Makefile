@@ -1,5 +1,5 @@
 
-MODULES= map_test map types command state main authors
+MODULES= map_test map types command state main authors gui 
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -12,7 +12,7 @@ default: build
 	OCAMLRUNPARAM=b utop
 
 build:
-	$(OCAMLBUILD) $(OBJECTS)
+	$(OCAMLBUILD) $(OBJECTS) -pkg camlimages
 
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)

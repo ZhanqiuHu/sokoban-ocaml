@@ -2,6 +2,10 @@ open Types
 open State
 open Command
 
+let read_key_new () =
+  let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
+  s.key
+
 (** [change_state st direction] returns a new state given the current
     state [st] and the direction of movement [direction].
 
@@ -19,7 +23,7 @@ let change_state st direction =
 let prompt_command st =
   print_endline "Where do you go next?";
   try
-    match parse (read_line ()) with
+    match parse (Char.escaped (read_key_new ())) with
     | Quit ->
         ANSITerminal.print_string [ ANSITerminal.yellow ]
           "Goodbye and may the camel be with you! ^w^ \n\n";
@@ -68,20 +72,15 @@ let rec print_gline (line : tile list) =
     attribute. *)
 let print_game (st : state) =
   let map = get_tile_list st in
-  let rec print_map = function
-    | [] -> print_string "\n"
-    | h :: t ->
-        print_gline h;
-        print_map t
-  in
-  print_map map
+  Gui.draw_rect_images map 60 60
 
 (** [play_game st] executes the game at state [st]. It prints the map to
     the screen and prompts the user for a command. *)
-let rec play_game st =
-  print_game st;
+let rec play_game st boo =
+  if not boo then print_game st else ();
+  Gui.draw_player st;
   let new_state = prompt_command st in
-  play_game new_state
+  play_game new_state (new_state = st)
 
 (** [start_game s] starts the adventure is [s] is 'start'. If [s] is
     'quit' then the game stops. Otherwise, it prompts for a valid
@@ -89,7 +88,7 @@ let rec play_game st =
 let rec start_game s =
   try
     match parse s with
-    | Start -> play_game init_state
+    | Start -> play_game init_state true
     | Quit ->
         ANSITerminal.print_string [ ANSITerminal.yellow ]
           "Goodbye and may the camel be with you! ^w^ \n\n";
@@ -97,35 +96,41 @@ let rec start_game s =
     | _ -> (
         print_endline "Please type 'start' to begin the game.\n";
         print_string "> ";
-        match read_line () with
+        match Char.escaped (read_key_new ()) with
         | exception End_of_file -> ()
-        | s -> start_game s )
+        | s -> start_game s)
   with
   | Empty -> (
       print_endline "Please type 'start' to begin the game.\n";
       print_string "> ";
-      match read_line () with
+      match Char.escaped (read_key_new ()) with
       | exception End_of_file -> ()
-      | s -> start_game s )
+      | s -> start_game s)
   | Malformed -> (
       print_endline "Please type 'start' to begin the game.\n";
       print_string "> ";
-      match read_line () with
+      match Char.escaped (read_key_new ()) with
       | exception End_of_file -> ()
-      | s -> start_game s )
+      | s -> start_game s)
 
 (** [main ()] prompts the user to start the game, then starts it.
 
     This method will continually prompt the user until they enter
     "start".*)
+exception End
+
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
-    "\n\nWelcome to the 3110 Puzzle Game engine.\n";
-  print_endline "Please type 'start' to begin the game.\n";
+    "\n\nWelcome to the\n     3110 Puzzle Game engine.\n";
+  print_endline "Please type 'start' to\n     begin the game.\n";
   print_string "> ";
-  match read_line () with
+  Graphics.open_graph " 1000x750";
+  let map = get_tile_list init_state in
+  Gui.draw_rect_images map 60 60;
+  (* 20 x 27 *)
+  match Char.escaped (read_key_new ()) with
   | exception End_of_file -> ()
-  | s -> start_game s
+  | s -> start_game "start"
 
 (* Execute the game engine. *)
 let () = main ()
