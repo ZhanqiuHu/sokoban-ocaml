@@ -1,5 +1,5 @@
 
-MODULES= map_test map types command state main authors gui 
+MODULES= map_test map types command state main authors gui genmap
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
