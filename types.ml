@@ -1,50 +1,37 @@
-type player = {
-  position : int * int;
-  on_exit : bool;
-}
+type player = { on_exit : bool }
 
-type block = {
-  position : int * int;
-  in_hole : bool;
-}
+type block = { in_hole : bool }
 
-type hole = { position : int * int }
+type normal = { is_hole : bool }
+
+(* maybe use variant to represent type of tile...? *)
 
 type ttypes =
-  | Obstacle
-  | Normal
+  | Player of player
+  | Block of block
+  | Hor_bound
+  | Ver_bound
+  | Normal of normal
   | Exit
 
 type tile = {
   position : int * int;
-  ttype : ttypes;
+  mutable ttype : ttypes;
 }
-
-type game_object =
-  | Player of player
-  | Block of block
-  | Hole of hole
-  | Tile of tile
 
 type room = {
   room_id : string;
   width : int;
   height : int;
-  map_tile_list : tile list;
-  init_blocks : block list;
-  holes : hole list;
-  num_holes : int;
-  exit_pos : int * int;
-  init_pos : int * int;
+  mutable map_tile_list : tile list list;
+  blocks : block list;
+  holes : (int * int) list;
 }
 
 type state = {
   mutable current_room_id : string;
   all_rooms : room list;
-  player : player;
-  mutable blocks : block list;
-  filled_holes : int;
-  exit_active : bool;
+  mutable player_pos : int * int;
 }
 
 type direction =
@@ -52,7 +39,6 @@ type direction =
   | Right
   | Up
   | Down
-  | Empty
 
 type command =
   | Start
