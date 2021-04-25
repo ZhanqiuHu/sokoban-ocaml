@@ -18,7 +18,7 @@ type result =
 
 (* val get_tile_list : state -> tile list *)
 
-val get_player_pos : state -> int * int
+val get_player : state -> player list
 
 val get_tile_list : state -> tile list list
 
@@ -32,4 +32,4 @@ val get_room_by_id : string -> state -> room
     direction [dir]. If the movement is allowed, it returns a result
     [Legal state] with the new state. If the movement is not allowed, it
     returns [Illegal]. *)
-val move : state -> direction -> room -> result
+val move : state -> direction -> room -> player_num -> result

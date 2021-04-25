@@ -1,6 +1,11 @@
+type player_num =
+  | Fst
+  | Snd
+
 type player = {
   position : int * int;
   on_exit : bool;
+  player_num : player_num;
 }
 
 type block = {
@@ -41,7 +46,7 @@ type room = {
 type state = {
   mutable current_room_id : string;
   all_rooms : room list;
-  player : player;
+  mutable players : player list;
   mutable blocks : block list;
   filled_holes : int;
   exit_active : bool;
@@ -56,5 +61,6 @@ type direction =
 
 type command =
   | Start
-  | Go of direction
+  | Fst of direction
+  | Snd of direction
   | Quit

@@ -73,7 +73,7 @@ let draw_hor_images (tile_list : 'a list) width height =
   in
   draw_helper tile_list
 
-let draw_rect_images (tile_list : 'a list list) width height =
+let draw_rect_images (st : state) width height =
   let rec draw_helper tile_list =
     match tile_list with
     | h_list :: t_list_list ->
@@ -81,6 +81,7 @@ let draw_rect_images (tile_list : 'a list list) width height =
         draw_helper t_list_list
     | [] -> ()
   in
+  let tile_list = get_tile_list st in
   draw_helper tile_list
 
 let list_to_array tile_list map_width map_height =
@@ -104,14 +105,24 @@ let flatten_list (nested_list : Types.tile list list) : Types.tile list
     =
   List.flatten nested_list
 
-let draw_player (st : Types.state) =
-  let player_pos = get_player_pos st in
-  Graphics.draw_image
-    (get_img_transparent "link60x60.png")
-    (fst player_pos * 60)
-    (snd player_pos * 60)
+let draw_player (st : state) width height =
+  let rec draw_helper (player_list : player list) =
+    match player_list with
+    | h :: t ->
+        draw_image
+          (get_img_transparent "link60x60.png")
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
+    | [] -> ()
+  in
+  let player_list = get_player st in
+  draw_helper player_list
 
-let draw_block_list (block_list : block list) width height =
+(* Graphics.draw_image (get_img_transparent "link60x60.png") (fst
+   player_pos * 60) (snd player_pos * 60) *)
+
+let draw_block_list (st : state) width height =
   let rec draw_helper (block_list : block list) =
     match block_list with
     | h :: t ->
@@ -122,9 +133,10 @@ let draw_block_list (block_list : block list) width height =
         draw_helper t
     | [] -> ()
   in
+  let block_list = get_blocks st in
   draw_helper block_list
 
-let draw_hole_list (hole_list : hole list) width height =
+let draw_hole_list (st : state) width height =
   let rec draw_helper (hole_list : hole list) =
     match hole_list with
     | h :: t ->
@@ -134,5 +146,8 @@ let draw_hole_list (hole_list : hole list) width height =
           (snd h.position * height);
         draw_helper t
     | [] -> ()
+  in
+  let hole_list =
+    get_hole_list (get_room_by_id st.current_room_id st)
   in
   draw_helper hole_list
