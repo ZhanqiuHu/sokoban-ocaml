@@ -2,7 +2,7 @@ open Types
 open Map
 
 (** Returns the tuple position of the player. *)
-let get_player_pos st = st.player.position
+let get_player st = st.players
 
 (** Returns the id of the room given in this state. *)
 let get_room_by_id room_id st =
@@ -14,7 +14,11 @@ let init_state : state =
   {
     current_room_id = "random";
     (* should be [map1] *) all_rooms = [ map2 ];
-    player = { position = (1, 1); on_exit = false };
+    players =
+      [
+        { position = (1, 1); on_exit = false; player_num = Fst };
+        { position = (1, 8); on_exit = false; player_num = Snd };
+      ];
     filled_holes = 0;
     exit_active = false;
     blocks = map2.init_blocks;
@@ -156,19 +160,27 @@ let new_block_list
       in
       new_block_list_helper st.blocks []
 
+let update_player_next_level st next player_num =
+  List.map
+    (fun player ->
+      if player.player_num == player_num then
+        {
+          player with
+          position = (get_room_by_id next st).init_pos;
+          on_exit = false;
+        }
+      else player)
+    st.players
+
 (** Checks if the level is finished. That is the player is on the exit
     and all the holes are filled. *)
-let next_level st =
+let next_level st player_num =
   let next = get_next_room st in
   Legal
     {
       st with
       current_room_id = next;
-      player =
-        {
-          position = (get_room_by_id next st).init_pos;
-          on_exit = false;
-        };
+      players = update_player_next_level st next player_num;
       blocks = [];
       filled_holes = 0;
       exit_active = false;
@@ -185,21 +197,42 @@ let move_blocks p_pos dir st =
         (new_pos b.position dir)
         st.blocks
 
-let move (st : state) (dir : direction) (room : room) : result =
+let determine_player_num st player_num =
+  st.players
+  |> List.filter (fun player -> player.player_num == player_num)
+  |> List.hd
+
+let update_player st new_loc room player_num =
+  List.map
+    (fun player ->
+      if player.player_num == player_num then
+        {
+          player with
+          position = new_loc;
+          on_exit = check_on_exit new_loc room;
+        }
+      else player)
+    st.players
+
+let move
+    (st : state)
+    (dir : direction)
+    (room : room)
+    (player_num : player_num) : result =
   let current_rm = get_room_by_id st.current_room_id st in
-  if collide st.player.position dir current_rm then Illegal
-  else if check_on_exit st.player.position room && check_full st room
-  then next_level st
+  let player = determine_player_num st player_num in
+  if collide player.position dir current_rm then Illegal
+  else if check_on_exit player.position room && check_full st room then
+    next_level st player_num
   else
-    let new_loc = new_pos st.player.position dir in
+    let new_loc = new_pos player.position dir in
     let legal_move = move_blocks new_loc dir st in
     if not legal_move then Illegal
     else
       Legal
         {
           st with
-          player =
-            { position = new_loc; on_exit = check_on_exit new_loc room };
+          players = update_player st new_loc room player_num;
           blocks =
             new_block_list current_rm
               (check_blocks new_loc st.blocks)

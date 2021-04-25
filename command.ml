@@ -27,6 +27,10 @@ let is_invalid_dir str_list =
   | [ "d" ] -> false
   | [ "w" ] -> false
   | [ "s" ] -> false
+  | [ "i" ] -> false
+  | [ "j" ] -> false
+  | [ "k" ] -> false
+  | [ "l" ] -> false
   | _ -> true
 
 (** [is_malformed str] is true if [str] is not in the form of "go <arg1>
@@ -43,10 +47,14 @@ let is_malformed str =
     Requires: str_list is a valid object phrase starting with go. *)
 let form_go_command str_list =
   match str_list with
-  | [ "a" ] -> Go Left
-  | [ "d" ] -> Go Right
-  | [ "w" ] -> Go Up
-  | _ -> Go Down
+  | [ "a" ] -> Fst Left
+  | [ "d" ] -> Fst Right
+  | [ "w" ] -> Fst Up
+  | [ "s" ] -> Fst Down
+  | [ "j" ] -> Snd Left
+  | [ "l" ] -> Snd Right
+  | [ "i" ] -> Snd Up
+  | _ -> Snd Down
 
 let parse str : command =
   if is_empty str then raise Empty

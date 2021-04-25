@@ -12,9 +12,9 @@ let read_key_new () =
 
     If the movement is [Illegal] then this function returns the old
     state. *)
-let change_state st direction room =
+let change_state st direction room player_num =
   let state_of_result st = function Legal t -> t | Illegal -> st in
-  state_of_result st (move st direction room)
+  state_of_result st (move st direction room player_num)
 
 (** [prompt_command st] prompts the user for a command while in state
     [st] and returns the new state given the command. If the player
@@ -28,8 +28,14 @@ let prompt_command st : state =
         ANSITerminal.print_string [ ANSITerminal.yellow ]
           "Goodbye and may the camel be with you! ^w^\n   \n\n";
         exit 0
-    | Go direction ->
-        change_state st direction (get_room_by_id st.current_room_id st)
+    | Fst direction ->
+        change_state st direction
+          (get_room_by_id st.current_room_id st)
+          Fst
+    | Snd direction ->
+        change_state st direction
+          (get_room_by_id st.current_room_id st)
+          Snd
     | Start -> st
   with
   | Empty ->
@@ -48,18 +54,15 @@ let prompt_command st : state =
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
 let print_game (st : state) =
-  let map = get_tile_list st in
-  Gui.draw_rect_images map 60 60;
-  let holes = get_hole_list (get_room_by_id st.current_room_id st) in
-  Gui.draw_hole_list holes 60 60;
-  let blocks = get_blocks st in
-  Gui.draw_block_list blocks 60 60
+  Gui.draw_rect_images st 60 60;
+  Gui.draw_hole_list st 60 60;
+  Gui.draw_block_list st 60 60
 
 (** [play_game st] executes the game at state [st]. It prints the map to
     the screen and prompts the user for a command. *)
 let rec play_game st boo =
   if not boo then print_game st else ();
-  Gui.draw_player st;
+  Gui.draw_player st 60 60;
   let new_state = prompt_command st in
   play_game new_state (new_state = st)
 
@@ -106,14 +109,9 @@ let main () =
   print_endline "Please type 'start' to\n     begin the game.\n";
   print_string "> ";
   Graphics.open_graph " 600x600";
-  let map = get_tile_list init_state in
-  Gui.draw_rect_images map 60 60;
-  let map =
-    get_hole_list (get_room_by_id init_state.current_room_id init_state)
-  in
-  Gui.draw_hole_list map 60 60;
-  let map = get_blocks init_state in
-  Gui.draw_block_list map 60 60;
+  Gui.draw_rect_images init_state 60 60;
+  Gui.draw_hole_list init_state 60 60;
+  Gui.draw_block_list init_state 60 60;
   (* Uncomment the following code to test faltten_list and
      list_to_nested_list
 
