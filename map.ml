@@ -24,6 +24,7 @@ let map_try =
       (4, 2);
       (3, 2);
       (5, 4);
+      (9, 9);
     ]
   in
   let obstacle_prob = 0.25 in
@@ -40,26 +41,28 @@ let map2 =
     height = 10;
     map_tile_list =
       map_to_list
-        (Genmap.set_with_same_pos map_try 1 9
-           { position = (1, 10); ttype = Exit });
+        (Genmap.set_with_same_pos map_try 1 8
+           { position = (1, 8); ttype = Exit });
     init_blocks = [ { position = (2, 2); in_hole = false } ];
     (*{ position = (3, 2); in_hole = false } *)
     holes = [ { position = (5, 4) } ];
     num_holes = 1;
-    exit_pos = (1, 9);
+    exit_pos = (1, 8);
     init_pos = (1, 1);
+    init_breaks = [ { position = (4, 1); hp = 1 } ];
   }
 
-let map1 =
+let win =
   {
-    room_id = "beginning";
+    room_id = "win";
     width = 10;
     height = 10;
-    init_blocks = [ { position = (1, 2); in_hole = false } ];
-    holes = [ { position = (3, 3) } ];
+    init_blocks = [];
+    holes = [];
     num_holes = 1;
-    exit_pos = (1, 10);
+    exit_pos = (100, 100);
     init_pos = (1, 1);
+    init_breaks = [];
     map_tile_list =
       [
         (*First row*)

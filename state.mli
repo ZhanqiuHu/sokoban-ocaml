@@ -26,6 +26,8 @@ val get_blocks : state -> block list
 
 val get_hole_list : room -> hole list
 
+val get_breaks : state -> breakable1 list
+
 val get_room_by_id : string -> state -> room
 
 (** [move st dir] returns a result given the current state [st] and

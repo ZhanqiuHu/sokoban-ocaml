@@ -58,7 +58,7 @@ let tile_to_img tile =
   match tile.ttype with
   | Obstacle -> "brick60x60.png"
   | Normal -> "grass60x60.png"
-  | Exit -> "images/hole60x60.png"
+  | Exit -> "images/door360x60.png"
 
 let draw_hor_images (tile_list : 'a list) width height =
   let rec draw_helper tile_list =
@@ -104,6 +104,9 @@ let list_to_nested_list tile_list map_width map_height =
 let flatten_list (nested_list : Types.tile list list) : Types.tile list
     =
   List.flatten nested_list
+
+let nested_to_map nested_list map_width map_height =
+  list_to_array (flatten_list nested_list) map_width map_height
 
 let draw_player (st : state) width height =
   let rec draw_helper (player_list : player list) =
@@ -151,3 +154,17 @@ let draw_hole_list (st : state) width height =
     get_hole_list (get_room_by_id st.current_room_id st)
   in
   draw_helper hole_list
+
+let draw_break_list (st : state) width height =
+  let rec draw_helper (break_list : breakable1 list) =
+    match break_list with
+    | h :: t ->
+        draw_image
+          (get_img_transparent "images/oblock60x60.png")
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
+    | [] -> ()
+  in
+  let break_list = get_breaks st in
+  draw_helper break_list
