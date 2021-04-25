@@ -1,5 +1,6 @@
 open Types
 open Map
+open Genmap
 
 (* (* better change on_exit to on_hole *) type player = { on_exit : bool
    }
@@ -42,9 +43,9 @@ let get_room_by_id room_id st =
 
 let init_state =
   {
-    current_room_id = "beginning";
+    current_room_id = "random";
     (* should be [map1] *)
-    all_rooms = [ map1 ];
+    all_rooms = [ map2 ];
     (* in map1, should initialize player position *)
     player_pos = (1, 1);
   }

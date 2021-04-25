@@ -5,6 +5,7 @@ open Png
 open Images
 open Jpeg
 open Types
+open Genmap
 
 (* [array_of_image img] transforms a given image to a color color array. *)
 let array_of_image img =
@@ -62,25 +63,49 @@ let tile_to_img tile =
   | Normal _ -> "grass60x60.png"
   | Exit -> "brick60x60.png"
 
-let draw_hor_images (tile_list : 'a list) width y =
-  let rec draw_helper tile_list x =
+let draw_hor_images (tile_list : 'a list) width height =
+  let rec draw_helper tile_list =
     match tile_list with
     | h :: t ->
-        draw_image (get_img (tile_to_img h)) x y;
-        draw_helper t (x + width)
+        draw_image
+          (get_img (tile_to_img h))
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
     | [] -> ()
   in
-  draw_helper tile_list 0
+  draw_helper tile_list
 
 let draw_rect_images (tile_list : 'a list list) width height =
-  let rec draw_helper tile_list y =
+  let rec draw_helper tile_list =
     match tile_list with
     | h_list :: t_list_list ->
-        draw_hor_images h_list width y;
-        draw_helper t_list_list (height + y)
+        draw_hor_images h_list width height;
+        draw_helper t_list_list
     | [] -> ()
   in
-  draw_helper tile_list 0
+  draw_helper tile_list
+
+let list_to_array tile_list map_width map_height =
+  let map = map_init map_width map_height (List.hd tile_list) in
+  let rec update_map tile_list =
+    match tile_list with
+    | h :: t ->
+        let _ = set map (fst h.position) (snd h.position) h in
+        update_map t
+    | _ -> ()
+  in
+  update_map tile_list;
+  map
+
+let array_to_nested_list arr = Genmap.map_to_list arr
+
+let list_to_nested_list tile_list map_width map_height =
+  list_to_array tile_list map_width map_height |> array_to_nested_list
+
+let flatten_list (nested_list : Types.tile list list) : Types.tile list
+    =
+  List.flatten nested_list
 
 let draw_player (st : Types.state) =
   let player_pos = st.player_pos in

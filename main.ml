@@ -1,6 +1,7 @@
 open Types
 open State
 open Command
+open Gui
 
 let read_key_new () =
   let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
@@ -127,6 +128,11 @@ let main () =
   Graphics.open_graph " 1000x750";
   let map = get_tile_list init_state in
   Gui.draw_rect_images map 60 60;
+  (* Uncomment the following code to test faltten_list and
+     list_to_nested_list
+
+     Gui.draw_rect_images (Gui.list_to_nested_list (Gui.flatten_list
+     map) 10 10) 60 60; *)
   (* 20 x 27 *)
   match Char.escaped (read_key_new ()) with
   | exception End_of_file -> ()
