@@ -127,7 +127,7 @@ let draw_block_list (st : state) width height =
     match block_list with
     | h :: t ->
         draw_image
-          (get_img "yblock60x60.png")
+          (get_img_transparent "yblock60x60.png")
           (fst h.position * width)
           (snd h.position * height);
         draw_helper t
