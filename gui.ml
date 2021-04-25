@@ -58,7 +58,7 @@ let tile_to_img tile =
   match tile.ttype with
   | Obstacle -> "brick60x60.png"
   | Normal -> "grass60x60.png"
-  | Exit -> "brick60x60.png"
+  | Exit -> "images/hole60x60.png"
 
 let draw_hor_images (tile_list : 'a list) width height =
   let rec draw_helper tile_list =

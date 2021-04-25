@@ -45,6 +45,19 @@ let set map x_pos y_pos new_val =
   map.(y_end - y_pos).(x_pos) <- new_val;
   map
 
+let set_with_same_pos map x_pos y_pos new_val =
+  let y_end = Array.length map - 1 in
+  map.(y_end - y_pos).(x_pos) <-
+    {
+      position = map.(y_end - y_pos).(x_pos).position;
+      ttype = new_val.ttype;
+    };
+  map
+
+let get map x_pos y_pos =
+  let y_end = Array.length map - 1 in
+  map.(y_end - y_pos).(x_pos)
+
 let copy_map map =
   let new_map = Array.copy map in
   let y_end = Array.length map - 1 in

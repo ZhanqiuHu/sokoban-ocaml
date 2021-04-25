@@ -31,19 +31,22 @@ let map_try =
     new_map_with_obstacles map_w map_h tile_val bound_val path_val
       obstacle_val path_pos_list obstacle_prob
   in
-  map_to_list map
+  map
 
 let map2 =
   {
     room_id = "random";
     width = 10;
     height = 10;
-    map_tile_list = map_try;
+    map_tile_list =
+      map_to_list
+        (Genmap.set_with_same_pos map_try 1 9
+           { position = (1, 10); ttype = Exit });
     init_blocks = [ { position = (2, 2); in_hole = false } ];
     (*{ position = (3, 2); in_hole = false } *)
     holes = [ { position = (5, 4) } ];
     num_holes = 1;
-    exit_pos = (1, 10);
+    exit_pos = (1, 9);
     init_pos = (1, 1);
   }
 
