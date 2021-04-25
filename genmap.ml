@@ -55,7 +55,7 @@ let copy_map map =
 
 let define_path_map map path_list path_val =
   let y_end = Array.length map - 1 in
-  let x_end = Array.length map.(0) - 1 in
+
   let map_copy = copy_map map in
   let rec set_path path_pos_list =
     match path_pos_list with
