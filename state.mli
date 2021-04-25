@@ -2,10 +2,11 @@
    as it is being played, including the player's current position, the
    block pieces, the layout of the rooms, and functions that cause the
    state to change. *)
+
 open Types
 
 (** [init_state] returns the initial state when the game is started*)
-val init_state : state
+val init_state : room -> state
 
 (** The type representing the result of an attempted movement. *)
 type result =
@@ -14,10 +15,21 @@ type result =
 
 (** get_tile_list [state] returns the 2D list of tiles that map the
     current room state. *)
-val get_tile_list : state -> tile list list
+
+(* val get_tile_list : state -> tile list *)
+
+val get_player_pos : state -> int * int
+
+val get_background_list : room -> tile list
+
+val get_blocks : state -> block list
+
+val get_hole_list : room -> hole list
+
+val get_room_by_id : string -> state -> room
 
 (** [move st dir] returns a result given the current state [st] and
     direction [dir]. If the movement is allowed, it returns a result
     [Legal state] with the new state. If the movement is not allowed, it
     returns [Illegal]. *)
-val move : state -> direction -> result
+val move : state -> direction -> room -> result

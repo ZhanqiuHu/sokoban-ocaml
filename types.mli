@@ -2,51 +2,68 @@
 
 (** Represents the player. on_exit is true when the player is on the
     exit *)
-type player = { on_exit : bool }
-
+type player = {
+  position : int * int;
+  on_exit : bool;
+}
 (** Represents a block. in_hole is true when it overlaps a hole
     coordinate*)
-type block = { in_hole : bool }
-
-(** Represents a normal tile in the game. When is_hole is true,
-    represents a hole*)
-type normal = { is_hole : bool }
-
-(** Represents the possible types of objects in the game. Player is the
-    player, Block is a block, Hor_bound is a horizontal boundary,
-    Ver_boundary is a vertical boundary, Normal is a normal tile, and
-    Exit is the exit.*)
-type ttypes =
-  | Player of player
-  | Block of block
-  | Hor_bound
-  | Ver_bound
-  | Normal of normal
-  | Exit
-
-(** Represents an object in the game.*)
-type tile = {
+type block = {
   position : int * int;
-  mutable ttype : ttypes;
+  in_hole : bool;
 }
 
+(** Represents a hole in the game. *)
+type hole = { position : int * int }
+
+(** Represents the possible types of background objects in the game. 
+    Obstacle is something the player cannot walk through, 
+    and Normal is a walkable tile. Exit is the exit. *)
+type ttypes =
+  | Obstacle
+  | Normal
+  | Exit
+
+(** Represents a background tile in the game.*)
+type tile = {
+  position : int * int;
+  ttype : ttypes;
+}
+
+(**Represents types of objects in the game.*)
+type game_object = 
+| Player of player
+| Block of block
+| Hole of hole
+| Tile of tile 
+
+
 (** Represents a "level" in the game. blocks is the list of blocks in
-    the room. holes represents the coordinates of all holes in the game. *)
+    the room. holes list of holes in the level. num_holes is the number of
+    holes in the level. *)
 type room = {
   room_id : string;
   width : int;
   height : int;
-  mutable map_tile_list : tile list list;
-  blocks : block list;
-  holes : (int * int) list;
+  map_tile_list : tile list;
+  init_blocks : block list;
+  holes : hole list;
+  num_holes : int;
+  exit_pos : int * int;
+  init_pos : int * int;
 }
 
 (** Represents the current room, all_rooms, and the current player
-    position.*)
+    position. filled_holes is the number of holes that are currently filled.
+    exit_active is true when the number of filled holes is equal to the
+    number of holes in the room. *)
 type state = {
   mutable current_room_id : string;
   all_rooms : room list;
-  mutable player_pos : int * int;
+  player : player;
+  mutable blocks : block list;
+  filled_holes : int;
+  exit_active : bool;
 }
 
 type direction =
@@ -54,6 +71,7 @@ type direction =
   | Right
   | Up
   | Down
+  | Empty
 
 (** Represents player commands: moving, starting/stopping the game.*)
 type command =

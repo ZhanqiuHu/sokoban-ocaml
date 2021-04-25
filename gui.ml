@@ -3,7 +3,8 @@ open State
 open Graphics
 open Png
 open Images
-open Jpeg
+
+(* open Jpeg *)
 open Types
 
 (* [array_of_image img] transforms a given image to a color color array. *)
@@ -54,37 +55,73 @@ let get_img_transparent img =
   Png.load img [] |> array_of_image |> make_transp |> make_image
 
 let tile_to_img tile =
+  (* match obj with | Player _ -> "" | Block _ -> "brick60x60.png" |
+     Hole _ -> "brick60x60.png" | Tile tile -> ( *)
   match tile.ttype with
-  | Player _ -> "grass60x60.png"
-  | Block _ -> "brick60x60.png"
-  | Ver_bound -> "brick60x60.png"
-  | Hor_bound -> "brick60x60.png"
-  | Normal _ -> "grass60x60.png"
+  (* | Player _ -> "grass60x60.png" | Block _ -> "brick60x60.png" *)
+  | Obstacle -> "brick60x60.png"
+  | Normal -> "grass60x60.png"
   | Exit -> "brick60x60.png"
 
-let draw_hor_images (tile_list : 'a list) width y =
-  let rec draw_helper tile_list x =
+(* let draw_hor_images (tile_list : 'a list) width y = let rec
+   draw_helper tile_list x = match tile_list with | h :: t -> draw_image
+   (get_img (tile_to_img h)) x y; draw_helper t (x + width) | [] -> ()
+   in draw_helper tile_list 0 *)
+
+(* let draw_rect_images (tile_list : 'a list) width height = let rec
+   draw_helper tile_list y = match tile_list with | h :: t ->
+   draw_hor_images h width y; draw_helper t (height + y) | [] -> () in
+   draw_helper tile_list 0 *)
+
+let get_position game_obj =
+  match game_obj with
+  | Player p -> p.position
+  | Block b -> b.position
+  | Hole h -> h.position
+  | Tile t -> t.position
+
+let draw_tile_list (tile_list : tile list) width height =
+  let rec draw_helper tile_list =
     match tile_list with
     | h :: t ->
-        draw_image (get_img (tile_to_img h)) x y;
-        draw_helper t (x + width)
+        draw_image
+          (get_img (tile_to_img h))
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
     | [] -> ()
   in
-  draw_helper tile_list 0
-
-let draw_rect_images (tile_list : 'a list list) width height =
-  let rec draw_helper tile_list y =
-    match tile_list with
-    | h_list :: t_list_list ->
-        draw_hor_images h_list width y;
-        draw_helper t_list_list (height + y)
-    | [] -> ()
-  in
-  draw_helper tile_list 0
+  draw_helper tile_list
 
 let draw_player (st : Types.state) =
-  let player_pos = st.player_pos in
+  let player_pos = State.get_player_pos st in
   Graphics.draw_image
     (get_img_transparent "link60x60.png")
     (fst player_pos * 60)
     (snd player_pos * 60)
+
+let draw_block_list (block_list : block list) width height =
+  let rec draw_helper (block_list : block list) =
+    match block_list with
+    | h :: t ->
+        draw_image
+          (get_img "brick60x60.png")
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
+    | [] -> ()
+  in
+  draw_helper block_list
+
+let draw_hole_list (hole_list : hole list) width height =
+  let rec draw_helper (hole_list : hole list) =
+    match hole_list with
+    | h :: t ->
+        draw_image
+          (get_img "brick60x60.png")
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
+    | [] -> ()
+  in
+  draw_helper hole_list
