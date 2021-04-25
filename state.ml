@@ -50,14 +50,27 @@ let collide old_pos dir room =
   match tile.ttype with Obstacle -> true | _ -> false
 
 (** Updates st.breaks to be the correct hp given that the player will
-    move according to the direction given. *)
+    move according to the direction given. Returns whether the player is
+    blocked *)
 let break (st : state) old_pos dir =
   let pos = new_pos old_pos dir in
   let rec find_break (lst : breakable1 list) =
     match lst with
-    | [] -> ()
+    | [] -> false
     | h :: t ->
-        if h.position = pos then h.hp <- h.hp - 1 else find_break t
+        if h.position = pos then (
+          h.hp <- h.hp - 1;
+          h.hp >= 0)
+        else find_break t
+  in
+  find_break st.breaks
+
+let is_break (st : state) old_pos dir =
+  let pos = new_pos old_pos dir in
+  let rec find_break (lst : breakable1 list) =
+    match lst with
+    | [] -> false
+    | h :: t -> if h.position = pos then true else find_break t
   in
   find_break st.breaks
 
@@ -159,7 +172,8 @@ let block_legal (room : room) (new_pos : int * int) (st : state) =
     match break_list with
     | [] -> true
     | h :: t ->
-        if h.position = new_pos then false else break_helper t new_pos
+        if h.position = new_pos && h.hp >= 0 then false
+        else break_helper t new_pos
   in
   let tile_list = List.flatten room.map_tile_list in
   tile_helper tile_list new_pos
@@ -282,12 +296,12 @@ let move
   let current_rm = get_room_by_id st.current_room_id st in
   let player = determine_player_num st player_num in
   if collide player.position dir current_rm then Illegal
+  else if break st player.position dir then Illegal
   else
     let new_loc = new_pos player.position dir in
     let legal_move = move_blocks new_loc dir st in
     if not legal_move then Illegal
     else
-      let () = break st player.position dir in
       let new_block_list =
         new_block_list current_rm
           (check_blocks new_loc st.blocks)

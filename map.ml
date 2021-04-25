@@ -49,7 +49,16 @@ let map2 =
     num_holes = 1;
     exit_pos = (1, 8);
     init_pos = (1, 1);
-    init_breaks = [ { position = (4, 1); hp = 1 } ];
+    init_breaks =
+      [
+        { position = (4, 1); hp = 1 };
+        { position = (7, 1); hp = 1 };
+        { position = (5, 3); hp = 1 };
+        { position = (4, 2); hp = 1 };
+        { position = (5, 7); hp = 1 };
+        { position = (5, 8); hp = 1 };
+        { position = (4, 6); hp = 1 };
+      ];
   }
 
 let win =

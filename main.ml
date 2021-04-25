@@ -56,16 +56,16 @@ let prompt_command st : state =
 let print_game (st : state) =
   Gui.draw_rect_images st 60 60;
   Gui.draw_hole_list st 60 60;
-  Gui.draw_block_list st 60 60
-
-(* Gui.draw_break_list st 60 60 *)
+  Gui.draw_block_list st 60 60;
+  Gui.draw_break_list st 60 60
 
 (** [play_game st boo] executes the game at state [st]. It prints the
     map to the screen and prompts the user for a command. [boo] checks
     if new state is the same as previous state. *)
 let rec play_game st boo =
-  if not boo then print_game st else ();
+  if not boo then print_game st else Gui.draw_break_list st 60 60;
   Gui.draw_player st 60 60;
+
   let new_state = prompt_command st in
   play_game new_state (new_state = st)
 
@@ -115,7 +115,7 @@ let main () =
   Gui.draw_rect_images init_state 60 60;
   Gui.draw_hole_list init_state 60 60;
   Gui.draw_block_list init_state 60 60;
-  (* Gui.draw_break_list init_state 60 60; *)
+  Gui.draw_break_list init_state 60 60;
   (* Uncomment the following code to test faltten_list and
      list_to_nested_list
 

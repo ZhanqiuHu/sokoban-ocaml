@@ -159,10 +159,21 @@ let draw_break_list (st : state) width height =
   let rec draw_helper (break_list : breakable1 list) =
     match break_list with
     | h :: t ->
-        draw_image
-          (get_img_transparent "images/oblock60x60.png")
-          (fst h.position * width)
-          (snd h.position * height);
+        if h.hp > 0 then
+          draw_image
+            (get_img_transparent "images/cracks60x60.png")
+            (fst h.position * width)
+            (snd h.position * height)
+        else if h.hp = 0 then (
+          draw_image
+            (get_img_transparent "grass60x60.png")
+            (fst h.position * width)
+            (snd h.position * height);
+          draw_image
+            (get_img_transparent "images/heaps60x60.png")
+            (fst h.position * width)
+            (snd h.position * height))
+        else ();
         draw_helper t
     | [] -> ()
   in
