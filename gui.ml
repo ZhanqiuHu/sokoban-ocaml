@@ -56,11 +56,8 @@ let get_img_transparent img =
 
 let tile_to_img tile =
   match tile.ttype with
-  | Player _ -> "grass60x60.png"
-  | Block _ -> "brick60x60.png"
-  | Ver_bound -> "brick60x60.png"
-  | Hor_bound -> "brick60x60.png"
-  | Normal _ -> "grass60x60.png"
+  | Obstacle -> "brick60x60.png"
+  | Normal -> "grass60x60.png"
   | Exit -> "brick60x60.png"
 
 let draw_hor_images (tile_list : 'a list) width height =
@@ -108,8 +105,34 @@ let flatten_list (nested_list : Types.tile list list) : Types.tile list
   List.flatten nested_list
 
 let draw_player (st : Types.state) =
-  let player_pos = st.player_pos in
+  let player_pos = get_player_pos st in
   Graphics.draw_image
     (get_img_transparent "link60x60.png")
     (fst player_pos * 60)
     (snd player_pos * 60)
+
+let draw_block_list (block_list : block list) width height =
+  let rec draw_helper (block_list : block list) =
+    match block_list with
+    | h :: t ->
+        draw_image
+          (get_img "yblock60x60.png")
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
+    | [] -> ()
+  in
+  draw_helper block_list
+
+let draw_hole_list (hole_list : hole list) width height =
+  let rec draw_helper (hole_list : hole list) =
+    match hole_list with
+    | h :: t ->
+        draw_image
+          (get_img_transparent "cross60x60.png")
+          (fst h.position * width)
+          (snd h.position * height);
+        draw_helper t
+    | [] -> ()
+  in
+  draw_helper hole_list

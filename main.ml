@@ -12,68 +12,48 @@ let read_key_new () =
 
     If the movement is [Illegal] then this function returns the old
     state. *)
-let change_state st direction =
+let change_state st direction room =
   let state_of_result st = function Legal t -> t | Illegal -> st in
-  state_of_result st (move st direction)
+  state_of_result st (move st direction room)
 
 (** [prompt_command st] prompts the user for a command while in state
-    [st] and returns the new state given the command.
-
-    If the player enters an [Empty] or [Malformed] command then a
-    message is printed to the screen and the old state is returned. *)
-let prompt_command st =
+    [st] and returns the new state given the command. If the player
+    enters an [Empty] or [Malformed] command then a message is printed
+    to the screen and the old state is returned. *)
+let prompt_command st : state =
   print_endline "Where do you go next?";
   try
     match parse (Char.escaped (read_key_new ())) with
     | Quit ->
         ANSITerminal.print_string [ ANSITerminal.yellow ]
-          "Goodbye and may the camel be with you! ^w^ \n\n";
+          "Goodbye and may the camel be with you! ^w^\n   \n\n";
         exit 0
-    | Go direction -> change_state st direction
+    | Go direction ->
+        change_state st direction (get_room_by_id st.current_room_id st)
     | Start -> st
   with
   | Empty ->
       ANSITerminal.print_string [ ANSITerminal.cyan ]
         "\n\
-         You must type something. Type quit to stop the game or 'w', \
+        \ You must type something. Type quit to stop the game or 'w', \
          's', 'a', 'd' to move the player. \n\n";
       st
   | Malformed ->
       ANSITerminal.print_string [ ANSITerminal.cyan ]
         "\n\
-         Type quit to stop the game or 'w', 's', 'a', 'd' to move the \
-         player. \n\n";
+        \ Type quit to\n\
+        \   stop the game or 'w', 's', 'a', 'd' to move the  player. \n\n";
       st
-
-(** [print_gline line] prints one row of the map which is given by
-    [line].
-
-    The helper function inside [print_tile tile] prints out [tile]
-    according to its [ttype] attribute. *)
-let rec print_gline (line : tile list) =
-  let rec print_tile (tile : tile) =
-    match tile.ttype with
-    | Hor_bound -> print_string "-"
-    | Ver_bound -> print_string "|"
-    | Player _ -> ANSITerminal.print_string [ ANSITerminal.blue ] "X"
-    | Normal normal ->
-        if normal.is_hole then
-          ANSITerminal.print_string [ ANSITerminal.red ] "O"
-        else print_string " "
-    | Exit -> ANSITerminal.print_string [ ANSITerminal.green ] "+"
-    | Block _ -> print_string "#"
-  in
-  match line with
-  | [] -> print_string "\n"
-  | h :: t ->
-      print_tile h;
-      print_gline t
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
 let print_game (st : state) =
   let map = get_tile_list st in
-  Gui.draw_rect_images map 60 60
+  Gui.draw_rect_images map 60 60;
+  let map = get_hole_list (get_room_by_id st.current_room_id st) in
+  Gui.draw_hole_list map 60 60;
+  let map = get_blocks st in
+  Gui.draw_block_list map 60 60
 
 (** [play_game st] executes the game at state [st]. It prints the map to
     the screen and prompts the user for a command. *)
@@ -125,9 +105,15 @@ let main () =
     "\n\nWelcome to the\n     3110 Puzzle Game engine.\n";
   print_endline "Please type 'start' to\n     begin the game.\n";
   print_string "> ";
-  Graphics.open_graph " 1000x750";
+  Graphics.open_graph " 600x600";
   let map = get_tile_list init_state in
   Gui.draw_rect_images map 60 60;
+  let map =
+    get_hole_list (get_room_by_id init_state.current_room_id init_state)
+  in
+  Gui.draw_hole_list map 60 60;
+  let map = get_blocks init_state in
+  Gui.draw_block_list map 60 60;
   (* Uncomment the following code to test faltten_list and
      list_to_nested_list
 
