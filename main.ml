@@ -54,10 +54,12 @@ let prompt_command st : state =
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
 let print_game (st : state) =
+  Graphics.auto_synchronize false;
   Gui.draw_rect_images st 60 60;
   Gui.draw_hole_list st 60 60;
   Gui.draw_block_list st 60 60;
-  Gui.draw_break_list st 60 60
+  Gui.draw_break_list st 60 60;
+  Graphics.auto_synchronize true
 
 (** [play_game st boo] executes the game at state [st]. It prints the
     map to the screen and prompts the user for a command. [boo] checks
