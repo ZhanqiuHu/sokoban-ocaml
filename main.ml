@@ -50,10 +50,10 @@ let prompt_command st : state =
 let print_game (st : state) =
   let map = get_tile_list st in
   Gui.draw_rect_images map 60 60;
-  let map = get_hole_list (get_room_by_id st.current_room_id st) in
-  Gui.draw_hole_list map 60 60;
-  let map = get_blocks st in
-  Gui.draw_block_list map 60 60
+  let holes = get_hole_list (get_room_by_id st.current_room_id st) in
+  Gui.draw_hole_list holes 60 60;
+  let blocks = get_blocks st in
+  Gui.draw_block_list blocks 60 60
 
 (** [play_game st] executes the game at state [st]. It prints the map to
     the screen and prompts the user for a command. *)

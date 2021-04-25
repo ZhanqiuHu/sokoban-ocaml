@@ -17,7 +17,7 @@ let init_state : state =
     player = { position = (1, 1); on_exit = false };
     filled_holes = 0;
     exit_active = false;
-    blocks = map1.init_blocks;
+    blocks = map2.init_blocks;
   }
 
 let get_tile_by_loc loc room =
