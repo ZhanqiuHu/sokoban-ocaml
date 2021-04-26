@@ -160,6 +160,13 @@ let is_not_normal (place : tile) =
       | Normal -> false
       | Exit -> true)
 
+let rec block_helper (block_list : block list) new_pos =
+  (*Returns true if not block*)
+  match block_list with
+  | [] -> true
+  | h :: t ->
+      if h.position = new_pos then false else block_helper t new_pos
+
 (**Checks if block movement is legal. That is, the block should not be
    moved onto an exit, block, obstacle, or breakable.*)
 let block_legal (room : room) (new_pos : int * int) (st : state) =
@@ -170,12 +177,24 @@ let block_legal (room : room) (new_pos : int * int) (st : state) =
         if h.position = new_pos && not (is_not_normal h) then true
         else tile_helper t new_pos
   in
-  let rec block_helper (block_list : block list) new_pos =
-    (*Returns true if not block*)
-    match block_list with
+  let rec break_helper (break_list : breakable1 list) new_pos =
+    (*Returns true if not breakable*)
+    match break_list with
     | [] -> true
     | h :: t ->
-        if h.position = new_pos then false else block_helper t new_pos
+        if h.position = new_pos && h.hp >= 0 then false
+        else break_helper t new_pos
+  in
+  let tile_list = List.flatten room.map_tile_list in
+  tile_helper tile_list new_pos && break_helper st.breaks new_pos
+
+let movement_legal (room : room) (new_pos : int * int) (st : state) =
+  let rec tile_helper tile_list new_pos =
+    match tile_list with
+    | [] -> false
+    | h :: t ->
+        if h.position = new_pos && not (is_not_normal h) then true
+        else tile_helper t new_pos
   in
   let rec break_helper (break_list : breakable1 list) new_pos =
     (*Returns true if not breakable*)
@@ -186,9 +205,9 @@ let block_legal (room : room) (new_pos : int * int) (st : state) =
         else break_helper t new_pos
   in
   let tile_list = List.flatten room.map_tile_list in
-  tile_helper tile_list new_pos
-  && block_helper st.blocks new_pos
-  && break_helper st.breaks new_pos
+  tile_helper tile_list new_pos && break_helper st.breaks new_pos
+
+(* && block_helper st.blocks new_pos *)
 
 (** Returns the block with the new position it is in and its in_hole
     attribute updated with the new position. *)
@@ -205,7 +224,25 @@ let new_block (b : block) (new_pos : int * int) (holes : hole list) :
   in
   check_hole holes
 
-(** Returns the new block list given the block that moves, if any. *)
+let get_gameobj_pos game_object =
+  match game_object with
+  | Player p -> p.position
+  | Tile t -> t.position
+  | Block b -> b.position
+  | Break1 b1 -> b1.position
+  | Hole h -> h.position
+
+(** Returns true if new player position is not a block or if it is a
+    block but the block can be moved in the given direction. *)
+let move_blocks p_pos dir st =
+  match check_blocks p_pos st.blocks with
+  | None -> true
+  | Some b ->
+      block_legal
+        (get_room_by_id st.current_room_id st)
+        (new_pos b.position dir)
+        st
+
 let new_block_list
     (room : room)
     (block : block option)
@@ -214,16 +251,45 @@ let new_block_list
   match block with
   | None -> st.blocks
   | Some b ->
-      let rec new_block_list_helper
-          (block_list : block list)
-          (acc : block list) : block list =
-        match block_list with
-        | [] -> acc
-        | h :: t ->
-            if h = b then new_block b new_pos room.holes :: acc
-            else new_block_list_helper block_list (h :: acc)
-      in
-      new_block_list_helper st.blocks []
+      List.map
+        (fun block : block ->
+          if block = b then new_block block new_pos room.holes
+          else block)
+        st.blocks
+
+(** Returns the new block list given the obj that moves, if any. *)
+let pushed_obj_new_block_list
+    (room : room)
+    (new_loc : int * int)
+    (dir : direction)
+    (st : state) : block list =
+  List.map
+    (fun (block : block) ->
+      if block.position = new_loc && move_blocks new_loc dir st then
+        new_block block (new_pos new_loc dir) room.holes
+      else block)
+    st.blocks
+
+(** Returns the new player list given the obj that moves, if any. *)
+let pushed_obj_new_player_list
+    (room : room)
+    (dir : direction)
+    (new_loc : int * int)
+    (st : state) : player list =
+  List.map
+    (fun (player : player) ->
+      if
+        player.position = new_loc
+        && (not (collide new_loc dir room))
+        && not (break st new_loc dir)
+      then
+        {
+          player with
+          position = new_pos new_loc dir;
+          on_exit = check_on_exit (new_pos new_loc dir) room;
+        }
+      else player)
+    st.players
 
 (** Returns the new breakables list *)
 let new_break_list break_list : breakable1 list =
@@ -270,17 +336,6 @@ let next_level st =
       filled_holes = 0;
     }
 
-(** Returns true if new player position is not a block or if it is a
-    block but the block can be moved in the given direction. *)
-let move_blocks p_pos dir st =
-  match check_blocks p_pos st.blocks with
-  | None -> true
-  | Some b ->
-      block_legal
-        (get_room_by_id st.current_room_id st)
-        (new_pos b.position dir)
-        st
-
 let determine_player_num st player_num =
   st.players
   |> List.filter (fun player -> player.player_num = player_num)
@@ -297,6 +352,95 @@ let update_player st new_loc room player_num =
         }
       else player)
     st.players
+
+let updated_player st player_num =
+  st.players
+  |> List.filter (fun player -> player.player_num = player_num)
+  |> List.hd
+
+(* let get_gameobj game_object = match game_object with | Player p ->
+   Player | Tile t -> t | Block b -> Block b | Break1 b1 -> Break1 b1 |
+   Hole h -> Hole h *)
+
+(**Returns the position of a game_object*)
+let get_gameobj_pos game_object =
+  match game_object with
+  | Player p -> p.position
+  | Tile t -> t.position
+  | Block b -> b.position
+  | Break1 b1 -> b1.position
+  | Hole h -> h.position
+
+let check_overlap (pushed_obj : game_object) (st : state) =
+  let overlap_with_player =
+    List.fold_left
+      (fun init (player : player) ->
+        init || player.position = get_gameobj_pos pushed_obj)
+      false st.players
+  in
+  let block_list = st.blocks in
+  let overlap_with_block =
+    List.fold_left
+      (fun init (block : block) ->
+        init || block.position = get_gameobj_pos pushed_obj)
+      false block_list
+  in
+  overlap_with_player || overlap_with_block
+
+let gen_state players blocks filled_holes st =
+  { st with players; blocks; filled_holes }
+
+(* let (combine_list : game_object list) = player_list @ block_list in *)
+
+(**Returns the new state of game_object with new position *)
+let move_game_object game_object dir st room : state =
+  let pos = get_gameobj_pos game_object in
+  let players = pushed_obj_new_player_list room dir pos st in
+  let blocks = pushed_obj_new_block_list room pos dir st in
+  gen_state players blocks (update_filled_holes blocks) st
+
+let overlap_player pushed_obj st =
+  List.filter
+    (fun (player : player) ->
+      player.position = get_gameobj_pos pushed_obj)
+    st.players
+
+let overlap_block pushed_obj st =
+  List.filter
+    (fun (block : block) -> block.position = get_gameobj_pos pushed_obj)
+    st.blocks
+
+let check_next_obj game_object st : game_object option =
+  if check_overlap game_object st then
+    let player = overlap_player game_object st in
+    let blocks = overlap_block game_object st in
+    if player = [] then Some (Block (List.hd blocks))
+    else Some (Player (List.hd player))
+  else None
+
+(* let move_legal game_object pos dir st = match check_overlap
+   game_object st with let move_blocks p_pos dir st = match check_blocks
+   p_pos st.blocks with | None -> true | Some b -> block_legal
+   (get_room_by_id st.current_room_id st) (new_pos b.position dir) st *)
+
+(** Returns true if new player position is not a block or if it is a
+    block but the block can be moved in the given direction. *)
+let rec move_rec
+    (st : state)
+    (dir : direction)
+    (pushed_obj : game_object) : result =
+  if check_overlap pushed_obj st then
+    let room = get_room_by_id st.current_room_id st in
+    let state_before_check = move_game_object pushed_obj dir st room in
+    if check_win room state_before_check then (
+      Stdlib.print_string "win";
+      next_level state_before_check)
+    else
+      let new_push_obj = check_next_obj pushed_obj st in
+      match new_push_obj with
+      | None -> raise (Failure "Not_possible")
+      | Some obj -> move_rec state_before_check dir obj
+  else Legal st
 
 let move
     (st : state)
@@ -317,10 +461,15 @@ let move
           (check_blocks new_loc st.blocks)
           (new_pos new_loc dir) st
       in
+      let updated_player_lst =
+        update_player st new_loc room player_num
+      in
       let state_before_check =
         {
           st with
-          players = update_player st new_loc room player_num;
+          players =
+            pushed_obj_new_player_list current_rm dir new_loc
+              { st with players = updated_player_lst };
           blocks = new_block_list;
           filled_holes = update_filled_holes new_block_list;
         }
@@ -328,20 +477,12 @@ let move
       if check_win room state_before_check then (
         Stdlib.print_string "win";
         next_level state_before_check)
-      else Legal state_before_check
-
-(* let move (st : state) (dir : direction) (room : room) (player_num :
-   player_num) : result = let current_rm = get_room_by_id
-   st.current_room_id st in let player = determine_player_num st
-   player_num in if collide player.position dir current_rm then Illegal
-   else let new_loc = new_pos player.position dir in let legal_move =
-   move_blocks new_loc dir st in if not legal_move then Illegal else let
-   () = break st player.position dir in let new_block_list =
-   new_block_list current_rm (check_blocks new_loc st.blocks) (new_pos
-   new_loc dir) st in let state_before_check = { st with players =
-   update_player st new_loc room player_num; blocks = new_block_list;
-   filled_holes = update_filled_holes new_block_list; } in if check_win
-   room state_before_check then next_level state_before_check else Legal
-   state_before_check (* filled_holes = update_filled_holes
-   new_block_list; } in if check_win room state_before_check then
-   next_level state_before_check else Legal state_before_check *) *)
+      else
+        let pushed_obj =
+          check_next_obj
+            (Player (updated_player state_before_check player_num))
+            st
+        in
+        match pushed_obj with
+        | None -> Legal state_before_check
+        | Some obj -> move_rec state_before_check dir obj

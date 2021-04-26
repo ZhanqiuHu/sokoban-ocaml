@@ -65,7 +65,7 @@ let draw_hor_images (tile_list : 'a list) width height =
     match tile_list with
     | h :: t ->
         draw_image
-          (get_img (tile_to_img h))
+          (get_img_transparent (tile_to_img h))
           (fst h.position * width)
           (snd h.position * height);
         draw_helper t

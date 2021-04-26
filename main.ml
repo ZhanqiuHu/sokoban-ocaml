@@ -113,7 +113,7 @@ let main () =
     "\n\nWelcome to the\n     3110 Puzzle Game engine.\n";
   print_endline "Please type 'start' to\n     begin the game.\n";
   print_string "> ";
-  Graphics.open_graph " 600x600";
+  Graphics.open_graph "localhost:0.0 600x600";
   Gui.draw_rect_images init_state 60 60;
   Gui.draw_hole_list init_state 60 60;
   Gui.draw_block_list init_state 60 60;
