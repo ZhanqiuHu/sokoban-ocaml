@@ -113,7 +113,7 @@ let draw_player (st : state) width height =
     match player_list with
     | h :: t ->
         draw_image
-          (get_img_transparent "link60x60.png")
+          (get_img_transparent h.player_img)
           (fst h.position * width)
           (snd h.position * height);
         draw_helper t

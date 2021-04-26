@@ -17,8 +17,18 @@ let init_state : state =
     all_rooms = [ map2; win ];
     players =
       [
-        { position = (1, 1); on_exit = false; player_num = Fst };
-        { position = (8, 8); on_exit = false; player_num = Snd };
+        {
+          position = (1, 1);
+          on_exit = false;
+          player_num = Fst;
+          player_img = "link60x60.png";
+        };
+        {
+          position = (8, 8);
+          on_exit = false;
+          player_num = Snd;
+          player_img = "images/player60x60.png";
+        };
       ];
     filled_holes = 0;
     blocks = map2.init_blocks;

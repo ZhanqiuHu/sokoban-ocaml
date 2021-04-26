@@ -6,6 +6,7 @@ type player = {
   position : int * int;
   on_exit : bool;
   player_num : player_num;
+  player_img : string;
 }
 
 type block = {
