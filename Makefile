@@ -24,6 +24,6 @@ test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
 zip:
-	zip MS1.zip *.ml* *.sh *.txt *.md _tags .merlin .ocamlformat .ocamlinit Makefile	
+	zip MS2.zip *.ml* *.sh *.txt *.md _tags .merlin .ocamlformat .ocamlinit Makefile	
 	
 
