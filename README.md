@@ -6,7 +6,7 @@
 
 - Step 1: Download the zip file and upzip it;
 
-- Step 2: In the directory, run [make play] command;
+- Step 2: In the directory, run [make build] and then [make play] command;
 
 - Step 3: Press any key to start the game.
     To move player 1, type in:
@@ -21,11 +21,11 @@
   "j" to move the player one tile leftwards; 
   "l" to move the player one tile rightwards; 
 
-Note that a move that causes the player to end up on an obstacle/boundary will
-not take place.
-Also, if the input command is anything other than the above characters, a 
-warning will be printed and ask you to retype an input. 
-You cannot push two blocks in a row.
+    Note that a move that causes the player to end up on an obstacle/boundary will
+    not take place.
+    Also, if the input command is anything other than the above characters, a 
+    warning will be printed and ask you to retype an input. 
+    You cannot push two blocks in a row.
 
 - Step 4: Close the window to stop the game. 
 
@@ -78,6 +78,12 @@ $ brew reinstall ocaml --with-x11
     $ sudo apt install pkg-config
 
     $ opam install graphics
+
+    $ opam update
+
+    $ opam upgrade
+
+     eval $(opam)  
 
 - Step 3: install Xming available here: [Xming](https://sourceforge.net/projects/xming/)
 
