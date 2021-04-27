@@ -78,6 +78,8 @@ $ brew reinstall ocaml --with-x11
 - Step 4: run 
     $ opam install camlimages
 
+NOTE: All of the terminal commands from step 1 to step 4 are included in the script macinstall.sh. Mac users can run this script in their terminal to install all packages needed. 
+
 ## For Windows:
 - Step 1: create a new switch for the game by running the command 
 
