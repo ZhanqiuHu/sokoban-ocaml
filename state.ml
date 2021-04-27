@@ -35,6 +35,17 @@ let init_state : state =
     breaks = map2.init_breaks;
   }
 
+let rec init_breaks hp breaks_list =
+  match breaks_list with
+  | h :: t ->
+      h.hp <- hp;
+      init_breaks hp t
+  | _ -> ()
+
+let initialize_state init_state breaks_hp =
+  init_breaks breaks_hp init_state.breaks;
+  init_state
+
 let get_tile_by_loc loc room =
   room.map_tile_list |> List.flatten
   |> List.filter (fun tile -> tile.position = loc)

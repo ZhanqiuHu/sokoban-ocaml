@@ -12,6 +12,15 @@ let quit_button =
     name = "quit";
   }
 
+let reset_button =
+  {
+    position = (4 * 60, 9 * 60);
+    width = 131;
+    height = 60;
+    image = "images/reset131x60.png";
+    name = "reset";
+  }
+
 let button_press
     (pos_condition : int * int -> bool)
     (s : Graphics.status) =
@@ -24,20 +33,31 @@ let pos_condition x_low x_high y_low y_high (pos : int * int) =
   && snd pos >= y_low
   && snd pos <= y_high
 
+let quit_cond =
+  let pos = quit_button.position in
+  let x_low = fst pos in
+  let y_low = snd pos in
+  let x_high = x_low + quit_button.width in
+  let y_high = y_low + quit_button.height in
+  pos_condition x_low x_high y_low y_high
+
+let reset_cond =
+  let pos = reset_button.position in
+  let x_low = fst pos in
+  let y_low = snd pos in
+  let x_high = x_low + quit_button.width in
+  let y_high = y_low + quit_button.height in
+  pos_condition x_low x_high y_low y_high
+
 let read_key_button () =
   let s = Graphics.wait_next_event [ Key_pressed ] in
   let key_char = s.key in
   Char.escaped key_char
 
 let read_key_button () =
-  let pos = quit_button.position in
-  let x_low = fst pos in
-  let y_low = snd pos in
-  let x_high = x_low + quit_button.width in
-  let y_high = y_low + quit_button.height in
-  let pos_cond = pos_condition x_low x_high y_low y_high in
   let s = Graphics.wait_next_event [ Key_pressed; Button_down ] in
-  if button_press pos_cond s then "quit"
+  if button_press quit_cond s then "quit"
+  else if button_press reset_cond s then "start"
   else
     let key_char = s.key in
     Char.escaped key_char
@@ -71,7 +91,7 @@ let prompt_command st : state =
         change_state st direction
           (get_room_by_id st.current_room_id st)
           Snd
-    | Start -> st
+    | Start -> State.initialize_state init_state 1
   with
   | Empty ->
       ANSITerminal.print_string [ ANSITerminal.cyan ]
@@ -103,6 +123,7 @@ let print_game (st : state) =
   Gui.draw_block_list st 60 60;
   Gui.draw_break_list st 60 60;
   Gui.draw_button quit_button;
+  Gui.draw_button reset_button;
   if st.current_room_id = "win" then print_win st;
   Graphics.auto_synchronize true
 
@@ -172,6 +193,7 @@ let main () =
   Gui.draw_block_list init_state 60 60;
   Gui.draw_break_list init_state 60 60;
   Gui.draw_button quit_button;
+  Gui.draw_button reset_button;
   print_start init_state;
   (* Uncomment the following code to test flatten_list and
      list_to_nested_list
