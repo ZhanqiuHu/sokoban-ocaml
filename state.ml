@@ -227,14 +227,6 @@ let new_block (b : block) (new_pos : int * int) (holes : hole list) :
   in
   check_hole holes
 
-let get_gameobj_pos game_object =
-  match game_object with
-  | Player p -> p.position
-  | Tile t -> t.position
-  | Block b -> b.position
-  | Break1 b1 -> b1.position
-  | Hole h -> h.position
-
 (** Returns true if new player position is not a block or if it is a
     block but the block can be moved in the given direction. *)
 let move_blocks p_pos dir st =
@@ -328,15 +320,6 @@ let updated_player player new_loc room =
     position = new_loc;
     on_exit = check_on_exit new_loc room;
   }
-
-(**Returns the position of a game_object*)
-let get_gameobj_pos game_object =
-  match game_object with
-  | Player p -> p.position
-  | Tile t -> t.position
-  | Block b -> b.position
-  | Break1 b1 -> b1.position
-  | Hole h -> h.position
 
 (** Returns the new block list given the obj that moves, if any. *)
 let pushed_player_new_block_list
@@ -465,25 +448,33 @@ let gen_state players blocks filled_holes st =
 
 (**Returns the new state of game_object with new position *)
 let move_game_object game_object dir st room : state =
-  let pos = get_gameobj_pos game_object in
   match game_object with
   | Player player ->
       let players =
-        match pushed_player_new_player_list room dir pos player st with
+        match
+          pushed_player_new_player_list room dir player.position player
+            st
+        with
         | a, b, c -> c
       in
       let blocks =
-        match pushed_player_new_block_list room pos dir st with
+        match
+          pushed_player_new_block_list room player.position dir st
+        with
         | a, b, c -> c
       in
       gen_state players blocks (update_filled_holes blocks) st
   | Block block ->
       let players =
-        match pushed_block_new_player_list room dir pos st with
+        match
+          pushed_block_new_player_list room dir block.position st
+        with
         | a, b, c -> c
       in
       let blocks =
-        match pushed_block_new_block_list room pos dir st with
+        match
+          pushed_block_new_block_list room block.position dir st
+        with
         | a, b, c -> c
       in
       gen_state players blocks (update_filled_holes blocks) st
