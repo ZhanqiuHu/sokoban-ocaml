@@ -9,25 +9,9 @@
 - Step 2: In the directory, run [make build] and then [make play] command;
 
 - Step 3: Press any key to start the game.
-    To move player 1, type in:
-  "w" to move the player one tile upwards;
-  "s" to move the player one tile downwards; 
-  "a" to move the player one tile leftwards; 
-  "d" to move the player one tile rightwards; 
-
-  To move player 2, type in:
-  "i" to move the player one tile upwards;
-  "k" to move the player one tile downwards; 
-  "j" to move the player one tile leftwards; 
-  "l" to move the player one tile rightwards; 
-
-    Note that a move that causes the player to end up on an obstacle/boundary will
-    not take place.
-    Also, if the input command is anything other than the above characters, a 
-    warning will be printed and ask you to retype an input. 
-    You cannot push two blocks in a row.
 
 - Step 4: Close the window to stop the game. 
+
 
 # Getting the GUI to Work
 ## For Mac:
@@ -112,23 +96,3 @@ Note: you will need to change `Graphics.open_graph “ 600x600”` to `Graphics.
 You will also need to replace the code in _tags with the following:
 
 true: package(ounit2),package(yojson),package(ANSITerminal), package(graphics), package(camlimages), package(camlimages.png), package(camlimages.jpeg)
-
-
-# Modules implemented
-## Main:
-Calls functions in other modules to run the game.
-
-## Types: 
-Contains all types used in other modules.
-
-## Map:
-Contains the maps used for the game.
-
-## State:
-Contains functions that store game's current states and update states.
-
-## Command:
-Contains functions that parse command line input to a command type.
-
-## Gui:
-Contains functions used to print the game to the screen.
