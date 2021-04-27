@@ -1,21 +1,128 @@
-Step 1: Download the zip file and unzip it;
+# CS3110-final-project
 
-Step 2: Enter the directory containing the file. 
-In the terminal, run [make build];
 
-Step 3: In the terminal, run [make play];
+# Installation
+- Step 0: Install the graphics and camlimages packages; see below for more details
 
-Step 4: Type in "start" and then press "Enter/return" to start the game.
-To move the player, type in:
+- Step 1: Download the zip file and upzip it;
+
+- Step 2: In the directory, run [make play] command;
+
+- Step 3: Press any key to start the game.
+    To move player 1, type in:
   "w" to move the player one tile upwards;
   "s" to move the player one tile downwards; 
   "a" to move the player one tile leftwards; 
   "d" to move the player one tile rightwards; 
 
-After typing the input in the desired direction, press "Enter/return" to move.
+  To move player 2, type in:
+  "i" to move the player one tile upwards;
+  "k" to move the player one tile downwards; 
+  "j" to move the player one tile leftwards; 
+  "l" to move the player one tile rightwards; 
 
-If a command moves the player into the boundary, the move won't take place.
+Note that a move that causes the player to end up on an obstacle/boundary will
+not take place.
 Also, if the input command is anything other than the above characters, a 
-warning will be printed and you will be asked to retype an input. 
+warning will be printed and ask you to retype an input. 
 
-Step 5: Type in "quit" to quit the game. 
+- Step 4: Close the window to stop the game. 
+
+# Getting the GUI to Work
+## For Mac:
+NOTE: 
+You will need to install X11/XQuartz for Graphics support. 
+If you installed ocaml with homebrew, it can be done by running
+
+$ brew install Caskroom/cask/xquartz
+$ brew reinstall ocaml --with-x11
+
+- Step 1: create a new switch for the game by running the command 
+
+    $ opam switch create <name> 4.07.1
+
+- Step 2: run
+
+    $ opam install graphics
+
+    $ opam update
+
+    $ opam upgrade
+
+    $ eval $(opam)
+
+    NOTE: If the installation of graphics module is successful, then the
+    following commands should have you open a XQuartz window:
+
+    $ ocaml
+
+    $ #load "graphics.cma";;
+
+    $ Graphics.open_graph "";;
+
+- Step 3: run 
+    $ opam install -y utop ounit qcheck ocaml-lsp-server ocamlformat yojson ansiterminal csv bisect_ppx-ocamlbuild menhir user-setup
+    $ opam user-setup install
+
+- Step 4: run 
+    $ opam install camlimages
+
+## For Windows:
+- Step 1: create a new switch for the game by running the command 
+
+    $ opam switch create <name> 4.07.1
+
+- Step 2: run
+
+    $ sudo apt install pkg-config
+
+    $ opam install graphics
+
+- Step 3: install Xming available here: [Xming](https://sourceforge.net/projects/xming/)
+
+- Step 3b: check to make sure running the following code opens up a blank window (make sure Xming has a server running):
+
+    $ ocaml
+    
+    $ #load “graphics.cma”;;
+
+    $ Graphics.open_graph “localhost:0.0”;;
+
+- Step 4: run
+
+    $ sudo apt-get install libpng-dev
+    
+    $ opam install camlimages
+    
+- Step 5: run 
+
+    $ opam install -y utop ounit qcheck ocaml-lsp-server ocamlformat yojson ansiterminal csv bisect_ppx-ocamlbuild menhir user-setup
+    
+    $ opam user-setup install
+
+Note: you will need to change `Graphics.open_graph “ 600x600”` to `Graphics.open_graph “localhost:0.0 600x600”` in the main file.
+
+You will also need to replace the code in _tags with the following:
+
+true: package(ounit2),package(yojson),package(ANSITerminal), package(graphics), package(camlimages), package(camlimages.png), package(camlimages.jpeg)
+
+
+# Modules implemented
+## Main:
+Calls functions in other modules to run the game.
+
+## Types: 
+Contains all types used in other modules.
+
+## Map:
+Contains the maps used for the game.
+
+## State:
+Contains functions that store game's current states and update states.
+
+## Command:
+Contains functions that parse command line input to a command type.
+
+## Gui:
+Contains functions used to print the game to the screen.
+

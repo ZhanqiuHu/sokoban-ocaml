@@ -43,10 +43,14 @@ let map2 =
       map_to_list
         (Genmap.set_with_same_pos map_try 1 8
            { position = (1, 8); ttype = Exit });
-    init_blocks = [ { position = (2, 2); in_hole = false } ];
+    init_blocks =
+      [
+        { position = (2, 2); in_hole = false };
+        { position = (3, 2); in_hole = false };
+      ];
     (*{ position = (3, 2); in_hole = false } *)
-    holes = [ { position = (5, 4) } ];
-    num_holes = 1;
+    holes = [ { position = (5, 4) }; { position = (1, 2) } ];
+    num_holes = 2;
     exit_pos = (1, 8);
     init_pos = (1, 1);
     init_breaks =

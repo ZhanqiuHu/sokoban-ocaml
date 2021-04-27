@@ -56,8 +56,8 @@ let get_img_transparent img =
 
 let tile_to_img tile =
   match tile.ttype with
-  | Obstacle -> "brick60x60.png"
-  | Normal -> "grass60x60.png"
+  | Obstacle -> "images/brick60x60.png"
+  | Normal -> "images/grass60x60.png"
   | Exit -> "images/door360x60.png"
 
 let draw_hor_images (tile_list : 'a list) width height =
@@ -130,7 +130,7 @@ let draw_block_list (st : state) width height =
     match block_list with
     | h :: t ->
         draw_image
-          (get_img_transparent "yblock60x60.png")
+          (get_img_transparent "images/yblock60x60.png")
           (fst h.position * width)
           (snd h.position * height);
         draw_helper t
@@ -144,7 +144,7 @@ let draw_hole_list (st : state) width height =
     match hole_list with
     | h :: t ->
         draw_image
-          (get_img_transparent "cross60x60.png")
+          (get_img_transparent "images/cross60x60.png")
           (fst h.position * width)
           (snd h.position * height);
         draw_helper t
@@ -166,7 +166,7 @@ let draw_break_list (st : state) width height =
             (snd h.position * height)
         else if h.hp = 0 then (
           draw_image
-            (get_img_transparent "grass60x60.png")
+            (get_img_transparent "images/grass60x60.png")
             (fst h.position * width)
             (snd h.position * height);
           draw_image

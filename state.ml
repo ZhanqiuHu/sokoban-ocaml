@@ -21,7 +21,7 @@ let init_state : state =
           position = (1, 1);
           on_exit = false;
           player_num = Fst;
-          player_img = "link60x60.png";
+          player_img = "images/link60x60.png";
         };
         {
           position = (8, 8);
@@ -108,22 +108,15 @@ let check_on_exit loc room = loc = room.exit_pos
 
 (** Returns true if all the holes in the room have been filled. *)
 let check_full st room =
-  if st.filled_holes = room.num_holes then (
-    Stdlib.print_string "check_full";
-    true)
-  else false
+  if st.filled_holes = room.num_holes then true else false
 
 let update_filled_holes blocks =
   let rec hole_counter blocks acc =
     match blocks with
     | [] -> acc
     | h :: t ->
-        if h.in_hole then (
-          Stdlib.print_string "T";
-          hole_counter t (acc + 1))
-        else (
-          Stdlib.print_string "F";
-          hole_counter t acc)
+        if h.in_hole then hole_counter t (acc + 1)
+        else hole_counter t acc
   in
   hole_counter blocks 0
 
@@ -214,16 +207,11 @@ let new_block_list
   match block with
   | None -> st.blocks
   | Some b ->
-      let rec new_block_list_helper
-          (block_list : block list)
-          (acc : block list) : block list =
-        match block_list with
-        | [] -> acc
-        | h :: t ->
-            if h = b then new_block b new_pos room.holes :: acc
-            else new_block_list_helper block_list (h :: acc)
-      in
-      new_block_list_helper st.blocks []
+      List.map
+        (fun block : block ->
+          if block = b then new_block block new_pos room.holes
+          else block)
+        st.blocks
 
 (** Returns the new breakables list *)
 let new_break_list break_list : breakable1 list =
@@ -298,6 +286,21 @@ let update_player st new_loc room player_num =
       else player)
     st.players
 
+(** Returns true if a block and a player are at the same position. False
+    otherwise. *)
+let player_is_block st =
+  let rec check_blocks (lst : block list) =
+    match lst with
+    | [] -> false
+    | h :: t ->
+        if
+          h.position = (List.hd st.players).position
+          || h.position = (List.hd (List.tl st.players)).position
+        then true
+        else check_blocks t
+  in
+  check_blocks st.blocks
+
 let move
     (st : state)
     (dir : direction)
@@ -325,9 +328,9 @@ let move
           filled_holes = update_filled_holes new_block_list;
         }
       in
-      if check_win room state_before_check then (
-        Stdlib.print_string "win";
-        next_level state_before_check)
+      if player_is_block state_before_check then Illegal
+      else if check_win room state_before_check then
+        next_level state_before_check
       else Legal state_before_check
 
 (* let move (st : state) (dir : direction) (room : room) (player_num :

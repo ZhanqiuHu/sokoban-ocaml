@@ -1,28 +1,116 @@
 # CS3110-final-project
 
 
-# Installzation
+# Installation
+- Step 0: Install the graphics and camlimages packages; see below for more details
 
 - Step 1: Download the zip file and upzip it;
 
 - Step 2: In the directory, run [make play] command;
 
-- Step 3: Type in "start" to start the game.
-    To move the player, type in:
+- Step 3: Press any key to start the game.
+    To move player 1, type in:
   "w" to move the player one tile upwards;
   "s" to move the player one tile downwards; 
   "a" to move the player one tile leftwards; 
   "d" to move the player one tile rightwards; 
 
-Note if a move has the player reached the boundary, the move won't take place;
-Also if the input command is anything other than the above characters, a 
-warnning will be printed and asks you to retype an input. 
+  To move player 2, type in:
+  "i" to move the player one tile upwards;
+  "k" to move the player one tile downwards; 
+  "j" to move the player one tile leftwards; 
+  "l" to move the player one tile rightwards; 
 
-- Step 4: Type in "quit" to quit the game. 
+Note that a move that causes the player to end up on an obstacle/boundary will
+not take place.
+Also, if the input command is anything other than the above characters, a 
+warning will be printed and ask you to retype an input. 
+You cannot push two blocks in a row.
+
+- Step 4: Close the window to stop the game. 
+
+# Getting the GUI to Work
+## For Mac:
+NOTE: 
+You will need to install X11/XQuartz for Graphics support. 
+If you installed ocaml with homebrew, it can be done by running
+
+$ brew install Caskroom/cask/xquartz
+$ brew reinstall ocaml --with-x11
+
+- Step 1: create a new switch for the game by running the command 
+
+    $ opam switch create <name> 4.07.1
+
+- Step 2: run
+
+    $ opam install graphics
+
+    $ opam update
+
+    $ opam upgrade
+
+    $ eval $(opam)
+
+    NOTE: If the installation of graphics module is successful, then the
+    following commands should have you open a XQuartz window:
+
+    $ ocaml
+
+    $ #load "graphics.cma";;
+
+    $ Graphics.open_graph "";;
+
+- Step 3: run 
+    $ opam install -y utop ounit qcheck ocaml-lsp-server ocamlformat yojson ansiterminal csv bisect_ppx-ocamlbuild menhir user-setup
+    $ opam user-setup install
+
+- Step 4: run 
+    $ opam install camlimages
+
+## For Windows:
+- Step 1: create a new switch for the game by running the command 
+
+    $ opam switch create <name> 4.07.1
+
+- Step 2: run
+
+    $ sudo apt install pkg-config
+
+    $ opam install graphics
+
+- Step 3: install Xming available here: [Xming](https://sourceforge.net/projects/xming/)
+
+- Step 3b: check to make sure running the following code opens up a blank window (make sure Xming has a server running):
+
+    $ ocaml
+    
+    $ #load “graphics.cma”;;
+
+    $ Graphics.open_graph “localhost:0.0”;;
+
+- Step 4: run
+
+    $ sudo apt-get install libpng-dev
+    
+    $ opam install camlimages
+    
+- Step 5: run 
+
+    $ opam install -y utop ounit qcheck ocaml-lsp-server ocamlformat yojson ansiterminal csv bisect_ppx-ocamlbuild menhir user-setup
+    
+    $ opam user-setup install
+
+Note: you will need to change `Graphics.open_graph “ 600x600”` to `Graphics.open_graph “localhost:0.0 600x600”` in the main file.
+
+You will also need to replace the code in _tags with the following:
+
+true: package(ounit2),package(yojson),package(ANSITerminal), package(graphics), package(camlimages), package(camlimages.png), package(camlimages.jpeg)
+
 
 # Modules implemented
 ## Main:
-Call functions in other modules to run the game.
+Calls functions in other modules to run the game.
 
 ## Types: 
 Contains all types used in other modules.
@@ -34,5 +122,8 @@ Contains the maps used for the game.
 Contains functions that store game's current states and update states.
 
 ## Command:
-Contain functions that parse command line input to a command type.
+Contains functions that parse command line input to a command type.
+
+## Gui:
+Contains functions used to print the game to the screen.
 
