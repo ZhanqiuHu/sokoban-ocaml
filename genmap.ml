@@ -18,7 +18,7 @@ let random_bool true_prob =
   let random_val = Random.float 100. in
   if random_val <= 100. *. true_prob then true else false
 
-let init_boundary init_map bound_val =
+let init_boundary (init_map : tile array array) bound_val =
   let y_end = Array.length init_map - 1 in
   let x_end = Array.length init_map.(0) - 1 in
   for x = 0 to x_end do
@@ -45,7 +45,7 @@ let set map x_pos y_pos new_val =
   map.(y_end - y_pos).(x_pos) <- new_val;
   map
 
-let set_with_same_pos map x_pos y_pos new_val =
+let set_with_same_pos (map : tile array array) x_pos y_pos new_val =
   let y_end = Array.length map - 1 in
   map.(y_end - y_pos).(x_pos) <-
     {
@@ -66,7 +66,7 @@ let copy_map map =
   done;
   new_map
 
-let define_path_map map path_list path_val =
+let define_path_map (map : tile array array) path_list path_val =
   let y_end = Array.length map - 1 in
 
   let map_copy = copy_map map in

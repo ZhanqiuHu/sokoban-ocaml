@@ -3,9 +3,44 @@ open State
 open Command
 open Gui
 
-let read_key_new () =
-  let s = Graphics.wait_next_event [ Graphics.Key_pressed ] in
-  s.key
+let quit_button =
+  {
+    position = (1 * 60, 9 * 60);
+    width = 144;
+    height = 60;
+    image = "images/quit144x60.png";
+    name = "quit";
+  }
+
+let button_press
+    (pos_condition : int * int -> bool)
+    (s : Graphics.status) =
+  let pos = Graphics.mouse_pos () in
+  pos_condition pos && s.button
+
+let pos_condition x_low x_high y_low y_high (pos : int * int) =
+  fst pos >= x_low
+  && fst pos <= x_high
+  && snd pos >= y_low
+  && snd pos <= y_high
+
+let read_key_button () =
+  let s = Graphics.wait_next_event [ Key_pressed ] in
+  let key_char = s.key in
+  Char.escaped key_char
+
+let read_key_button () =
+  let pos = quit_button.position in
+  let x_low = fst pos in
+  let y_low = snd pos in
+  let x_high = x_low + quit_button.width in
+  let y_high = y_low + quit_button.height in
+  let pos_cond = pos_condition x_low x_high y_low y_high in
+  let s = Graphics.wait_next_event [ Key_pressed; Button_down ] in
+  if button_press pos_cond s then "quit"
+  else
+    let key_char = s.key in
+    Char.escaped key_char
 
 (** [change_state st direction] returns a new state given the current
     state [st] and the direction of movement [direction].
@@ -23,7 +58,7 @@ let change_state st direction room player_num =
 let prompt_command st : state =
   print_endline "valid...";
   try
-    match parse (Char.escaped (read_key_new ())) with
+    match parse (read_key_button ()) with
     | Quit ->
         ANSITerminal.print_string [ ANSITerminal.yellow ]
           "Goodbye and may the camel be with you! ^w^\n   \n\n";
@@ -67,6 +102,7 @@ let print_game (st : state) =
   Gui.draw_hole_list st 60 60;
   Gui.draw_block_list st 60 60;
   Gui.draw_break_list st 60 60;
+  Gui.draw_button quit_button;
   if st.current_room_id = "win" then print_win st;
   Graphics.auto_synchronize true
 
@@ -94,20 +130,20 @@ let rec start_game s =
     | _ -> (
         print_endline "Please press any key to begin the game.\n";
         print_string "> ";
-        match Char.escaped (read_key_new ()) with
+        match read_key_button () with
         | exception End_of_file -> ()
         | s -> start_game s)
   with
   | Empty -> (
       print_endline "Please press any key to begin the game.\n";
       print_string "> ";
-      match Char.escaped (read_key_new ()) with
+      match read_key_button () with
       | exception End_of_file -> ()
       | s -> start_game s)
   | Malformed -> (
       print_endline "Please press any key to begin the game.\n";
       print_string "> ";
-      match Char.escaped (read_key_new ()) with
+      match read_key_button () with
       | exception End_of_file -> ()
       | s -> start_game s)
 
@@ -135,6 +171,7 @@ let main () =
   Gui.draw_hole_list init_state 60 60;
   Gui.draw_block_list init_state 60 60;
   Gui.draw_break_list init_state 60 60;
+  Gui.draw_button quit_button;
   print_start init_state;
   (* Uncomment the following code to test flatten_list and
      list_to_nested_list
@@ -142,9 +179,10 @@ let main () =
      Gui.draw_rect_images (Gui.list_to_nested_list (Gui.flatten_list
      map) 10 10) 60 60; *)
   (* 20 x 27 *)
-  match Char.escaped (read_key_new ()) with
+  match read_key_button () with
   | exception End_of_file -> ()
-  | s -> start_game "start"
+  | "quit" -> start_game "quit"
+  | _ -> start_game "start"
 
 (* Execute the game engine. *)
 

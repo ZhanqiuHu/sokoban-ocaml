@@ -26,6 +26,14 @@ type breakable1 = {
   mutable hp : int;
 }
 
+type button = {
+  position : int * int;
+  width : int;
+  height : int;
+  image : string;
+  name : string;
+}
+
 type tile = {
   position : int * int;
   ttype : ttypes;
@@ -37,6 +45,7 @@ type game_object =
   | Hole of hole
   | Break1 of breakable1
   | Tile of tile
+  | Button of button
 
 type room = {
   room_id : string;

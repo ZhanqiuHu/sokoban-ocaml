@@ -31,12 +31,21 @@ type tile = {
   ttype : ttypes;
 }
 
+type button = {
+  position : int * int;
+  width : int;
+  height : int;
+  image : string;
+  name : string;
+}
+
 type game_object =
   | Player of player
   | Block of block
   | Hole of hole
   | Break1 of breakable1
   | Tile of tile
+  | Button of button
 
 type room = {
   room_id : string;
