@@ -60,7 +60,7 @@ $ brew reinstall ocaml --with-x11
 
     $ opam upgrade
 
-    $ eval $(opam)
+    $ eval $(opam env)
 
     NOTE: If the installation of graphics module is successful, then the
     following commands should have you open a XQuartz window:
@@ -93,7 +93,7 @@ $ brew reinstall ocaml --with-x11
 
     $ opam upgrade
 
-     eval $(opam)  
+     eval $(opam env)  
 
 - Step 3: install Xming available here: [Xming](https://sourceforge.net/projects/xming/)
 

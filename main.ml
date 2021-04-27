@@ -111,16 +111,24 @@ let rec start_game s =
       | exception End_of_file -> ()
       | s -> start_game s)
 
+(** Prints the start game instructions/message to the screen. *)
 let print_start st =
   Graphics.set_color Graphics.black;
   let room = get_room_by_id st.current_room_id st in
   Graphics.moveto (room.height / 2 * 60) (room.width / 2 * 60);
   Graphics.draw_string "Press any key to start the game."
 
+(* let open_graph w h = Stdlib.print_string "open"; match Sys.os_type
+   with | "Win32" -> Stdlib.print_string "window"; Graphics.open_graph
+   ("localhost:0.0 " ^ string_of_int w ^ "x" ^ string_of_int h) | "Unix"
+   | "Cygwin" | "MacOS" -> Stdlib.print_string ("other" ^ Sys.os_type);
+   Graphics.open_graph (" " ^ string_of_int w ^ "x" ^ string_of_int h) |
+   _ -> invalid_arg ("Graphics: unknown OS type: " ^ Sys.os_type) *)
+
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
-    "\n\nWelcome to the\n     3110 Puzzle Game engine.\n";
-  print_endline "Please press any key to\n     begin the game.\n";
+    "\n\nWelcome to the\n 3110 Puzzle Game engine.\n";
+  print_endline "Please press any key to\n begin the game.\n";
   print_string "> ";
   Graphics.open_graph " 600x600";
   Gui.draw_rect_images init_state 60 60;
@@ -139,4 +147,5 @@ let main () =
   | s -> start_game "start"
 
 (* Execute the game engine. *)
+
 let () = main ()
