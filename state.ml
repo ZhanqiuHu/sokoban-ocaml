@@ -86,15 +86,6 @@ let break (st : state) old_pos dir =
   in
   find_break st.breaks
 
-let is_break (st : state) old_pos dir =
-  let pos = new_pos old_pos dir in
-  let rec find_break (lst : breakable1 list) =
-    match lst with
-    | [] -> false
-    | h :: t -> if h.position = pos then true else find_break t
-  in
-  find_break st.breaks
-
 let get_tile_list st =
   let rec get_room lst =
     match lst with

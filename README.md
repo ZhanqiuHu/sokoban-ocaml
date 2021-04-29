@@ -15,14 +15,14 @@
 # How to play the game
 Once the window is open, press any key to start the game.
 
-### To move player 1, type in:
+### To move player 1, press the following keys on keyboard:
 
  - "w" to move the player one tile upwards;
  - "s" to move the player one tile downwards; 
  - "a" to move the player one tile leftwards; 
  - "d" to move the player one tile rightwards; 
 
-### To move player 2, type in:
+### To move player 2, press the following keys on keyboard:
   
  - "i" to move the player one tile upwards;
  - "k" to move the player one tile downwards; 
@@ -33,11 +33,12 @@ Once the window is open, press any key to start the game.
 Note that a move that causes the player to end up on an obstacle/boundary will not take place.
 Also, if the input command is anything other than the above characters, a warning will be printed and ask you to retype an input. 
 The objective of the game is to push all blocks (yellow) into holes (black X). 
-You cannot push two blocks in a row. Once all the holes have been filled, both players must step on the exit to teleport to the next level (gate image).
-There are breakable objects which are depicted as gray blocks. You can try to "walk" on them twice (enter the command that would otherwise cause you to collide with the object) to break them and turn that tile into a walkable tile. You do not need to break all these objects to finish the level.
+Once all the holes have been filled, both players must step on the exit to teleport to the next level (gate image).
+There are breakable objects which are depicted as gray blocks. You can try to "walk" on them twice (press the key that would otherwise cause you to collide with the object) to break them and turn that tile into a walkable tile. You do not need to break all these objects to finish the level.
 The last room is a "win" room which has no exit and a win message displayed.
 
-Close the window to quit the game.
+Click on the "RESET" button to reset the game, restarting from first level.
+Click on the "QUIT" button to quit the game.
 
 # Getting the GUI to Work
 ## For Mac:
