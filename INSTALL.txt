@@ -63,7 +63,8 @@ $ brew reinstall ocaml --with-x11
 
 - Step 3: install Xming available here: [Xming](https://sourceforge.net/projects/xming/)
 
-- Step 3b: check to make sure running the following code opens up a blank window (make sure Xming has a server running):
+- Step 3b: check to make sure running the following code opens up a blank 
+    window (make sure Xming has a server running):
 
     $ ocaml 
     $ #load “graphics.cma”;;
@@ -79,5 +80,7 @@ $ brew reinstall ocaml --with-x11
     $ opam install -y utop ounit qcheck ocaml-lsp-server ocamlformat yojson ansiterminal csv bisect_ppx-ocamlbuild menhir user-setup  
     $ opam user-setup install
 
-Note: you will need to change `Graphics.open_graph “ 600x600”` to `Graphics.open_graph “localhost:0.0 600x600”` in the main.ml file inside the function main () around line 190.
-
+Note: you will need to change something like `Graphics.open_graph “ 600x600”` 
+to `Graphics.open_graph “localhost:0.0 600x600”` in the main.ml file inside 
+the open_graph function. This is noted in a comment right below the Mac 
+implementation which is what it will be by default.

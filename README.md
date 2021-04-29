@@ -127,7 +127,7 @@ NOTE: All of the terminal commands from step 1 to step 4 are included in the scr
     
     `$ opam user-setup install`
 
-Note: you will need to change `Graphics.open_graph “ 600x600”` to `Graphics.open_graph “localhost:0.0 600x600”` in the main.ml file inside the main () function around line 190.
+Note: you will need to change something like `Graphics.open_graph “ 600x600”` to `Graphics.open_graph “localhost:0.0 600x600”` in the main.ml file inside the open_graph function. This is noted in a comment right below the Mac implementation which is what it will be by default.
 
 
 # Modules implemented
