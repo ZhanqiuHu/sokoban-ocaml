@@ -1,5 +1,12 @@
 open Types
 
+type 'a mutable_pos_list = { mutable list : 'a list }
+
+let rec init_breakables pos_list hp_val =
+  match pos_list with
+  | h :: t -> { position = h; hp = hp_val } :: init_breakables t hp_val
+  | _ -> []
+
 let update_positions tile_map =
   let y_end = Array.length tile_map - 1 in
   let x_end = Array.length tile_map.(0) - 1 in
@@ -68,7 +75,6 @@ let copy_map map =
 
 let define_path_map (map : tile array array) path_list path_val =
   let y_end = Array.length map - 1 in
-
   let map_copy = copy_map map in
   let rec set_path path_pos_list =
     match path_pos_list with
@@ -122,6 +128,25 @@ let choose_obstacles
     done
   done
 
+let generate_breakables map path_list path_val tile_val true_prob =
+  let pos_list = { list = [] } in
+  let path_map = define_path_map map path_list path_val in
+  let y_end = Array.length map - 1 in
+  let x_end = Array.length map.(0) - 1 in
+  for x = 0 to x_end do
+    for y = 0 to y_end do
+      if
+        map.(y).(x).ttype = tile_val.ttype
+        && path_map.(y).(x).ttype <> path_val.ttype
+      then
+        if random_bool true_prob then
+          pos_list.list <- (x, y_end - y) :: pos_list.list
+        else ()
+      else ()
+    done
+  done;
+  pos_list.list
+
 let map_to_list map =
   let array_list = Array.to_list map in
   List.map (fun arr -> Array.to_list arr) array_list
@@ -141,7 +166,6 @@ let new_map_with_obstacles
     choose_obstacles map path_pos_list path_val tile_val obstacle_val
       obstacle_prob
   in
-  (* let _ = update_positions map in *)
   map
 
 (* let map_try = let map_w = 10 in let map_h = 5 in let tile_val =

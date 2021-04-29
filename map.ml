@@ -1,38 +1,44 @@
 open Types
 open Genmap
 
-type list_box = { mutable l : int * int list }
+let path_val = { position = (0, 0); ttype = Obstacle }
+
+let path_pos_list =
+  [
+    (1, 1);
+    (1, 2);
+    (1, 8);
+    (2, 2);
+    (2, 1);
+    (3, 1);
+    (4, 1);
+    (5, 1);
+    (5, 3);
+    (5, 2);
+    (4, 2);
+    (3, 2);
+    (5, 4);
+    (8, 8);
+  ]
+
+let tile_val = { position = (0, 0); ttype = Normal }
 
 let map_try =
   let map_w = 10 in
   let map_h = 10 in
-  let tile_val = { position = (0, 0); ttype = Normal } in
   let bound_val = { position = (0, 0); ttype = Obstacle } in
-  let path_val = { position = (0, 0); ttype = Obstacle } in
   let obstacle_val = { position = (0, 0); ttype = Obstacle } in
-  let path_pos_list =
-    [
-      (1, 1);
-      (1, 2);
-      (2, 2);
-      (2, 1);
-      (3, 1);
-      (4, 1);
-      (5, 1);
-      (5, 3);
-      (5, 2);
-      (4, 2);
-      (3, 2);
-      (5, 4);
-      (9, 9);
-    ]
-  in
   let obstacle_prob = 0.25 in
   let map =
     new_map_with_obstacles map_w map_h tile_val bound_val path_val
       obstacle_val path_pos_list obstacle_prob
   in
   map
+
+let breakable_pos_list =
+  generate_breakables map_try path_pos_list path_val tile_val 0.3
+
+let breakable_list = init_breakables breakable_pos_list 1
 
 let map2 =
   {
