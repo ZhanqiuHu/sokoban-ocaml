@@ -7,6 +7,16 @@ let rec init_breakables pos_list hp_val =
   | h :: t -> { position = h; hp = hp_val } :: init_breakables t hp_val
   | _ -> []
 
+let rec init_blocks pos_list =
+  match pos_list with
+  | h :: t -> { position = h; in_hole = false } :: init_blocks t
+  | _ -> []
+
+let rec init_holes pos_list =
+  match pos_list with
+  | h :: t -> { position = h } :: init_holes t
+  | _ -> []
+
 let update_positions tile_map =
   let y_end = Array.length tile_map - 1 in
   let x_end = Array.length tile_map.(0) - 1 in
@@ -167,6 +177,33 @@ let new_map_with_obstacles
       obstacle_prob
   in
   map
+
+let generate_path_pos
+    exit_pos_list
+    init_pos_list
+    hole_pos_list
+    block_pos_list =
+  let new_list =
+    exit_pos_list @ init_pos_list @ hole_pos_list @ block_pos_list
+  in
+  let path_list = { list = new_list } in
+  let rec helper pos_lst path_lst =
+    match pos_lst with
+    | (x1, y1) :: (x2, y2) :: t ->
+        let x_start = if x1 <= x2 then x1 else x2 in
+        let x_end = if x1 <= x2 then x1 else x2 in
+        let y_start = if y1 <= y2 then y1 else y2 in
+        let y_end = if y1 <= y2 then y1 else y2 in
+        for x = x_start to x_end do
+          path_lst.list <- (x, y_start) :: path_lst.list
+        done;
+        for y = y_start to y_end do
+          path_lst.list <- (x_end, y) :: path_lst.list
+        done;
+        helper ((x2, y2) :: t) path_lst
+    | _ -> path_lst.list
+  in
+  helper new_list path_list
 
 (* let map_try = let map_w = 10 in let map_h = 5 in let tile_val =
    "tile" in let bound_val = "bound" in let path_val = "path" in let

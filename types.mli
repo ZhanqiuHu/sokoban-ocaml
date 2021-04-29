@@ -27,7 +27,7 @@ type breakable1 = {
 }
 
 type button = {
-  position : int * int;
+  mutable position : int * int;
   width : int;
   height : int;
   image : string;

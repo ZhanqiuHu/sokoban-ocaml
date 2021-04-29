@@ -32,7 +32,7 @@ type tile = {
 }
 
 type button = {
-  position : int * int;
+  mutable position : int * int;
   width : int;
   height : int;
   image : string;

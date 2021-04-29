@@ -182,12 +182,26 @@ let print_start st =
    Graphics.open_graph (" " ^ string_of_int w ^ "x" ^ string_of_int h) |
    _ -> invalid_arg ("Graphics: unknown OS type: " ^ Sys.os_type) *)
 
+let open_graph map_w map_h =
+  Graphics.open_graph
+    (" " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
+
+(* For Windows users: Graphics.open_graph (" localhost:0.0" ^
+   (string_of_int map_w) ^ "x" ^ (string_of_int map_h)) *)
+
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
     "\n\nWelcome to the\n 3110 Puzzle Game engine.\n";
   print_endline "Please press any key to\n begin the game.\n";
   print_string "> ";
-  Graphics.open_graph " 600x600";
+  let init_room =
+    State.get_room_by_id init_state.current_room_id init_state
+  in
+  open_graph (init_room.width * 60) (init_room.height * 60);
+  quit_button.position <-
+    (fst quit_button.position, (init_room.height - 1) * 60);
+  reset_button.position <-
+    (fst reset_button.position, (init_room.height - 1) * 60);
   Gui.draw_rect_images init_state 60 60;
   Gui.draw_hole_list init_state 60 60;
   Gui.draw_block_list init_state 60 60;

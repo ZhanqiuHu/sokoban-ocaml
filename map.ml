@@ -1,6 +1,7 @@
 open Types
 open Genmap
 
+(* Map 2 *)
 let path_val = { position = (0, 0); ttype = Obstacle }
 
 let path_pos_list =
@@ -70,6 +71,56 @@ let map2 =
         { position = (5, 8); hp = 1 };
         { position = (4, 6); hp = 1 };
       ];
+  }
+
+(* Map 3 *)
+let path_val3 = { position = (0, 0); ttype = Obstacle }
+
+let init_block_pos3 = [ (16, 7); (12, 4) ]
+
+let init_hole_pos3 = [ (6, 6); (15, 8) ]
+
+let exit_pos3 = (18, 8)
+
+let path_pos_list3 =
+  generate_path_pos [ exit_pos3 ] [ (1, 1) ] init_block_pos3
+    init_hole_pos3
+
+let tile_val3 = { position = (0, 0); ttype = Normal }
+
+let map_array3 =
+  let map_w = 20 in
+  let map_h = 10 in
+  let bound_val = { position = (0, 0); ttype = Obstacle } in
+  let obstacle_val = { position = (0, 0); ttype = Obstacle } in
+  let obstacle_prob = 0.2 in
+  let map =
+    new_map_with_obstacles map_w map_h tile_val bound_val path_val
+      obstacle_val path_pos_list3 obstacle_prob
+  in
+  map
+
+let breakable_pos_list3 =
+  generate_breakables map_array3 path_pos_list3 path_val3 tile_val3 0.3
+
+let breakable_list3 = init_breakables breakable_pos_list3 1
+
+let map3 =
+  {
+    room_id = "random3";
+    width = 20;
+    height = 10;
+    map_tile_list =
+      map_to_list
+        (Genmap.set_with_same_pos map_array3 (fst exit_pos3)
+           (snd exit_pos3)
+           { position = (0, 0); ttype = Exit });
+    init_blocks = init_blocks init_block_pos3;
+    holes = init_holes init_hole_pos3;
+    num_holes = List.length init_hole_pos3;
+    exit_pos = exit_pos3;
+    init_pos = (1, 1);
+    init_breaks = breakable_list3;
   }
 
 let win =
