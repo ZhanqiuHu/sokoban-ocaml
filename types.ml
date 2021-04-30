@@ -33,10 +33,10 @@ type tile = {
 
 type button = {
   mutable position : int * int;
-  width : int;
-  height : int;
-  image : string;
-  name : string;
+  mutable width : int;
+  mutable height : int;
+  mutable image : string;
+  mutable name : string;
 }
 
 type game_object =
@@ -61,6 +61,7 @@ type room = {
 }
 
 type state = {
+  mutable active : bool;
   mutable current_room_id : string;
   all_rooms : room list;
   mutable players : player list;
@@ -87,3 +88,5 @@ type command =
   | Snd of direction
   | Quit
   | Back
+  | Pause
+  | Resume

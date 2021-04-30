@@ -76,16 +76,16 @@ let draw_hor_images (tile_list : 'a list) width height =
   in
   draw_helper tile_list
 
+let rec draw_tiles width height tile_list =
+  match tile_list with
+  | h_list :: t_list_list ->
+      draw_hor_images h_list width height;
+      draw_tiles width height t_list_list
+  | [] -> ()
+
 let draw_rect_images (st : state) width height =
-  let rec draw_helper tile_list =
-    match tile_list with
-    | h_list :: t_list_list ->
-        draw_hor_images h_list width height;
-        draw_helper t_list_list
-    | [] -> ()
-  in
   let tile_list = get_tile_list st in
-  draw_helper tile_list
+  draw_tiles width height tile_list
 
 let list_to_array tile_list map_width map_height =
   let map = map_init map_width map_height (List.hd tile_list) in

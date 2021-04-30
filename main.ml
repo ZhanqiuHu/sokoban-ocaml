@@ -3,9 +3,20 @@ open State
 open Command
 open Gui
 
+let map_w = 10
+
+let map_h = 10
+
+let tile_size = 60
+
+let pause_page =
+  Genmap.(
+    map_to_list
+      (map_init map_w map_h { position = (0, 0); ttype = Normal }))
+
 let quit_button =
   {
-    position = (1 * 60, 10 * 60);
+    position = (1 * tile_size, map_h * tile_size);
     width = 144;
     height = 60;
     image = "images/quit144x60.png";
@@ -14,7 +25,7 @@ let quit_button =
 
 let reset_button =
   {
-    position = (4 * 60, 10 * 60);
+    position = (4 * tile_size, map_h * tile_size);
     width = 131;
     height = 60;
     image = "images/reset131x60.png";
@@ -23,11 +34,20 @@ let reset_button =
 
 let back_button =
   {
-    position = (7 * 60, 10 * 60);
+    position = (7 * tile_size, 10 * tile_size);
     width = 63;
     height = 60;
     image = "images/left63x60.png";
     name = "back";
+  }
+
+let pause_button =
+  {
+    position = (9 * tile_size, 10 * tile_size);
+    width = 63;
+    height = 60;
+    image = "images/left63x60.png";
+    name = "pause";
   }
 
 let button_press
@@ -42,38 +62,29 @@ let pos_condition x_low x_high y_low y_high (pos : int * int) =
   && snd pos >= y_low
   && snd pos <= y_high
 
-let quit_cond =
-  let pos = quit_button.position in
+let button_cond (button : button) =
+  let pos = button.position in
   let x_low = fst pos in
   let y_low = snd pos in
-  let x_high = x_low + quit_button.width in
-  let y_high = y_low + quit_button.height in
+  let x_high = x_low + button.width in
+  let y_high = y_low + button.height in
   pos_condition x_low x_high y_low y_high
 
-let reset_cond =
-  let pos = reset_button.position in
-  let x_low = fst pos in
-  let y_low = snd pos in
-  let x_high = x_low + reset_button.width in
-  let y_high = y_low + reset_button.height in
-  pos_condition x_low x_high y_low y_high
+let quit_cond = button_cond quit_button
 
-let back_cond =
-  let pos = back_button.position in
-  let x_low = fst pos in
-  let y_low = snd pos in
-  let x_high = x_low + back_button.width in
-  let y_high = y_low + back_button.height in
-  pos_condition x_low x_high y_low y_high
+let reset_cond = button_cond reset_button
 
-let read_key_button () =
-  let s = Graphics.wait_next_event [ Key_pressed ] in
-  let key_char = s.key in
-  Char.escaped key_char
+let back_cond = button_cond back_button
+
+let pause_cond = button_cond pause_button
 
 let read_key_button () =
   let s = Graphics.wait_next_event [ Key_pressed; Button_down ] in
-  if button_press quit_cond s then "quit"
+  if button_press pause_cond s && pause_button.name = "pause" then
+    "pause"
+  else if button_press pause_cond s && pause_button.name = "resume" then
+    "resume"
+  else if button_press quit_cond s then "quit"
   else if button_press reset_cond s then "start"
   else if button_press back_cond s then "back"
   else
@@ -110,10 +121,10 @@ let change_state st direction room player_num =
     [st] and returns the new state given the command. If the player
     enters an [Empty] or [Malformed] command then a message is printed
     to the screen and the old state is returned. *)
-let prompt_command (st : state) history =
+let prompt_command_active (st : state) history (command : command) =
   print_endline "valid...";
   try
-    match parse (read_key_button ()) with
+    match command with
     | Quit ->
         ANSITerminal.print_string [ ANSITerminal.yellow ]
           "Goodbye and may the camel be with you! ^w^\n   \n\n";
@@ -128,6 +139,12 @@ let prompt_command (st : state) history =
           Snd
     | Start -> State.initialize_state init_state 1
     | Back -> update_back history
+    | Pause ->
+        st.active <- false;
+        st
+    | Resume ->
+        st.active <- true;
+        st
   with
   | Empty ->
       ANSITerminal.print_string [ ANSITerminal.cyan ]
@@ -143,35 +160,61 @@ let prompt_command (st : state) history =
          move player 1 or 'i', 'k', 'j', 'l' to move player 2. \n\n";
       st
 
+let prompt_command (st : state) (history : history) =
+  let s = read_key_button () in
+  if st.active && s <> "pause" then (
+    pause_button.name <- "pause";
+    let command = parse s in
+    prompt_command_active st history command)
+  else if s = "resume" && not st.active then (
+    pause_button.name <- "pause";
+    prompt_command_active st history Resume)
+  else (
+    pause_button.name <- "resume";
+    prompt_command_active st history Pause)
+
 (** [print_win st] prints the win message to the screen. *)
 let print_win st =
   Graphics.set_color Graphics.black;
   let room = get_room_by_id "win" st in
-  Graphics.moveto (room.height / 2 * 60) (room.width / 2 * 60);
+  Graphics.moveto
+    (room.height / 2 * tile_size)
+    (room.width / 2 * tile_size);
   Graphics.draw_string "YOU WIN!"
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
 let print_game (st : state) =
   Graphics.auto_synchronize false;
-  Gui.draw_rect_images st 60 60;
-  Gui.draw_hole_list st 60 60;
-  Gui.draw_block_list st 60 60;
+  Gui.draw_rect_images st tile_size tile_size;
+  Gui.draw_hole_list st tile_size tile_size;
+  Gui.draw_block_list st tile_size tile_size;
   Gui.draw_button quit_button;
   Gui.draw_button reset_button;
   Gui.draw_button back_button;
-  Gui.draw_break_list st 60 60;
+  Gui.draw_button pause_button;
+  Gui.draw_break_list st tile_size tile_size;
   if st.current_room_id = "win" then print_win st;
   Graphics.auto_synchronize true
+
+let draw_new_active_state st is_updated history =
+  print_game st;
+  Gui.draw_break_list st tile_size tile_size;
+  Gui.draw_player st tile_size tile_size
 
 (** [play_game st is_updated history] executes the game at state [st].
     It prints the map to the screen and prompts the user for a command.
     [boo] checks if new state is the same as previous state. *)
 let rec play_game st is_updated history =
-  if not is_updated then print_game st else Gui.draw_break_list st 60 60;
-  Gui.draw_player st 60 60;
-  update_history (duplicate_state st) history;
+  if st.active then (
+    draw_new_active_state st is_updated history;
+    update_history (duplicate_state st) history)
+  else (
+    Graphics.auto_synchronize false;
 
+    draw_tiles tile_size tile_size pause_page;
+    draw_button pause_button;
+    Graphics.auto_synchronize true);
   let new_state = prompt_command st history in
   play_game new_state (new_state = st) history
 
@@ -210,7 +253,9 @@ let rec start_game s history =
 let print_start st =
   Graphics.set_color Graphics.black;
   let room = get_room_by_id st.current_room_id st in
-  Graphics.moveto (room.height / 2 * 60) (room.width / 2 * 60);
+  Graphics.moveto
+    (room.height / 2 * tile_size)
+    (room.width / 2 * tile_size);
   Graphics.draw_string "Press any key to start the game."
 
 (* let open_graph w h = Stdlib.print_string "open"; match Sys.os_type
@@ -235,21 +280,24 @@ let main () =
   let init_room =
     State.get_room_by_id init_state.current_room_id init_state
   in
-  open_graph (init_room.width * 60) ((init_room.height + 1) * 60);
+  open_graph
+    (init_room.width * tile_size)
+    ((init_room.height + 1) * tile_size);
   quit_button.position <-
-    (fst quit_button.position, init_room.height * 60);
+    (fst quit_button.position, init_room.height * tile_size);
   reset_button.position <-
-    (fst reset_button.position, init_room.height * 60);
+    (fst reset_button.position, init_room.height * tile_size);
   back_button.position <-
-    (fst back_button.position, init_room.height * 60);
+    (fst back_button.position, init_room.height * tile_size);
 
-  Gui.draw_rect_images init_state 60 60;
-  Gui.draw_hole_list init_state 60 60;
-  Gui.draw_block_list init_state 60 60;
-  Gui.draw_break_list init_state 60 60;
+  Gui.draw_rect_images init_state tile_size tile_size;
+  Gui.draw_hole_list init_state tile_size tile_size;
+  Gui.draw_block_list init_state tile_size tile_size;
+  Gui.draw_break_list init_state tile_size tile_size;
   Gui.draw_button quit_button;
   Gui.draw_button reset_button;
   Gui.draw_button back_button;
+  Gui.draw_button pause_button;
   print_start init_state;
   let state_history =
     { state_list = [ duplicate_state init_state ]; num_steps = 0 }

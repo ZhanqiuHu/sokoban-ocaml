@@ -12,6 +12,7 @@ let rec copy_breaks breaks =
 
 let duplicate_state st =
   {
+    active = st.active;
     current_room_id = st.current_room_id;
     all_rooms = st.all_rooms;
     players = st.players;
@@ -28,6 +29,7 @@ let get_room_by_id room_id st =
 
 let init_state : state =
   {
+    active = true;
     current_room_id = "random";
     all_rooms = [ map2; win ];
     players =
