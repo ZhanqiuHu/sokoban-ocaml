@@ -224,7 +224,7 @@ let open_graph map_w map_h =
   Graphics.open_graph
     (" " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
 
-(* For Windows users: Graphics.open_graph (" localhost:0.0" ^
+(* For Windows users: Graphics.open_graph ("localhost:0.0 " ^
    (string_of_int map_w) ^ "x" ^ (string_of_int map_h)) *)
 
 let main () =
