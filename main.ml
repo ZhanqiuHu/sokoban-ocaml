@@ -123,28 +123,41 @@ let change_state st direction room player_num =
     to the screen and the old state is returned. *)
 let prompt_command_active (st : state) history (command : command) =
   print_endline "valid...";
+  match command with
+  | Quit ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "Goodbye and may the camel be with you! ^w^\n   \n\n";
+      exit 0
+  | Fst direction ->
+      change_state st direction
+        (get_room_by_id st.current_room_id st)
+        Fst
+  | Snd direction ->
+      change_state st direction
+        (get_room_by_id st.current_room_id st)
+        Snd
+  | Start -> State.initialize_state init_state 1
+  | Back -> update_back history
+  | Pause ->
+      st.active <- false;
+      st
+  | Resume ->
+      st.active <- true;
+      st
+
+let prompt_command (st : state) (history : history) =
   try
-    match command with
-    | Quit ->
-        ANSITerminal.print_string [ ANSITerminal.yellow ]
-          "Goodbye and may the camel be with you! ^w^\n   \n\n";
-        exit 0
-    | Fst direction ->
-        change_state st direction
-          (get_room_by_id st.current_room_id st)
-          Fst
-    | Snd direction ->
-        change_state st direction
-          (get_room_by_id st.current_room_id st)
-          Snd
-    | Start -> State.initialize_state init_state 1
-    | Back -> update_back history
-    | Pause ->
-        st.active <- false;
-        st
-    | Resume ->
-        st.active <- true;
-        st
+    let s = read_key_button () in
+    if st.active && s <> "pause" then (
+      pause_button.name <- "pause";
+      let command = parse s in
+      prompt_command_active st history command)
+    else if s = "resume" && not st.active then (
+      pause_button.name <- "pause";
+      prompt_command_active st history Resume)
+    else (
+      pause_button.name <- "resume";
+      prompt_command_active st history Pause)
   with
   | Empty ->
       ANSITerminal.print_string [ ANSITerminal.cyan ]
@@ -159,19 +172,6 @@ let prompt_command_active (st : state) history (command : command) =
         \ Close the window to stop the game or 'w', 's', 'a', 'd' to \
          move player 1 or 'i', 'k', 'j', 'l' to move player 2. \n\n";
       st
-
-let prompt_command (st : state) (history : history) =
-  let s = read_key_button () in
-  if st.active && s <> "pause" then (
-    pause_button.name <- "pause";
-    let command = parse s in
-    prompt_command_active st history command)
-  else if s = "resume" && not st.active then (
-    pause_button.name <- "pause";
-    prompt_command_active st history Resume)
-  else (
-    pause_button.name <- "resume";
-    prompt_command_active st history Pause)
 
 (** [print_win st] prints the win message to the screen. *)
 let print_win st =
