@@ -2,6 +2,8 @@ open Types
 
 type 'a mutable_pos_list = { mutable list : 'a list }
 
+type bool_box = { mutable bool_val : bool }
+
 let rec init_breakables pos_list hp_val =
   match pos_list with
   | h :: t -> { position = h; hp = hp_val } :: init_breakables t hp_val
@@ -57,10 +59,14 @@ let init_boundary (init_map : tile array array) bound_val =
   done;
   init_map
 
-let set map x_pos y_pos new_val =
+let set (map : tile array array) x_pos y_pos new_val =
   let y_end = Array.length map - 1 in
   map.(y_end - y_pos).(x_pos) <- new_val;
   map
+
+let get (map : tile array array) x_pos y_pos new_val =
+  let y_end = Array.length map - 1 in
+  map.(y_end - y_pos).(x_pos)
 
 let set_with_same_pos (map : tile array array) x_pos y_pos new_val =
   let y_end = Array.length map - 1 in
@@ -204,6 +210,24 @@ let generate_path_pos
     | _ -> path_lst.list
   in
   helper new_list path_list
+
+let rec check_valid_object_position map position_list =
+  match position_list with
+  | (x, y) :: d ->
+      (get map x y).ttype = Normal && check_valid_object_position map d
+  | [] -> true
+
+let rec check_valid_boundary map =
+  let bool_box = { bool_val = true } in
+  let y_end = Array.length map - 1 in
+  let x_end = Array.length map.(0) - 1 in
+  for x = 0 to x_end do
+    for y = 0 to y_end do
+      bool_box.bool_val <-
+        (get map x y).ttype = Obstacle && bool_box.bool_val
+    done
+  done;
+  bool_box.bool_val
 
 (* let map_try = let map_w = 10 in let map_h = 5 in let tile_val =
    "tile" in let bound_val = "bound" in let path_val = "path" in let

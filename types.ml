@@ -69,6 +69,11 @@ type state = {
   filled_holes : int;
 }
 
+type history = {
+  mutable state_list : state list;
+  mutable num_steps : int;
+}
+
 type direction =
   | Left
   | Right
@@ -81,3 +86,4 @@ type command =
   | Fst of direction
   | Snd of direction
   | Quit
+  | Back

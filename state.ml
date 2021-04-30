@@ -5,6 +5,21 @@ open Genmap
 (** Returns the tuple position of the player. *)
 let get_player st = st.players
 
+let rec copy_breaks breaks =
+  match breaks with
+  | h :: t -> { h with hp = h.hp } :: copy_breaks t
+  | [] -> []
+
+let duplicate_state st =
+  {
+    current_room_id = st.current_room_id;
+    all_rooms = st.all_rooms;
+    players = st.players;
+    blocks = st.blocks;
+    breaks = copy_breaks st.breaks;
+    filled_holes = st.filled_holes;
+  }
+
 (** Returns the id of the room given in this state. *)
 let get_room_by_id room_id st =
   st.all_rooms

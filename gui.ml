@@ -61,9 +61,7 @@ let tile_to_img tile =
   | Exit -> "images/door360x60.png"
 
 let draw_button (b : Types.button) =
-  draw_image
-    (get_img_transparent b.image)
-    (fst b.position) (snd b.position)
+  draw_image (get_img b.image) (fst b.position) (snd b.position)
 
 let draw_hor_images (tile_list : 'a list) width height =
   let rec draw_helper tile_list =

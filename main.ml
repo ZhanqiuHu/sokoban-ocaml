@@ -5,7 +5,7 @@ open Gui
 
 let quit_button =
   {
-    position = (1 * 60, 9 * 60);
+    position = (1 * 60, 10 * 60);
     width = 144;
     height = 60;
     image = "images/quit144x60.png";
@@ -14,11 +14,20 @@ let quit_button =
 
 let reset_button =
   {
-    position = (4 * 60, 9 * 60);
+    position = (4 * 60, 10 * 60);
     width = 131;
     height = 60;
     image = "images/reset131x60.png";
     name = "reset";
+  }
+
+let back_button =
+  {
+    position = (7 * 60, 10 * 60);
+    width = 63;
+    height = 60;
+    image = "images/left63x60.png";
+    name = "back";
   }
 
 let button_press
@@ -45,8 +54,16 @@ let reset_cond =
   let pos = reset_button.position in
   let x_low = fst pos in
   let y_low = snd pos in
-  let x_high = x_low + quit_button.width in
-  let y_high = y_low + quit_button.height in
+  let x_high = x_low + reset_button.width in
+  let y_high = y_low + reset_button.height in
+  pos_condition x_low x_high y_low y_high
+
+let back_cond =
+  let pos = back_button.position in
+  let x_low = fst pos in
+  let y_low = snd pos in
+  let x_high = x_low + back_button.width in
+  let y_high = y_low + back_button.height in
   pos_condition x_low x_high y_low y_high
 
 let read_key_button () =
@@ -58,9 +75,27 @@ let read_key_button () =
   let s = Graphics.wait_next_event [ Key_pressed; Button_down ] in
   if button_press quit_cond s then "quit"
   else if button_press reset_cond s then "start"
+  else if button_press back_cond s then "back"
   else
     let key_char = s.key in
     Char.escaped key_char
+
+let update_back history =
+  if history.num_steps >= 1 then (
+    history.num_steps <- history.num_steps - 1;
+    history.state_list <- List.tl history.state_list)
+  else ();
+  List.hd history.state_list
+
+let update_history st history =
+  if
+    history.num_steps = 0
+    || List.hd history.state_list <> st
+    || history.state_list = []
+  then (
+    history.num_steps <- history.num_steps + 1;
+    history.state_list <- st :: history.state_list)
+  else ()
 
 (** [change_state st direction] returns a new state given the current
     state [st] and the direction of movement [direction].
@@ -75,7 +110,7 @@ let change_state st direction room player_num =
     [st] and returns the new state given the command. If the player
     enters an [Empty] or [Malformed] command then a message is printed
     to the screen and the old state is returned. *)
-let prompt_command st : state =
+let prompt_command (st : state) history =
   print_endline "valid...";
   try
     match parse (read_key_button ()) with
@@ -92,6 +127,7 @@ let prompt_command st : state =
           (get_room_by_id st.current_room_id st)
           Snd
     | Start -> State.initialize_state init_state 1
+    | Back -> update_back history
   with
   | Empty ->
       ANSITerminal.print_string [ ANSITerminal.cyan ]
@@ -121,29 +157,31 @@ let print_game (st : state) =
   Gui.draw_rect_images st 60 60;
   Gui.draw_hole_list st 60 60;
   Gui.draw_block_list st 60 60;
-  Gui.draw_break_list st 60 60;
   Gui.draw_button quit_button;
   Gui.draw_button reset_button;
+  Gui.draw_button back_button;
+  Gui.draw_break_list st 60 60;
   if st.current_room_id = "win" then print_win st;
   Graphics.auto_synchronize true
 
-(** [play_game st boo] executes the game at state [st]. It prints the
-    map to the screen and prompts the user for a command. [boo] checks
-    if new state is the same as previous state. *)
-let rec play_game st boo =
-  if not boo then print_game st else Gui.draw_break_list st 60 60;
+(** [play_game st is_updated history] executes the game at state [st].
+    It prints the map to the screen and prompts the user for a command.
+    [boo] checks if new state is the same as previous state. *)
+let rec play_game st is_updated history =
+  if not is_updated then print_game st else Gui.draw_break_list st 60 60;
   Gui.draw_player st 60 60;
+  update_history (duplicate_state st) history;
 
-  let new_state = prompt_command st in
-  play_game new_state (new_state = st)
+  let new_state = prompt_command st history in
+  play_game new_state (new_state = st) history
 
 (** [start_game s] starts the adventure is [s] is 'start'. If [s] is
     'quit' then the game stops. Otherwise, it prompts for a valid
     start/quit command. *)
-let rec start_game s =
+let rec start_game s history =
   try
     match parse s with
-    | Start -> play_game init_state true
+    | Start -> play_game init_state true history
     | Quit ->
         ANSITerminal.print_string [ ANSITerminal.yellow ]
           "Goodbye and may the camel be with you! ^w^ \n\n";
@@ -153,20 +191,20 @@ let rec start_game s =
         print_string "> ";
         match read_key_button () with
         | exception End_of_file -> ()
-        | s -> start_game s)
+        | s -> start_game s history)
   with
   | Empty -> (
       print_endline "Please press any key to begin the game.\n";
       print_string "> ";
       match read_key_button () with
       | exception End_of_file -> ()
-      | s -> start_game s)
+      | s -> start_game s history)
   | Malformed -> (
       print_endline "Please press any key to begin the game.\n";
       print_string "> ";
       match read_key_button () with
       | exception End_of_file -> ()
-      | s -> start_game s)
+      | s -> start_game s history)
 
 (** Prints the start game instructions/message to the screen. *)
 let print_start st =
@@ -197,18 +235,26 @@ let main () =
   let init_room =
     State.get_room_by_id init_state.current_room_id init_state
   in
-  open_graph (init_room.width * 60) (init_room.height * 60);
+  open_graph (init_room.width * 60) ((init_room.height + 1) * 60);
   quit_button.position <-
-    (fst quit_button.position, (init_room.height - 1) * 60);
+    (fst quit_button.position, init_room.height * 60);
   reset_button.position <-
-    (fst reset_button.position, (init_room.height - 1) * 60);
+    (fst reset_button.position, init_room.height * 60);
+  back_button.position <-
+    (fst back_button.position, init_room.height * 60);
+
   Gui.draw_rect_images init_state 60 60;
   Gui.draw_hole_list init_state 60 60;
   Gui.draw_block_list init_state 60 60;
   Gui.draw_break_list init_state 60 60;
   Gui.draw_button quit_button;
   Gui.draw_button reset_button;
+  Gui.draw_button back_button;
   print_start init_state;
+  let state_history =
+    { state_list = [ duplicate_state init_state ]; num_steps = 0 }
+  in
+
   (* Uncomment the following code to test flatten_list and
      list_to_nested_list
 
@@ -217,8 +263,8 @@ let main () =
   (* 20 x 27 *)
   match read_key_button () with
   | exception End_of_file -> ()
-  | "quit" -> start_game "quit"
-  | _ -> start_game "start"
+  | "quit" -> start_game "quit" state_history
+  | _ -> start_game "start" state_history
 
 (* Execute the game engine. *)
 

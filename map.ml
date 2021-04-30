@@ -20,6 +20,7 @@ let path_pos_list =
     (3, 2);
     (5, 4);
     (8, 8);
+    (7, 1);
   ]
 
 let tile_val = { position = (0, 0); ttype = Normal }
