@@ -1,52 +1,78 @@
-(** Representation of the obstacles, player, and tiles.*)
+type player_num =
+  | Fst
+  | Snd
 
-(** Represents the player. on_exit is true when the player is on the
-    exit *)
-type player = { on_exit : bool }
-
-(** Represents a block. in_hole is true when it overlaps a hole
-    coordinate*)
-type block = { in_hole : bool }
-
-(** Represents a normal tile in the game. When is_hole is true,
-    represents a hole*)
-type normal = { is_hole : bool }
-
-(** Represents the possible types of objects in the game. Player is the
-    player, Block is a block, Hor_bound is a horizontal boundary,
-    Ver_boundary is a vertical boundary, Normal is a normal tile, and
-    Exit is the exit.*)
-type ttypes =
-  | Player of player
-  | Block of block
-  | Hor_bound
-  | Ver_bound
-  | Normal of normal
-  | Exit
-
-(** Represents an object in the game.*)
-type tile = {
+type player = {
   position : int * int;
-  mutable ttype : ttypes;
+  on_exit : bool;
+  player_num : player_num;
+  player_img : string;
 }
 
-(** Represents a "level" in the game. blocks is the list of blocks in
-    the room. holes represents the coordinates of all holes in the game. *)
+type block = {
+  position : int * int;
+  in_hole : bool;
+}
+
+type hole = { position : int * int }
+
+type ttypes =
+  | Obstacle
+  | Normal
+  | Exit
+
+type breakable1 = {
+  position : int * int;
+  mutable hp : int;
+}
+
+type button = {
+  mutable position : int * int;
+  mutable width : int;
+  mutable height : int;
+  mutable image : string;
+  mutable name : string;
+}
+
+type tile = {
+  position : int * int;
+  ttype : ttypes;
+}
+
+type game_object =
+  | Player of player
+  | Block of block
+  | Hole of hole
+  | Break1 of breakable1
+  | Tile of tile
+  | Button of button
+
 type room = {
   room_id : string;
   width : int;
   height : int;
   mutable map_tile_list : tile list list;
-  blocks : block list;
-  holes : (int * int) list;
+  init_blocks : block list;
+  holes : hole list;
+  num_holes : int;
+  exit_pos : int * int;
+  init_pos : int * int;
+  init_breaks : breakable1 list;
 }
 
-(** Represents the current room, all_rooms, and the current player
-    position.*)
 type state = {
+  mutable active : bool;
   mutable current_room_id : string;
   all_rooms : room list;
-  mutable player_pos : int * int;
+  mutable players : player list;
+  mutable blocks : block list;
+  mutable breaks : breakable1 list;
+  filled_holes : int;
+}
+
+type history = {
+  mutable state_list : state list;
+  mutable num_steps : int;
 }
 
 type direction =
@@ -54,9 +80,13 @@ type direction =
   | Right
   | Up
   | Down
+  | Empty
 
-(** Represents player commands: moving, starting/stopping the game.*)
 type command =
   | Start
-  | Go of direction
+  | Fst of direction
+  | Snd of direction
   | Quit
+  | Back
+  | Pause
+  | Resume

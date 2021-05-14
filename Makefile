@@ -1,5 +1,5 @@
 
-MODULES= map_test map types command state main authors
+MODULES= map_test map types command state main authors genmap gui
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -12,7 +12,7 @@ default: build
 	OCAMLRUNPARAM=b utop
 
 build:
-	$(OCAMLBUILD) $(OBJECTS)
+	$(OCAMLBUILD) $(OBJECTS) -pkg camlimages
 
 play:
 	$(OCAMLBUILD) -tag 'debug' $(MAIN) && OCAMLRUNPARAM=b ./$(MAIN)
@@ -24,6 +24,6 @@ test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
 zip:
-	zip MS1.zip *.ml* *.sh *.txt *.md _tags .merlin .ocamlformat .ocamlinit Makefile	
+	zip MS2_1.zip *images/*.png* *.ml* *.sh *.txt *.md _tags .merlin .ocamlformat .ocamlinit Makefile	
 	
 

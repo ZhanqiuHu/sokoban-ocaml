@@ -27,6 +27,10 @@ let is_invalid_dir str_list =
   | [ "d" ] -> false
   | [ "w" ] -> false
   | [ "s" ] -> false
+  | [ "i" ] -> false
+  | [ "j" ] -> false
+  | [ "k" ] -> false
+  | [ "l" ] -> false
   | _ -> true
 
 (** [is_malformed str] is true if [str] is not in the form of "go <arg1>
@@ -36,6 +40,7 @@ let is_malformed str =
   let str_lst = split str in
   if str_lst = [ "start" ] then false
   else if str_lst = [ "quit" ] then false
+  else if str_lst = [ "back" ] then false
   else if not (is_invalid_dir str_lst) then false
   else true
 
@@ -43,14 +48,21 @@ let is_malformed str =
     Requires: str_list is a valid object phrase starting with go. *)
 let form_go_command str_list =
   match str_list with
-  | [ "a" ] -> Go Left
-  | [ "d" ] -> Go Right
-  | [ "w" ] -> Go Up
-  | _ -> Go Down
+  | [ "a" ] -> Fst Left
+  | [ "d" ] -> Fst Right
+  | [ "w" ] -> Fst Up
+  | [ "s" ] -> Fst Down
+  | [ "j" ] -> Snd Left
+  | [ "l" ] -> Snd Right
+  | [ "i" ] -> Snd Up
+  | _ -> Snd Down
 
 let parse str : command =
   if is_empty str then raise Empty
   else if is_malformed str then raise Malformed
   else if List.hd (split str) = "quit" then Quit
   else if List.hd (split str) = "start" then Start
+  else if List.hd (split str) = "back" then Back
+  else if List.hd (split str) = "pause" then Pause
+  else if List.hd (split str) = "resume" then Resume
   else form_go_command (split str)
