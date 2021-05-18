@@ -176,6 +176,20 @@ let select_press (sel : select) (s : Graphics.status) : bool =
   let mouse_pos = Graphics.mouse_pos () in
   button_cond sel.position (sel.width, sel.height) sel.enable mouse_pos
 
+(* let button_press (button_condition : int * int -> bool) (s :
+   Graphics.status) : bool = let mouse_pos = Graphics.mouse_pos () in
+   button_condition mouse_pos && s.button
+
+   (** returns true if pos is inside x and y range *) let pos_condition
+   x_low x_high y_low y_high (pos : int * int) = fst pos >= x_low && fst
+   pos <= x_high && snd pos >= y_low && snd pos <= y_high
+
+   (** returns a function that takes in the mouse position *) let
+   button_cond (button : button) = let pos = button.position in let
+   x_low = fst pos in let y_low = snd pos in let x_high = x_low +
+   button.width in let y_high = y_low + button.height in pos_condition
+   x_low x_high y_low y_high *)
+
 (** Updates the select field of [sel] to true and unselects all other
     other select buttons that are exclusive to it. *)
 let update_select (sel : select) =
@@ -397,6 +411,13 @@ let print_start st =
     (room.width / 2 * tile_size);
   Graphics.draw_string "Press any key to start the game."
 
+(* let open_graph w h = Stdlib.print_string "open"; match Sys.os_type
+   with | "Win32" -> Stdlib.print_string "window"; Graphics.open_graph
+   ("localhost:0.0 " ^ string_of_int w ^ "x" ^ string_of_int h) | "Unix"
+   | "Cygwin" | "MacOS" -> Stdlib.print_string ("other" ^ Sys.os_type);
+   Graphics.open_graph (" " ^ string_of_int w ^ "x" ^ string_of_int h) |
+   _ -> invalid_arg ("Graphics: unknown OS type: " ^ Sys.os_type) *)
+
 let open_graph map_w map_h =
   Graphics.open_graph
     ("localhost:0.0 " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
@@ -421,6 +442,13 @@ let main () =
     (fst reset_button.position, init_room.height * tile_size);
   back_button.position <-
     (fst back_button.position, init_room.height * tile_size);
+
+  (* Gui.draw_rect_images init_state tile_size tile_size;
+     Gui.draw_hole_list init_state tile_size tile_size;
+     Gui.draw_block_list init_state tile_size tile_size;
+     Gui.draw_break_list init_state tile_size tile_size; Gui.draw_button
+     quit_button; Gui.draw_button reset_button; Gui.draw_button
+     back_button; Gui.draw_button pause_button; *)
   Graphics.auto_synchronize false;
   Gui.draw_tiles tile_size tile_size start_page;
   Gui.draw_button start_button;
@@ -451,6 +479,7 @@ let main () =
           then true
           else false
         in
+        Stdlib.print_string (string_of_bool check_select);
         if check_select then start_game "start" state_history
         else wait_start ()
     | "select" ->
