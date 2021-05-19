@@ -40,6 +40,7 @@ let is_malformed str =
   let str_lst = split str in
   if str_lst = [ "start" ] then false
   else if str_lst = [ "quit" ] then false
+  else if str_lst = [ "back" ] then false
   else if not (is_invalid_dir str_lst) then false
   else true
 
@@ -61,4 +62,7 @@ let parse str : command =
   else if is_malformed str then raise Malformed
   else if List.hd (split str) = "quit" then Quit
   else if List.hd (split str) = "start" then Start
+  else if List.hd (split str) = "back" then Back
+  else if List.hd (split str) = "pause" then Pause
+  else if List.hd (split str) = "resume" then Resume
   else form_go_command (split str)

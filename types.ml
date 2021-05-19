@@ -31,12 +31,21 @@ type tile = {
   ttype : ttypes;
 }
 
+type button = {
+  mutable position : int * int;
+  mutable width : int;
+  mutable height : int;
+  mutable image : string;
+  mutable name : string;
+}
+
 type game_object =
   | Player of player
   | Block of block
   | Hole of hole
   | Break1 of breakable1
   | Tile of tile
+  | Button of button
 
 type room = {
   room_id : string;
@@ -52,12 +61,18 @@ type room = {
 }
 
 type state = {
+  mutable active : bool;
   mutable current_room_id : string;
   all_rooms : room list;
   mutable players : player list;
   mutable blocks : block list;
   mutable breaks : breakable1 list;
   filled_holes : int;
+}
+
+type history = {
+  mutable state_list : state list;
+  mutable num_steps : int;
 }
 
 type direction =
@@ -72,3 +87,6 @@ type command =
   | Fst of direction
   | Snd of direction
   | Quit
+  | Back
+  | Pause
+  | Resume

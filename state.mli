@@ -30,6 +30,10 @@ val get_breaks : state -> breakable1 list
 
 val get_room_by_id : string -> state -> room
 
+val initialize_state : state -> int -> state
+
+val duplicate_state : state -> state
+
 (** [move st dir] returns a result given the current state [st] and
     direction [dir]. If the movement is allowed, it returns a result
     [Legal state] with the new state. If the movement is not allowed, it

@@ -1,5 +1,24 @@
 open Types
 
+type 'a mutable_pos_list = { mutable list : 'a list }
+
+type bool_box = { mutable bool_val : bool }
+
+let rec init_breakables pos_list hp_val =
+  match pos_list with
+  | h :: t -> { position = h; hp = hp_val } :: init_breakables t hp_val
+  | _ -> []
+
+let rec init_blocks pos_list =
+  match pos_list with
+  | h :: t -> { position = h; in_hole = false } :: init_blocks t
+  | _ -> []
+
+let rec init_holes pos_list =
+  match pos_list with
+  | h :: t -> { position = h } :: init_holes t
+  | _ -> []
+
 let update_positions tile_map =
   let y_end = Array.length tile_map - 1 in
   let x_end = Array.length tile_map.(0) - 1 in
@@ -18,7 +37,7 @@ let random_bool true_prob =
   let random_val = Random.float 100. in
   if random_val <= 100. *. true_prob then true else false
 
-let init_boundary init_map bound_val =
+let init_boundary (init_map : tile array array) bound_val =
   let y_end = Array.length init_map - 1 in
   let x_end = Array.length init_map.(0) - 1 in
   for x = 0 to x_end do
@@ -40,12 +59,16 @@ let init_boundary init_map bound_val =
   done;
   init_map
 
-let set map x_pos y_pos new_val =
+let set (map : tile array array) x_pos y_pos new_val =
   let y_end = Array.length map - 1 in
   map.(y_end - y_pos).(x_pos) <- new_val;
   map
 
-let set_with_same_pos map x_pos y_pos new_val =
+let get (map : tile array array) x_pos y_pos new_val =
+  let y_end = Array.length map - 1 in
+  map.(y_end - y_pos).(x_pos)
+
+let set_with_same_pos (map : tile array array) x_pos y_pos new_val =
   let y_end = Array.length map - 1 in
   map.(y_end - y_pos).(x_pos) <-
     {
@@ -66,9 +89,8 @@ let copy_map map =
   done;
   new_map
 
-let define_path_map map path_list path_val =
+let define_path_map (map : tile array array) path_list path_val =
   let y_end = Array.length map - 1 in
-
   let map_copy = copy_map map in
   let rec set_path path_pos_list =
     match path_pos_list with
@@ -122,6 +144,25 @@ let choose_obstacles
     done
   done
 
+let generate_breakables map path_list path_val tile_val true_prob =
+  let pos_list = { list = [] } in
+  let path_map = define_path_map map path_list path_val in
+  let y_end = Array.length map - 1 in
+  let x_end = Array.length map.(0) - 1 in
+  for x = 0 to x_end do
+    for y = 0 to y_end do
+      if
+        map.(y).(x).ttype = tile_val.ttype
+        && path_map.(y).(x).ttype <> path_val.ttype
+      then
+        if random_bool true_prob then
+          pos_list.list <- (x, y_end - y) :: pos_list.list
+        else ()
+      else ()
+    done
+  done;
+  pos_list.list
+
 let map_to_list map =
   let array_list = Array.to_list map in
   List.map (fun arr -> Array.to_list arr) array_list
@@ -141,8 +182,52 @@ let new_map_with_obstacles
     choose_obstacles map path_pos_list path_val tile_val obstacle_val
       obstacle_prob
   in
-  (* let _ = update_positions map in *)
   map
+
+let generate_path_pos
+    exit_pos_list
+    init_pos_list
+    hole_pos_list
+    block_pos_list =
+  let new_list =
+    exit_pos_list @ init_pos_list @ hole_pos_list @ block_pos_list
+  in
+  let path_list = { list = new_list } in
+  let rec helper pos_lst path_lst =
+    match pos_lst with
+    | (x1, y1) :: (x2, y2) :: t ->
+        let x_start = if x1 <= x2 then x1 else x2 in
+        let x_end = if x1 <= x2 then x1 else x2 in
+        let y_start = if y1 <= y2 then y1 else y2 in
+        let y_end = if y1 <= y2 then y1 else y2 in
+        for x = x_start to x_end do
+          path_lst.list <- (x, y_start) :: path_lst.list
+        done;
+        for y = y_start to y_end do
+          path_lst.list <- (x_end, y) :: path_lst.list
+        done;
+        helper ((x2, y2) :: t) path_lst
+    | _ -> path_lst.list
+  in
+  helper new_list path_list
+
+let rec check_valid_object_position map position_list =
+  match position_list with
+  | (x, y) :: d ->
+      (get map x y).ttype = Normal && check_valid_object_position map d
+  | [] -> true
+
+let rec check_valid_boundary map =
+  let bool_box = { bool_val = true } in
+  let y_end = Array.length map - 1 in
+  let x_end = Array.length map.(0) - 1 in
+  for x = 0 to x_end do
+    for y = 0 to y_end do
+      bool_box.bool_val <-
+        (get map x y).ttype = Obstacle && bool_box.bool_val
+    done
+  done;
+  bool_box.bool_val
 
 (* let map_try = let map_w = 10 in let map_h = 5 in let tile_val =
    "tile" in let bound_val = "bound" in let path_val = "path" in let
