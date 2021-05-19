@@ -55,7 +55,9 @@ let map2 =
       [
         { position = (2, 2); in_hole = false };
         { position = (3, 2); in_hole = false };
+        { position = (4, 4); in_hole = false };
       ];
+    (*{ position = (3, 2); in_hole = false } *)
     holes = [ { position = (5, 4) }; { position = (1, 2) } ];
     num_holes = 2;
     exit_pos = (1, 8);

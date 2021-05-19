@@ -112,10 +112,8 @@ let update_history st history =
   else ()
 
 (** [change_state st direction] returns a new state given the current
-    state [st] and the direction of movement [direction].
-
-    If the movement is [Illegal] then this function returns the old
-    state. *)
+    state [st] and the direction of movement [direction]. If the
+    movement is [Illegal] then this function returns the old state. *)
 let change_state st direction room player_num =
   let state_of_result st = function Legal t -> t | Illegal -> st in
   state_of_result st (move st direction room player_num)
@@ -279,16 +277,43 @@ let main () =
     "\n\nWelcome to the\n 3110 Puzzle Game engine.\n";
   print_endline "Please press any key to\n begin the game.\n";
   print_string "> ";
-  Graphics.open_graph "localhost:0.0 600x600";
-  Gui.draw_rect_images init_state 60 60;
-  Gui.draw_hole_list init_state 60 60;
-  Gui.draw_block_list init_state 60 60;
-  Gui.draw_break_list init_state 60 60;
-  (* Uncomment the following code to test faltten_list and
-     list_to_nested_list
+  let init_room =
+    State.get_room_by_id init_state.current_room_id init_state
+  in
+  open_graph
+    (init_room.width * tile_size)
+    ((init_room.height + 1) * tile_size);
+  quit_button.position <-
+    (fst quit_button.position, init_room.height * tile_size);
+  reset_button.position <-
+    (fst reset_button.position, init_room.height * tile_size);
+  back_button.position <-
+    (fst back_button.position, init_room.height * tile_size);
 
-     Gui.draw_rect_images (Gui.list_to_nested_list (Gui.flatten_list
-     map) 10 10) 60 60; *)
+  Gui.draw_rect_images init_state tile_size tile_size;
+  Gui.draw_hole_list init_state tile_size tile_size;
+  Gui.draw_block_list init_state tile_size tile_size;
+  Gui.draw_break_list init_state tile_size tile_size;
+  Gui.draw_button quit_button;
+  Gui.draw_button reset_button;
+  Gui.draw_button back_button;
+  Gui.draw_button pause_button;
+  (* let x, y = Graphics.text_size "h" in print_int x; print_int y; *)
+  Text.draw_box
+    (init_room.width * tile_size)
+    "Press any key to start the game. Use \"asdw\" for player 1 and \
+     \"jkli\" for player 2. Fill all holes on the screen by pushing \
+     blocks into them, then go to the exit to arrive at the next \
+     level.";
+
+  (* print_start init_state; *)
+  let state_history =
+    { state_list = [ duplicate_state init_state ]; num_steps = 0 }
+  in
+
+  (* Uncomment the following code to test flatten_list and
+     list_to_nested_list Gui.draw_rect_images (Gui.list_to_nested_list
+     (Gui.flatten_list map) 10 10) 60 60; *)
   (* 20 x 27 *)
   match read_key_button () with
   | exception End_of_file -> ()
