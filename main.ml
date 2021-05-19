@@ -91,6 +91,9 @@ let read_key_button () =
     let key_char = s.key in
     Char.escaped key_char
 
+(* let interact () = (* let s = Graphics.wait_next_event [ Key_pressed ]
+   in *) let key = Graphics.read_key () in if key = ' ' then *)
+
 let update_back history =
   if history.num_steps >= 1 then (
     history.num_steps <- history.num_steps - 1;
@@ -173,14 +176,16 @@ let prompt_command (st : state) (history : history) =
          move player 1 or 'i', 'k', 'j', 'l' to move player 2. \n\n";
       st
 
+(* let print_win st = Graphics.set_color Graphics.black; let room =
+   get_room_by_id "win" st in Graphics.moveto (room.height / 2 *
+   tile_size) (room.width / 2 * tile_size); Graphics.draw_string "YOU
+   WIN!" *)
+
 (** [print_win st] prints the win message to the screen. *)
+
 let print_win st =
-  Graphics.set_color Graphics.black;
-  let room = get_room_by_id "win" st in
-  Graphics.moveto
-    (room.height / 2 * tile_size)
-    (room.width / 2 * tile_size);
-  Graphics.draw_string "YOU WIN!"
+  let width = Text.get_width st st.current_room_id tile_size in
+  Text.draw_box width "YOU WIN!"
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
@@ -250,13 +255,11 @@ let rec start_game s history =
       | s -> start_game s history)
 
 (** Prints the start game instructions/message to the screen. *)
-let print_start st =
-  Graphics.set_color Graphics.black;
-  let room = get_room_by_id st.current_room_id st in
-  Graphics.moveto
-    (room.height / 2 * tile_size)
-    (room.width / 2 * tile_size);
-  Graphics.draw_string "Press any key to start the game."
+
+(* let print_start st = Graphics.set_color Graphics.black; let room =
+   get_room_by_id st.current_room_id st in Graphics.moveto (room.height
+   / 2 * tile_size) (room.width / 2 * tile_size); Graphics.draw_string
+   "Press any key to start the game." *)
 
 (* let open_graph w h = Stdlib.print_string "open"; match Sys.os_type
    with | "Win32" -> Stdlib.print_string "window"; Graphics.open_graph
@@ -266,11 +269,10 @@ let print_start st =
    _ -> invalid_arg ("Graphics: unknown OS type: " ^ Sys.os_type) *)
 
 let open_graph map_w map_h =
+  (* Graphics.open_graph (" " ^ string_of_int map_w ^ "x" ^
+     string_of_int map_h) *)
   Graphics.open_graph
-    (" " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
-
-(* For Windows users: Graphics.open_graph ("localhost:0.0 " ^
-   (string_of_int map_w) ^ "x" ^ (string_of_int map_h)) *)
+    ("localhost:0.0 " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
 
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
@@ -298,7 +300,15 @@ let main () =
   Gui.draw_button reset_button;
   Gui.draw_button back_button;
   Gui.draw_button pause_button;
-  print_start init_state;
+  (* let x, y = Graphics.text_size "h" in print_int x; print_int y; *)
+  Text.draw_box
+    (init_room.width * tile_size)
+    "Press any key to start the game. Use \"asdw\" for player 1 and \
+     \"jkli\" for player 2. Fill all holes on the screen by pushing \
+     blocks into them, then go to the exit to arrive at the next \
+     level.";
+
+  (* print_start init_state; *)
   let state_history =
     { state_list = [ duplicate_state init_state ]; num_steps = 0 }
   in
