@@ -195,7 +195,7 @@ let pos_condition x_low x_high y_low y_high (pos : int * int) =
   && snd pos <= y_high
 
 (** [button_cond butt_pos butt_dim enable mouse_pos] returns true if the
-    button references has been pressed and it is enabled. *)
+    button it references has been pressed and it is enabled. *)
 let button_cond
     (butt_pos : int * int)
     (butt_dim : int * int)
@@ -207,18 +207,22 @@ let button_cond
   let y_high = y_low + snd butt_dim in
   pos_condition x_low x_high y_low y_high mouse_pos && enable
 
+(** [button_press button s] returns true if [button] has been pressed
+    given the event [s] in this frame and false otherwise. *)
 let button_press (button : button) (s : Graphics.status) : bool =
   let mouse_pos = Graphics.mouse_pos () in
   button_cond button.position
     (button.width, button.height)
     button.enable mouse_pos
 
+(** [select_press sel s] returns true if select button [sel] has been
+    pressed given the event [s] in this frame and false otherwise. *)
 let select_press (sel : select) (s : Graphics.status) : bool =
   let mouse_pos = Graphics.mouse_pos () in
   button_cond sel.position (sel.width, sel.height) sel.enable mouse_pos
 
-(** Updates the select field of [sel] to true and unselects all other
-    other select buttons that are exclusive to it. *)
+(** [update_select sel] updates the [select] field of [sel] to true and
+    unselects all other other select buttons that are exclusive to it. *)
 let update_select (sel : select) =
   sel.select <- not sel.select;
   if sel.select then
@@ -231,10 +235,10 @@ let update_select (sel : select) =
     in
     update sel.exclusives
 
-(** Returns true if a select button has been pushed. If so, then it
-    updates the select field of that button to true and unselects all
-    other other select buttons that are exclusive to it. False
-    otherwise. *)
+(** [select_button s] returns true if a select button has been pushed
+    given the event [s]. If so, then it returns true and updates the
+    select field of that button to true and unselects all other other
+    select buttons that are exclusive to it. False otherwise. *)
 let select_button (s : Graphics.status) =
   if select_press one_player_select s then (
     update_select one_player_select;
@@ -253,6 +257,8 @@ let select_button (s : Graphics.status) =
     true)
   else false
 
+(** [open_graph map_w map_h] opens a graphics window with dimensions
+    [map_w]x[map_h]. *)
 let open_graph map_w map_h =
   Graphics.open_graph
     ("localhost:0.0 " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
