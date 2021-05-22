@@ -65,4 +65,5 @@ let parse str : command =
   else if List.hd (split str) = "back" then Back
   else if List.hd (split str) = "pause" then Pause
   else if List.hd (split str) = "resume" then Resume
+  else if List.hd (split str) = "return" then Return
   else form_go_command (split str)

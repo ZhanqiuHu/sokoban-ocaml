@@ -104,3 +104,4 @@ type command =
   | Back
   | Pause
   | Resume
+  | Return
