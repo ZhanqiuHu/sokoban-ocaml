@@ -69,3 +69,27 @@
    get_tile_list_tests; move_tests; command_tests ]
 
    let _ = run_test_tt_main suite *)
+open Camlimages
+open OUnit2
+open State
+open Graphics
+open Png
+open Images
+open Jpeg
+open Types
+open Genmap
+open Text
+
+let text_tests name st expected_value =
+  name >:: fun ctxt ->
+  assert_equal expected_value
+    (parse_dialogue
+       "I somehow have to write something that is more than a hundred \
+        characters and I certainly hope this is enough cause if it's \
+        not I'm gonna be super annoyed."
+       [] 100)
+
+(* let tests = [ "parse test" [] ] *)
+let suite = "test suite for Final project" >::: List.flatten [ tests ]
+
+let _ = run_test_tt_main suite

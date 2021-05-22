@@ -295,6 +295,9 @@ let read_key_button () =
     let key_char = s.key in
     Char.escaped key_char
 
+(* let interact () = (* let s = Graphics.wait_next_event [ Key_pressed ]
+   in *) let key = Graphics.read_key () in if key = ' ' then *)
+
 let update_back history =
   if history.num_steps >= 1 then (
     history.num_steps <- history.num_steps - 1;
@@ -313,10 +316,8 @@ let update_history st history =
   else ()
 
 (** [change_state st direction] returns a new state given the current
-    state [st] and the direction of movement [direction].
-
-    If the movement is [Illegal] then this function returns the old
-    state. *)
+    state [st] and the direction of movement [direction]. If the
+    movement is [Illegal] then this function returns the old state. *)
 let change_state st direction room player_num =
   let state_of_result st = function Legal t -> t | Illegal -> st in
   state_of_result st (move st direction room player_num)
@@ -433,6 +434,17 @@ let prompt_command (st : state) (history : history) =
         \ Close the window to stop the game or 'w', 's', 'a', 'd' to \
          move player 1 or 'i', 'k', 'j', 'l' to move player 2. \n\n";
       st
+
+(* let print_win st = Graphics.set_color Graphics.black; let room =
+   get_room_by_id "win" st in Graphics.moveto (room.height / 2 *
+   tile_size) (room.width / 2 * tile_size); Graphics.draw_string "YOU
+   WIN!" *)
+
+(** [print_win st] prints the win message to the screen. *)
+
+let print_win st =
+  let width = Text.get_width st st.current_room_id tile_size in
+  Text.draw_box width "YOU WIN!"
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
@@ -566,9 +578,19 @@ let main () =
   (* let init_room = State.get_room_by_id init_state.current_room_id
      init_state in *)
   initialize_window;
+  Text.draw_box (map_w * tile_size)
+    "Select the mode you want to play in and press \"START\" to begin \
+     the game. Use \"asdw\" for player 1 and \"jkli\" for player 2. \
+     Fill all holes on the screen by pushing blocks into them, then go \
+     to the exit to arrive at the next level.";
   (* print_start init_state; *)
   let state_history = { state_list = []; num_steps = 0 } in
   wait_button state_history
+
+(* let update_map st = let map = get_tile_list st in let ppos =
+   get_player_pos room(*insert function we just wrote that gets a
+   room*)in match map with | [] -> [] | x::xs -> if x.position = ppos
+   then | *)
 
 (* Execute the game engine. *)
 
