@@ -60,7 +60,12 @@ type room = {
   init_breaks : breakable1 list;
 }
 
+type mode =
+  | Normal
+  | Sliding
+
 type state = {
+  mutable mode : mode;
   mutable current_room_id : string;
   all_rooms : room list;
   mutable players : player list;
