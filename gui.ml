@@ -69,11 +69,11 @@ let rec draw_select (select_list : Types.select list) =
   | h :: t ->
       if h.select then
         draw_image
-          (get_img_transparent h.image_select)
+          (get_img h.image_select)
           (fst h.position) (snd h.position)
       else
         draw_image
-          (get_img_transparent h.image_deselect)
+          (get_img h.image_deselect)
           (fst h.position) (snd h.position);
       draw_select t
 
@@ -189,7 +189,7 @@ let draw_break_list (st : state) width height =
           draw_image
             (get_img_transparent "images/heaps60x60.png")
             (fst h.position * width)
-            (snd h.position * height) )
+            (snd h.position * height))
         else ();
         draw_helper t
     | [] -> ()
