@@ -6,7 +6,7 @@
 open Types
 
 (** [init_state] returns the initial state when the game is started*)
-val init_state : state
+val init_state : string * string -> state
 
 (** The type representing the result of an attempted movement. *)
 type result =

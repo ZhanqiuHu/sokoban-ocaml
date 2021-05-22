@@ -3,131 +3,451 @@ open State
 open Command
 open Gui
 
+(** [map_w] is the width of a map. *)
+let map_w = 10
+
+(**[map_h] is the height of a map. *)
+let map_h = 10
+
+(** [tile_size ] is the pixel size of a tile. *)
+let tile_size = 60
+
+(** [empty_page] is an empty map used for the background of the start
+    and pause pages. *)
+let empty_page =
+  Genmap.(
+    map_to_list
+      (map_init map_w map_h { position = (0, 0); ttype = Normal }))
+
+(** [quit_button] is the button for quitting the game. *)
 let quit_button =
   {
-    position = (1 * 60, 10 * 60);
+    position = (1 * tile_size, map_h * tile_size);
     width = 144;
     height = 60;
     image = "images/quit144x60.png";
     name = "quit";
+    enable = false;
   }
 
+(** [reset_button] is the button for resetting the game. *)
 let reset_button =
   {
-    position = (4 * 60, 10 * 60);
+    position = (4 * tile_size, map_h * tile_size);
     width = 131;
     height = 60;
     image = "images/reset131x60.png";
     name = "reset";
+    enable = false;
   }
 
+(** [back_button] is the button for undoing the previous step. *)
 let back_button =
   {
-    position = (7 * 60, 10 * 60);
+    position = (7 * tile_size, 10 * tile_size);
     width = 63;
     height = 60;
     image = "images/left63x60.png";
     name = "back";
+    enable = false;
   }
 
-let button_press
-    (pos_condition : int * int -> bool)
-    (s : Graphics.status) =
-  let pos = Graphics.mouse_pos () in
-  pos_condition pos && s.button
+(** [pause_button] is the button for opening the pause menu. *)
+let pause_button =
+  {
+    position = (9 * tile_size, 10 * tile_size);
+    width = 63;
+    height = 60;
+    image = "images/pause60x60.png";
+    name = "pause";
+    enable = false;
+  }
 
+(** [start_button] is the button for starting the game. *)
+let start_button =
+  {
+    position = (7 * tile_size, 1 * tile_size);
+    width = 166;
+    height = 60;
+    image = "images/start166x60.png";
+    name = "start";
+    enable = true;
+  }
+
+(** [return_button] is the button for returning to the start menu to
+    select the mode. It is accessible through the pause menu. *)
+let return_button =
+  {
+    position = (3 * tile_size, 5 * tile_size);
+    width = 191;
+    height = 60;
+    image = "images/return191x60.png";
+    name = "return";
+    enable = false;
+  }
+
+(** [one_player_select] is the select button for playing in one player
+    mode. It is exclusive to [two_player_select]. *)
+let one_player_select =
+  {
+    position = (1 * tile_size, 8 * tile_size);
+    width = 133;
+    height = 60;
+    image_select = "images/one_select133x60.png";
+    image_deselect = "images/one_unselect133x60.png";
+    name = "start";
+    enable = true;
+    select = false;
+    exclusives = [];
+  }
+
+(** [two_player_select] is the select button for playing in two player
+    mode. It is exclusive to [one_player_select]. *)
+let two_player_select =
+  {
+    position = (1 * tile_size, 6 * tile_size);
+    width = 133;
+    height = 60;
+    image_select = "images/two_select133x60.png";
+    image_deselect = "images/two_unselect133x60.png";
+    name = "start";
+    enable = true;
+    select = false;
+    exclusives = [];
+  }
+
+(** [slide_select] is the select button for playing in sliding blocks
+    mode. It is exclusive to [time_select] and [normal_select]. *)
+let slide_select =
+  {
+    position = (5 * tile_size, 8 * tile_size);
+    width = 133;
+    height = 60;
+    image_select = "images/sliding_select133x60.png";
+    image_deselect = "images/sliding_unselect133x60.png";
+    name = "start";
+    enable = true;
+    select = false;
+    exclusives = [];
+  }
+
+(** [time_select] is the select button for playing in timed mode. It is
+    exclusive to [slide_select] and [normal_select]. *)
+let time_select =
+  {
+    position = (5 * tile_size, 6 * tile_size);
+    width = 133;
+    height = 60;
+    image_select = "images/time_select133x60.png";
+    image_deselect = "images/time_unselect133x60.png";
+    name = "start";
+    enable = true;
+    select = false;
+    exclusives = [];
+  }
+
+(** [normal_select] is the select button for playing in normal mode. It
+    is exclusive to [time_select] and [slide_select]. *)
+let normal_select =
+  {
+    position = (5 * tile_size, 4 * tile_size);
+    width = 133;
+    height = 60;
+    image_select = "images/normal_select133x60.png";
+    image_deselect = "images/normal_unselect133x60.png";
+    name = "start";
+    enable = true;
+    select = false;
+    exclusives = [];
+  }
+
+(** [select_list] is the list of all select buttons. *)
+let select_list =
+  [
+    one_player_select;
+    two_player_select;
+    slide_select;
+    time_select;
+    normal_select;
+  ]
+
+(** [assign_exclusives] assigns to each select button the selects that
+    it is exclusive to. *)
+let assign_exclusives =
+  one_player_select.exclusives <- [ two_player_select ];
+  two_player_select.exclusives <- [ one_player_select ];
+  slide_select.exclusives <- [ time_select; normal_select ];
+  time_select.exclusives <- [ slide_select; normal_select ];
+  normal_select.exclusives <- [ time_select; slide_select ]
+
+(** [enable_button] sets enable of [button] to be true. *)
+let enable_button (button : button) = button.enable <- true
+
+(** [disable_button] sets enable of [button] to be false. *)
+let disable_button (button : button) = button.enable <- false
+
+(** [pos_condition x_low x_high y_low y_high pos] returns true if [pos]
+    is inside [\[x_low, x_high\]] and [\[y_low, y_high\]]. *)
 let pos_condition x_low x_high y_low y_high (pos : int * int) =
   fst pos >= x_low
   && fst pos <= x_high
   && snd pos >= y_low
   && snd pos <= y_high
 
-let quit_cond =
-  let pos = quit_button.position in
-  let x_low = fst pos in
-  let y_low = snd pos in
-  let x_high = x_low + quit_button.width in
-  let y_high = y_low + quit_button.height in
-  pos_condition x_low x_high y_low y_high
+(** [button_cond butt_pos butt_dim enable mouse_pos] returns true if the
+    button it references has been pressed and it is enabled. *)
+let button_cond
+    (butt_pos : int * int)
+    (butt_dim : int * int)
+    (enable : bool)
+    (mouse_pos : int * int) =
+  let x_low = fst butt_pos in
+  let y_low = snd butt_pos in
+  let x_high = x_low + fst butt_dim in
+  let y_high = y_low + snd butt_dim in
+  pos_condition x_low x_high y_low y_high mouse_pos && enable
 
-let reset_cond =
-  let pos = reset_button.position in
-  let x_low = fst pos in
-  let y_low = snd pos in
-  let x_high = x_low + reset_button.width in
-  let y_high = y_low + reset_button.height in
-  pos_condition x_low x_high y_low y_high
+(** [button_press button s] returns true if [button] has been pressed
+    given the event [s] in this frame and false otherwise. *)
+let button_press (button : button) (s : Graphics.status) : bool =
+  let mouse_pos = Graphics.mouse_pos () in
+  button_cond button.position
+    (button.width, button.height)
+    button.enable mouse_pos
 
-let back_cond =
-  let pos = back_button.position in
-  let x_low = fst pos in
-  let y_low = snd pos in
-  let x_high = x_low + back_button.width in
-  let y_high = y_low + back_button.height in
-  pos_condition x_low x_high y_low y_high
+(** [select_press sel s] returns true if select button [sel] has been
+    pressed given the event [s] in this frame and false otherwise. *)
+let select_press (sel : select) (s : Graphics.status) : bool =
+  let mouse_pos = Graphics.mouse_pos () in
+  button_cond sel.position (sel.width, sel.height) sel.enable mouse_pos
 
-let read_key_button () =
-  let s = Graphics.wait_next_event [ Key_pressed ] in
-  let key_char = s.key in
-  Char.escaped key_char
+(** [update_select sel] updates the [select] field of [sel] to true and
+    unselects all other other select buttons that are exclusive to it. *)
+let update_select (sel : select) =
+  sel.select <- not sel.select;
+  if sel.select then
+    let rec update lst =
+      match lst with
+      | [] -> ()
+      | h :: t ->
+          h.select <- false;
+          update t
+    in
+    update sel.exclusives
 
+(** [select_button s] returns true if a select button has been pushed
+    given the event [s]. If so, then it returns true and updates the
+    select field of that button to true and unselects all other other
+    select buttons that are exclusive to it. False otherwise. *)
+let select_button (s : Graphics.status) =
+  if select_press one_player_select s then (
+    update_select one_player_select;
+    true)
+  else if select_press two_player_select s then (
+    update_select two_player_select;
+    true)
+  else if select_press slide_select s then (
+    update_select slide_select;
+    true)
+  else if select_press time_select s then (
+    update_select time_select;
+    true)
+  else if select_press normal_select s then (
+    update_select normal_select;
+    true)
+  else false
+
+let state_history = { state_list = []; num_steps = 0 }
+
+(** [open_graph map_w map_h] opens a graphics window with dimensions
+    [map_w]x[map_h]. *)
+let open_graph map_w map_h =
+  Graphics.open_graph
+    (" " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
+
+(* For Windows users: Graphics.open_graph ("localhost:0.0 " ^
+   (string_of_int map_w) ^ "x" ^ (string_of_int map_h)) *)
+
+(** [initialize_window] draws the start menu to the screen and enables
+    the select buttons and start button. It also assigns exclusive
+    select buttons i.e. one player vs two player, etc. *)
+let initialize_window =
+  open_graph (map_w * tile_size) ((map_h + 1) * tile_size);
+  quit_button.position <- (fst quit_button.position, map_h * tile_size);
+  reset_button.position <- (fst reset_button.position, map_h * tile_size);
+  back_button.position <- (fst back_button.position, map_h * tile_size);
+  Graphics.auto_synchronize false;
+  Gui.draw_tiles tile_size tile_size empty_page;
+  Gui.draw_button start_button;
+  Gui.draw_select select_list;
+  Graphics.auto_synchronize true;
+  enable_button start_button;
+  assign_exclusives
+
+(** returns the command in string when a key or a button is pressed *)
 let read_key_button () =
   let s = Graphics.wait_next_event [ Key_pressed; Button_down ] in
-  if button_press quit_cond s then "quit"
-  else if button_press reset_cond s then "start"
-  else if button_press back_cond s then "back"
+  if
+    button_press pause_button s
+    && pause_button.name = "pause"
+    && s.button
+  then "pause"
+  else if
+    button_press pause_button s
+    && pause_button.name = "resume"
+    && s.button
+  then "resume"
+  else if button_press quit_button s && s.button then "quit"
+  else if button_press start_button s && s.button then "start"
+  else if button_press reset_button s && s.button then "start"
+  else if button_press back_button s && s.button then "back"
+  else if button_press return_button s && s.button then "return"
+  else if select_button s && s.button then "select"
   else
     let key_char = s.key in
     Char.escaped key_char
 
+(* let interact () = (* let s = Graphics.wait_next_event [ Key_pressed ]
+   in *) let key = Graphics.read_key () in if key = ' ' then *)
+
 let update_back history =
-  if history.num_steps >= 1 then (
-    history.num_steps <- history.num_steps - 1;
-    history.state_list <- List.tl history.state_list)
+  if state_history.num_steps >= 1 then (
+    state_history.num_steps <- state_history.num_steps - 1;
+    state_history.state_list <- List.tl state_history.state_list)
   else ();
-  List.hd history.state_list
+  List.hd state_history.state_list
 
 let update_history st history =
   if
-    history.num_steps = 0
-    || List.hd history.state_list <> st
-    || history.state_list = []
+    state_history.num_steps = 0
+    || List.hd state_history.state_list <> st
+    || state_history.state_list = []
   then (
-    history.num_steps <- history.num_steps + 1;
-    history.state_list <- st :: history.state_list)
+    state_history.num_steps <- state_history.num_steps + 1;
+    state_history.state_list <- st :: state_history.state_list)
   else ()
 
 (** [change_state st direction] returns a new state given the current
-    state [st] and the direction of movement [direction].
-
-    If the movement is [Illegal] then this function returns the old
-    state. *)
+    state [st] and the direction of movement [direction]. If the
+    movement is [Illegal] then this function returns the old state. *)
 let change_state st direction room player_num =
   let state_of_result st = function Legal t -> t | Illegal -> st in
   state_of_result st (move st direction room player_num)
+
+(** [print_win st] prints the win message to the screen. *)
+let print_win st =
+  Graphics.set_color Graphics.black;
+  let room = get_room_by_id "win" st in
+  Graphics.moveto
+    (room.height / 2 * tile_size)
+    (room.width / 2 * tile_size);
+  Graphics.draw_string "YOU WIN!"
+
+let selected sel1 sel2 =
+  let player_mode = if sel1.select then "one" else "two" in
+  let mode = if sel2.select then "normal" else "sliding" in
+  Stdlib.print_string player_mode;
+  (player_mode, mode)
+
+let rec wait_restart (st : state) =
+  match read_key_button () with
+  | exception End_of_file -> wait_restart st
+  | "start" ->
+      let check_select : bool =
+        (one_player_select.select || two_player_select.select)
+        && (normal_select.select || slide_select.select
+          || time_select.select)
+      in
+      if check_select then (
+        (* update init state here *)
+        disable_button start_button;
+        enable_button pause_button;
+        enable_button quit_button;
+        enable_button reset_button;
+        enable_button back_button;
+        let st_new =
+          duplicate_state
+            (init_state (selected one_player_select normal_select))
+        in
+        state_history.state_list <- [ duplicate_state st_new ];
+        state_history.num_steps <- 0;
+        st_new)
+      else wait_restart st
+  | "select" ->
+      Gui.draw_select select_list;
+      wait_restart st
+  | _ -> wait_restart st
 
 (** [prompt_command st] prompts the user for a command while in state
     [st] and returns the new state given the command. If the player
     enters an [Empty] or [Malformed] command then a message is printed
     to the screen and the old state is returned. *)
-let prompt_command (st : state) history =
+let prompt_command_active (st : state) history (command : command) =
   print_endline "valid...";
+  match command with
+  | Quit ->
+      ANSITerminal.print_string [ ANSITerminal.yellow ]
+        "Goodbye and may the camel be with you! ^w^\n   \n\n";
+      exit 0
+  | Fst direction ->
+      change_state st direction
+        (get_room_by_id st.current_room_id st)
+        Fst
+  | Snd direction ->
+      change_state st direction
+        (get_room_by_id st.current_room_id st)
+        Snd
+  | Start ->
+      State.initialize_state
+        (init_state (selected one_player_select normal_select))
+        1
+  | Back -> update_back history
+  | Pause ->
+      st.active <- false;
+      st
+  | Resume ->
+      st.active <- true;
+      st
+  | Return ->
+      enable_button start_button;
+      disable_button pause_button;
+      disable_button quit_button;
+      disable_button reset_button;
+      disable_button back_button;
+      Graphics.auto_synchronize false;
+      Graphics.clear_graph ();
+      Gui.draw_tiles tile_size tile_size empty_page;
+      Gui.draw_button start_button;
+      Gui.draw_select select_list;
+      Graphics.auto_synchronize true;
+      enable_button start_button;
+      assign_exclusives;
+      st.active <- true;
+      wait_restart st
+
+let prompt_command (st : state) (history : history) =
   try
-    match parse (read_key_button ()) with
-    | Quit ->
-        ANSITerminal.print_string [ ANSITerminal.yellow ]
-          "Goodbye and may the camel be with you! ^w^\n   \n\n";
-        exit 0
-    | Fst direction ->
-        change_state st direction
-          (get_room_by_id st.current_room_id st)
-          Fst
-    | Snd direction ->
-        change_state st direction
-          (get_room_by_id st.current_room_id st)
-          Snd
-    | Start -> State.initialize_state init_state 1
-    | Back -> update_back history
+    let s = read_key_button () in
+    if st.active && s <> "pause" then (
+      pause_button.name <- "pause";
+      let command = parse s in
+      prompt_command_active st history command
+      (* else if s = "return" && not st.active then main () *))
+    else if s = "return" && not st.active then (
+      pause_button.name <- "pause";
+      pause_button.image <- "images/pause60x60.png";
+      disable_button pause_button;
+      prompt_command_active st history Return)
+    else if s = "resume" && not st.active then (
+      pause_button.name <- "pause";
+      pause_button.image <- "images/pause60x60.png";
+      disable_button return_button;
+      prompt_command_active st history Resume)
+    else (
+      pause_button.name <- "resume";
+      pause_button.image <- "images/resume60x60.png";
+      enable_button return_button;
+      prompt_command_active st history Pause)
   with
   | Empty ->
       ANSITerminal.print_string [ ANSITerminal.cyan ]
@@ -143,128 +463,168 @@ let prompt_command (st : state) history =
          move player 1 or 'i', 'k', 'j', 'l' to move player 2. \n\n";
       st
 
+(* let print_win st = Graphics.set_color Graphics.black; let room =
+   get_room_by_id "win" st in Graphics.moveto (room.height / 2 *
+   tile_size) (room.width / 2 * tile_size); Graphics.draw_string "YOU
+   WIN!" *)
+
 (** [print_win st] prints the win message to the screen. *)
+
 let print_win st =
-  Graphics.set_color Graphics.black;
-  let room = get_room_by_id "win" st in
-  Graphics.moveto (room.height / 2 * 60) (room.width / 2 * 60);
-  Graphics.draw_string "YOU WIN!"
+  let width = Text.get_width st st.current_room_id tile_size in
+  Text.draw_box width "YOU WIN!"
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
 let print_game (st : state) =
   Graphics.auto_synchronize false;
-  Gui.draw_rect_images st 60 60;
-  Gui.draw_hole_list st 60 60;
-  Gui.draw_block_list st 60 60;
+  Graphics.clear_graph ();
+  Gui.draw_rect_images st tile_size tile_size;
+  Gui.draw_hole_list st tile_size tile_size;
+  Gui.draw_block_list st tile_size tile_size;
   Gui.draw_button quit_button;
   Gui.draw_button reset_button;
   Gui.draw_button back_button;
-  Gui.draw_break_list st 60 60;
+  Gui.draw_button pause_button;
+  Gui.draw_break_list st tile_size tile_size;
   if st.current_room_id = "win" then print_win st;
   Graphics.auto_synchronize true
 
-(** [play_game st is_updated history] executes the game at state [st].
-    It prints the map to the screen and prompts the user for a command.
-    [boo] checks if new state is the same as previous state. *)
-let rec play_game st is_updated history =
-  if not is_updated then print_game st else Gui.draw_break_list st 60 60;
-  Gui.draw_player st 60 60;
-  update_history (duplicate_state st) history;
+let draw_new_active_state st is_updated history =
+  print_game st;
+  Gui.draw_break_list st tile_size tile_size;
+  Gui.draw_player st tile_size tile_size
 
+(** [play_game st is_updated history] executes the game at state [st].
+    It prints the map to the screen and prompts the user for a command. *)
+let rec play_game st is_updated history =
+  if st.active then (
+    draw_new_active_state st is_updated history;
+    update_history (duplicate_state st) history)
+  else (
+    Graphics.auto_synchronize false;
+    Graphics.clear_graph ();
+    draw_tiles tile_size tile_size empty_page;
+    draw_button return_button;
+    enable_button return_button;
+    draw_button pause_button;
+    Graphics.auto_synchronize true);
   let new_state = prompt_command st history in
   play_game new_state (new_state = st) history
 
-(** [start_game s] starts the adventure is [s] is 'start'. If [s] is
+(** [prompt_start s history] repeatedly prompts the user to press a key
+    to start the game. *)
+let rec prompt_start s history =
+  print_endline "Please press any key to begin the game.\n";
+  print_string "> ";
+  match read_key_button () with
+  | exception End_of_file -> ()
+  | s -> start_game s history
+
+(** [start_game s history] starts the game if [s] is 'start'. If [s] is
     'quit' then the game stops. Otherwise, it prompts for a valid
-    start/quit command. *)
-let rec start_game s history =
+    start/quit command. [history] represents the state history the
+    player has gone through so far. *)
+and start_game s history =
   try
     match parse s with
-    | Start -> play_game init_state true history
+    | Start ->
+        disable_button start_button;
+        enable_button pause_button;
+        enable_button quit_button;
+        enable_button reset_button;
+        enable_button back_button;
+        play_game
+          (duplicate_state
+             (init_state (selected one_player_select normal_select)))
+          true history
     | Quit ->
         ANSITerminal.print_string [ ANSITerminal.yellow ]
           "Goodbye and may the camel be with you! ^w^ \n\n";
         exit 0
-    | _ -> (
-        print_endline "Please press any key to begin the game.\n";
-        print_string "> ";
-        match read_key_button () with
-        | exception End_of_file -> ()
-        | s -> start_game s history)
-  with
-  | Empty -> (
-      print_endline "Please press any key to begin the game.\n";
-      print_string "> ";
-      match read_key_button () with
-      | exception End_of_file -> ()
-      | s -> start_game s history)
-  | Malformed -> (
-      print_endline "Please press any key to begin the game.\n";
-      print_string "> ";
-      match read_key_button () with
-      | exception End_of_file -> ()
-      | s -> start_game s history)
+    | _ -> prompt_start s history
+  with Empty | Malformed -> prompt_start s history
 
-(** Prints the start game instructions/message to the screen. *)
+(** Prints the start game instructions/message to the screen given the
+    current state [st]. *)
 let print_start st =
   Graphics.set_color Graphics.black;
   let room = get_room_by_id st.current_room_id st in
-  Graphics.moveto (room.height / 2 * 60) (room.width / 2 * 60);
+  Graphics.moveto
+    (room.height / 2 * tile_size)
+    (room.width / 2 * tile_size);
   Graphics.draw_string "Press any key to start the game."
 
-(* let open_graph w h = Stdlib.print_string "open"; match Sys.os_type
-   with | "Win32" -> Stdlib.print_string "window"; Graphics.open_graph
-   ("localhost:0.0 " ^ string_of_int w ^ "x" ^ string_of_int h) | "Unix"
-   | "Cygwin" | "MacOS" -> Stdlib.print_string ("other" ^ Sys.os_type);
-   Graphics.open_graph (" " ^ string_of_int w ^ "x" ^ string_of_int h) |
-   _ -> invalid_arg ("Graphics: unknown OS type: " ^ Sys.os_type) *)
+(* let open_graph map_w map_h = Graphics.open_graph ("localhost:0.0 " ^
+   string_of_int map_w ^ "x" ^ string_of_int map_h)
 
-let open_graph map_w map_h =
-  Graphics.open_graph
-    (" " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
-
-(* For Windows users: Graphics.open_graph ("localhost:0.0 " ^
+   (* For Windows users: Graphics.open_graph ("localhost:0.0 " ^
    (string_of_int map_w) ^ "x" ^ (string_of_int map_h)) *)
+
+   (** [initialize_window] draws the start menu to the screen and
+   enables the select buttons and start button. It also assigns
+   exclusive select buttons i.e. one player vs two player, etc. *) let
+   initialize_window = open_graph (map_w * tile_size) ((map_h + 1) *
+   tile_size); quit_button.position <- (fst quit_button.position, map_h
+   * tile_size); reset_button.position <- (fst reset_button.position,
+   map_h * tile_size); back_button.position <- (fst
+   back_button.position, map_h * tile_size); Graphics.auto_synchronize
+   false; Gui.draw_tiles tile_size tile_size empty_page; Gui.draw_button
+   start_button; Gui.draw_select select_list; Graphics.auto_synchronize
+   true; enable_button start_button; assign_exclusives *)
+
+let wait_button state_history =
+  let rec wait_start () =
+    match read_key_button () with
+    | exception End_of_file -> ()
+    | "quit" -> start_game "quit" state_history
+    | "start" ->
+        let check_select : bool =
+          (one_player_select.select || two_player_select.select)
+          && (normal_select.select || slide_select.select
+            || time_select.select)
+        in
+        if check_select then (
+          (* update init state here *)
+          (* let state_history = { state_list = [ duplicate_state
+             (init_state (selected one_player_select normal_select)); ];
+             num_steps = 0; } *)
+          state_history.state_list <-
+            [
+              duplicate_state
+                (init_state (selected one_player_select normal_select));
+            ];
+          state_history.num_steps <- 0;
+          start_game "start" state_history)
+        else wait_start ()
+    | "select" ->
+        Gui.draw_select select_list;
+        wait_start ()
+    | _ -> wait_start ()
+  in
+  wait_start ()
 
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
     "\n\nWelcome to the\n 3110 Puzzle Game engine.\n";
   print_endline "Please press any key to\n begin the game.\n";
   print_string "> ";
-  let init_room =
-    State.get_room_by_id init_state.current_room_id init_state
-  in
-  open_graph (init_room.width * 60) ((init_room.height + 1) * 60);
-  quit_button.position <-
-    (fst quit_button.position, init_room.height * 60);
-  reset_button.position <-
-    (fst reset_button.position, init_room.height * 60);
-  back_button.position <-
-    (fst back_button.position, init_room.height * 60);
+  (* let init_room = State.get_room_by_id init_state.current_room_id
+     init_state in *)
+  initialize_window;
+  Text.draw_box (map_w * tile_size)
+    "Select the mode you want to play in and press \"START\" to begin \
+     the game. Use \"asdw\" for player 1 and \"jkli\" for player 2. \
+     Fill all holes on the screen by pushing blocks into them, then go \
+     to the exit to arrive at the next level.";
+  (* print_start init_state; *)
+  (* let state_history = { state_list = []; num_steps = 0 } in *)
+  wait_button state_history
 
-  Gui.draw_rect_images init_state 60 60;
-  Gui.draw_hole_list init_state 60 60;
-  Gui.draw_block_list init_state 60 60;
-  Gui.draw_break_list init_state 60 60;
-  Gui.draw_button quit_button;
-  Gui.draw_button reset_button;
-  Gui.draw_button back_button;
-  print_start init_state;
-  let state_history =
-    { state_list = [ duplicate_state init_state ]; num_steps = 0 }
-  in
-
-  (* Uncomment the following code to test flatten_list and
-     list_to_nested_list
-
-     Gui.draw_rect_images (Gui.list_to_nested_list (Gui.flatten_list
-     map) 10 10) 60 60; *)
-  (* 20 x 27 *)
-  match read_key_button () with
-  | exception End_of_file -> ()
-  | "quit" -> start_game "quit" state_history
-  | _ -> start_game "start" state_history
+(* let update_map st = let map = get_tile_list st in let ppos =
+   get_player_pos room(*insert function we just wrote that gets a
+   room*)in match map with | [] -> [] | x::xs -> if x.position = ppos
+   then | *)
 
 (* Execute the game engine. *)
 

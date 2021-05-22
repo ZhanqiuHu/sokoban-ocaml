@@ -12,6 +12,8 @@ let rec copy_breaks breaks =
 
 let duplicate_state st =
   {
+    mode = st.mode;
+    active = st.active;
     current_room_id = st.current_room_id;
     all_rooms = st.all_rooms;
     players = st.players;
@@ -26,25 +28,31 @@ let get_room_by_id room_id st =
   |> List.filter (fun room -> room.room_id = room_id)
   |> List.hd
 
-let init_state : state =
+let player_one =
   {
+    position = (1, 1);
+    on_exit = false;
+    player_num = Fst;
+    player_img = "images/link60x60.png";
+  }
+
+let player_two =
+  {
+    position = (8, 8);
+    on_exit = false;
+    player_num = Snd;
+    player_img = "images/player60x60.png";
+  }
+
+let init_state (sel_list : string * string) : state =
+  {
+    mode = (if "normal" = snd sel_list then Normal else Sliding);
+    active = true;
     current_room_id = "random";
     all_rooms = [ map2; win ];
     players =
-      [
-        {
-          position = (1, 1);
-          on_exit = false;
-          player_num = Fst;
-          player_img = "images/link60x60.png";
-        };
-        {
-          position = (8, 8);
-          on_exit = false;
-          player_num = Snd;
-          player_img = "images/player60x60.png";
-        };
-      ];
+      (if "one" = fst sel_list then [ player_one ]
+      else [ player_one; player_two ]);
     filled_holes = 0;
     blocks = map2.init_blocks;
     breaks = map2.init_breaks;
@@ -773,10 +781,16 @@ let primary_move_update_state (st : state) room loc num pl_lst bl_lst =
     [pushed_obj] argument of the [move_rec] function, based on the
     [pushed_player] and [pushed_block] in this round *)
 let checker_move_rec pushed_player pushed_block state_before_check dir =
-  match (pushed_block, pushed_player) with
-  | Some block, None -> move_rec state_before_check dir (Block block)
-  | None, Some player -> move_rec state_before_check dir (Player player)
-  | None, None -> Legal state_before_check
+  match (pushed_block, pushed_player, state_before_check.mode) with
+  | Some block, None, Normal ->
+      move_rec state_before_check dir (Block block)
+  | None, Some player, Normal ->
+      move_rec state_before_check dir (Player player)
+  | Some block, None, Sliding ->
+      move_rec_sliding state_before_check dir (Block block)
+  | None, Some player, Sliding ->
+      move_rec_sliding state_before_check dir (Player player)
+  | None, None, _ -> Legal state_before_check
   | _ -> raise (Failure "Impossible")
 
 (** Checks whether the movement of the player is legal *)
@@ -814,6 +828,7 @@ let move
     (dir : direction)
     (room : room)
     (player_num : player_num) : result =
+  Stdlib.print_int (List.length st.players);
   let current_rm = get_room_by_id st.current_room_id st in
   let player = determine_player_num st player_num in
   if check_player_notlegal player.position st dir current_rm then

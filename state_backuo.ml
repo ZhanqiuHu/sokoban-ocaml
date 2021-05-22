@@ -1,4 +1,4 @@
-open Types
+(* open Types
 open Map
 open Genmap
 
@@ -833,4 +833,4 @@ let move
         next_level state_before_check
       else
         checker_move_rec pushed_player pushed_block state_before_check
-          dir
+          dir *)

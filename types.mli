@@ -28,10 +28,23 @@ type breakable1 = {
 
 type button = {
   mutable position : int * int;
-  width : int;
-  height : int;
-  image : string;
-  name : string;
+  mutable width : int;
+  mutable height : int;
+  mutable image : string;
+  mutable name : string;
+  mutable enable : bool;
+}
+
+type select = {
+  mutable position : int * int;
+  mutable width : int;
+  mutable height : int;
+  mutable image_select : string;
+  mutable image_deselect : string;
+  mutable name : string;
+  mutable enable : bool;
+  mutable select : bool;
+  mutable exclusives : select list;
 }
 
 type tile = {
@@ -46,6 +59,7 @@ type game_object =
   | Break1 of breakable1
   | Tile of tile
   | Button of button
+  | Select of select
 
 type room = {
   room_id : string;
@@ -60,7 +74,13 @@ type room = {
   init_breaks : breakable1 list;
 }
 
+type modes =
+  | Normal
+  | Sliding
+
 type state = {
+  mutable mode : modes;
+  mutable active : bool;
   mutable current_room_id : string;
   all_rooms : room list;
   mutable players : player list;
@@ -87,3 +107,6 @@ type command =
   | Snd of direction
   | Quit
   | Back
+  | Pause
+  | Resume
+  | Return
