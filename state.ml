@@ -225,16 +225,7 @@ and player_helper
     match player_list with
     | [] -> true
     | h :: t ->
-        if
-          h.position = new_position
-          && ((not (tile_helper tile_list (new_pos new_position dir)))
-             || (not
-                   (break_helper st.breaks (new_pos new_position dir)))
-             || not
-                  (block_helper st.blocks
-                     (new_pos new_position dir)
-                     tile_list st dir))
-        then false
+        if h.position = new_position then false
         else player_helper_helper t new_position dir tile_list st
   in
   player_helper_helper player_list new_position dir tile_list st

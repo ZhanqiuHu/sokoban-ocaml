@@ -34,7 +34,6 @@ let rec draw_dialogue dia_list pos =
 
 let draw_box room_dim (dialogue : string) =
   let width = snd room_dim in
-  let height = fst room_dim in
   Graphics.set_color Graphics.black;
   Graphics.fill_rect 0 0 width 60;
   Graphics.set_color Graphics.white;
