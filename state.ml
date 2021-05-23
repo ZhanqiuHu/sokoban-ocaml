@@ -20,6 +20,7 @@ let duplicate_state st =
     blocks = st.blocks;
     breaks = copy_breaks st.breaks;
     filled_holes = st.filled_holes;
+    steps_left = st.steps_left;
   }
 
 (** Returns the id of the room given in this state. *)
@@ -46,16 +47,20 @@ let player_two =
 
 let init_state (sel_list : string * string) : state =
   {
-    mode = (if "normal" = snd sel_list then Normal else Sliding);
+    mode =
+      (if "normal" = snd sel_list then Normal
+      else if snd sel_list = "sliding" then Sliding
+      else Limit);
     active = true;
     current_room_id = "random";
-    all_rooms = [ map2; win ];
+    all_rooms = [ map2; win; lose ];
     players =
       (if "one" = fst sel_list then [ player_one ]
       else [ player_one; player_two ]);
     filled_holes = 0;
     blocks = map2.init_blocks;
     breaks = map2.init_breaks;
+    steps_left = map2.step_limit;
   }
 
 let rec init_breaks hp breaks_list =
@@ -358,6 +363,20 @@ let next_level st =
       blocks = next_rm.init_blocks;
       breaks = next_rm.init_breaks;
       filled_holes = 0;
+      steps_left = next_rm.step_limit;
+    }
+
+let no_steps st =
+  let next_rm = get_room_by_id "lose" st in
+  Legal
+    {
+      st with
+      current_room_id = "lose";
+      players = update_player_next_level st "lose";
+      blocks = next_rm.init_blocks;
+      breaks = next_rm.init_breaks;
+      filled_holes = 0;
+      steps_left = next_rm.step_limit;
     }
 
 (** Returns the player in st.players with the corrresponding
@@ -390,6 +409,26 @@ let updated_player player new_loc room =
     on_exit = check_on_exit new_loc room;
   }
 
+let modify_block_helper
+    block
+    new_loc
+    dir
+    room
+    st
+    result
+    block_list_updated =
+  let modified_block =
+    new_block block (new_pos new_loc dir) room.holes
+  in
+  let moveable =
+    if st.mode = Normal then move_blocks new_loc dir st
+    else move_blocks_sliding new_loc dir st
+  in
+  if moveable then
+    (result, Some modified_block, modified_block :: block_list_updated)
+  else
+    (Illegal, Some modified_block, modified_block :: block_list_updated)
+
 (** Returns a tuple of (result, block_pushed, new_block_list) given that
     the pushed(moved) object in this round is a player *)
 let pushed_player_new_block_list
@@ -404,20 +443,34 @@ let pushed_player_new_block_list
     | [] -> init
     | block :: tl -> (
         match helper init tl with
-        | a, b, c ->
+        | result, pushed_block, block_list_updated ->
             if block.position = new_loc then
-              let modified_block =
-                new_block block (new_pos new_loc dir) room.holes
-              in
-              let boo =
-                if st.mode = Normal then move_blocks new_loc dir st
-                else move_blocks_sliding new_loc dir st
-              in
-              if boo then (a, Some modified_block, modified_block :: c)
-              else (Illegal, Some modified_block, modified_block :: c)
-            else (a, b, block :: c))
+              modify_block_helper block new_loc dir room st result
+                block_list_updated
+            else (result, pushed_block, block :: block_list_updated))
   in
   helper (Legal st, None, []) st.blocks
+
+let modify_player_helper
+    (player : player)
+    new_loc
+    pushed_player
+    dir
+    room
+    st
+    result
+    player_list_updated =
+  let modified_player =
+    updated_player player (new_pos new_loc dir) room
+  in
+  if (not (collide new_loc dir room)) && not (break st new_loc dir) then
+    ( result,
+      Some modified_player,
+      modified_player :: player_list_updated )
+  else
+    ( Illegal,
+      Some modified_player,
+      modified_player :: player_list_updated )
 
 (** Returns a tuple of (result, player_pushed, new_player_list) given
     that the pushed(moved) object in this round is a player *)
@@ -434,84 +487,96 @@ let pushed_player_new_player_list
     | [] -> init
     | player :: tl -> (
         match helper init tl with
-        | a, b, c ->
+        | result, pushed_player_op, player_list_updated ->
             if
               player.position = new_loc
               && player.player_num != pushed_player.player_num
               && player.on_exit = false
             then
-              let modified_player =
-                updated_player player (new_pos new_loc dir) room
-              in
-              if
-                (not (collide new_loc dir room))
-                && not (break st new_loc dir)
-              then (a, Some modified_player, modified_player :: c)
-              else (Illegal, Some modified_player, modified_player :: c)
-            else (a, b, player :: c))
+              modify_player_helper player new_loc pushed_player dir room
+                st result player_list_updated
+            else
+              (result, pushed_player_op, player :: player_list_updated))
   in
   helper (Legal st, None, []) st.players
 
+let pushed_block_new_block_moveable_helper
+    result
+    st
+    new_loc
+    dir
+    modified_block =
+  match result with
+  | result, pushed_block, block_list_updated ->
+      let moveable =
+        if st.mode = Normal then move_blocks new_loc dir st
+        else move_blocks_sliding new_loc dir st
+      in
+      if moveable then
+        ( result,
+          Some modified_block,
+          modified_block :: block_list_updated )
+      else
+        ( Illegal,
+          Some modified_block,
+          modified_block :: block_list_updated )
+
 (** Returns a tuple of (result, block_pushed, new block list) given that
     the pushed(moved) object in this round is a block *)
-let pushed_block_new_block_list
-    (room : room)
-    (new_loc : int * int)
-    (dir : direction)
-    (st : state) : result * block option * block list =
-  let rec helper
-      (acc : int)
-      (init : result * block option * block list)
-      (block_list : block list) =
+let pushed_block_new_block_list room new_loc dir st :
+    result * block option * block list =
+  let rec helper acc init (block_list : block list) =
     match block_list with
     | [] -> init
     | block :: tl -> (
         if block.position = new_loc then
-          if acc = 0 then
+          let acc_compare = if st.mode = Normal then 0 else 1 in
+          if acc = acc_compare then
             let modified_block =
               new_block block (new_pos new_loc dir) room.holes
             in
-            match helper acc init tl with
-            | a, b, c ->
-                if move_blocks new_loc dir st then
-                  (a, Some modified_block, modified_block :: c)
-                else (Illegal, Some modified_block, modified_block :: c)
+            let result =
+              if st.mode = Normal then helper acc init tl
+              else helper (acc - 1) init tl
+            in
+            pushed_block_new_block_moveable_helper result st new_loc dir
+              modified_block
           else
-            match helper (acc - 1) init tl with
-            | a, b, c -> (a, b, block :: c)
+            let recursive_result =
+              if st.mode = Normal then helper (acc - 1) init tl
+              else helper acc init tl
+            in
+            match recursive_result with
+            | result', pushed_block', block_list_updated' ->
+                (result', pushed_block', block :: block_list_updated')
         else
-          match helper acc init tl with a, b, c -> (a, b, block :: c))
+          match helper acc init tl with
+          | result'', pushed_block'', block_list_updated'' ->
+              (result'', pushed_block'', block :: block_list_updated''))
   in
   helper 1 (Legal st, None, []) st.blocks
 
-let pushed_block_new_block_list_sliding
-    (room : room)
-    (new_loc : int * int)
-    (dir : direction)
-    (st : state) : result * block option * block list =
-  let rec helper
-      (acc : int)
-      (init : result * block option * block list)
-      (block_list : block list) =
-    match block_list with
-    | [] -> init
-    | block :: tl -> (
-        if block.position = new_loc then
-          if acc = 1 then
-            let modified_block =
-              new_block block (new_pos new_loc dir) room.holes
-            in
-            match helper (acc - 1) init tl with
-            | a, b, c ->
-                if move_blocks_sliding new_loc dir st then
-                  (a, Some modified_block, modified_block :: c)
-                else (Illegal, Some modified_block, modified_block :: c)
-          else
-            match helper acc init tl with a, b, c -> (a, b, block :: c)
-        else
-          match helper acc init tl with a, b, c -> (a, b, block :: c))
-  in
-  helper 1 (Legal st, None, []) st.blocks
+let modify_player_helper'
+    new_loc
+    dir
+    room
+    st
+    block_legal
+    result
+    modified_player
+    player_list_updated =
+  if
+    (not (collide new_loc dir room))
+    && (not (break st new_loc dir))
+    && block_legal
+  then
+    ( result,
+      Some modified_player,
+      modified_player :: player_list_updated )
+  else
+    ( Illegal,
+      Some modified_player,
+      modified_player :: player_list_updated )
 
 (** Returns a tuple of (result, player_pushed, new_player_list) given
     that the pushed(moved) object in this round is a block *)
@@ -527,47 +592,18 @@ let pushed_block_new_player_list
     | [] -> init
     | player :: tl -> (
         match helper init tl with
-        | a, b, c ->
+        | result, pushed_player, player_list_updated ->
             if player.position = new_loc then
               let modified_player =
                 updated_player player (new_pos new_loc dir) room
               in
-              if
-                (not (collide new_loc dir room))
-                && not (break st new_loc dir)
-              then (a, Some modified_player, modified_player :: c)
-              else (Illegal, Some modified_player, modified_player :: c)
-            else (a, b, player :: c))
-  in
-  helper (Legal st, None, []) st.players
-
-let pushed_block_new_player_lists_sliding
-    (room : room)
-    (dir : direction)
-    (new_loc : int * int)
-    (st : state) : result * player option * player list =
-  let rec helper
-      (init : result * player option * player list)
-      (player_list : player list) =
-    match player_list with
-    | [] -> init
-    | player :: tl -> (
-        match helper init tl with
-        | a, b, c ->
-            if player.position = new_loc then
-              let modified_player =
-                updated_player player (new_pos new_loc dir) room
+              let block_legal =
+                if st.mode = Normal then true
+                else block_legal_sliding room new_loc st dir
               in
-              if
-                (not (collide new_loc dir room))
-                && (not (break st new_loc dir))
-                && block_legal_sliding room new_loc st dir
-                (* && player_helper st.players new_loc dir (List.flatten
-                   room.map_tile_list) st && block_helper st.blocks
-                   new_loc (List.flatten room.map_tile_list) st dir *)
-              then (a, Some modified_player, modified_player :: c)
-              else (Illegal, Some modified_player, modified_player :: c)
-            else (a, b, player :: c))
+              modify_player_helper' new_loc dir room st block_legal
+                result modified_player player_list_updated
+            else (result, pushed_player, player :: player_list_updated))
   in
   helper (Legal st, None, []) st.players
 
@@ -585,11 +621,11 @@ let move_game_object_helper_player (player : player) dir st room :
     match
       pushed_player_new_player_list room dir player.position player st
     with
-    | a, b, c -> c
+    | _, _, player_list_updated -> player_list_updated
   in
   let blocks =
     match pushed_player_new_block_list room player.position dir st with
-    | a, b, c -> c
+    | _, _, block_list_updated -> block_list_updated
   in
   (players, blocks)
 
@@ -599,11 +635,11 @@ let move_game_object_helper_block (block : block) dir st room :
     player list * block list =
   let players =
     match pushed_block_new_player_list room dir block.position st with
-    | a, b, c -> c
+    | _, _, player_list_updated -> player_list_updated
   in
   let blocks =
     match pushed_block_new_block_list room block.position dir st with
-    | a, b, c -> c
+    | _, _, block_list_updated -> block_list_updated
   in
   (players, blocks)
 
@@ -685,7 +721,7 @@ let rec move_rec
       | None -> Legal st
       | Some obj -> (
           match result with
-          | Illegal -> Illegal
+          | Illegal -> if st.mode = Normal then Illegal else Legal st
           | Legal st ->
               let state_before_check =
                 move_game_object pushed_obj dir st room
@@ -694,121 +730,28 @@ let rec move_rec
                 next_level state_before_check
               else move_rec state_before_check dir obj))
 
-(** Returns a turple of updated player list and updated block list after
-    the movement given that the pushed(moved) object is a block *)
-let move_game_object_helper_block_sliding (block : block) dir st room :
-    player list * block list =
-  let players =
-    match
-      pushed_block_new_player_lists_sliding room dir block.position st
-    with
-    | a, b, c -> c
-  in
-  let blocks =
-    match
-      pushed_block_new_block_list_sliding room block.position dir st
-    with
-    | a, b, c -> c
-  in
-  (players, blocks)
-
-(**Returns the new state after the movement in the direction [dir] given
-   the pushed(moved) [game_object] *)
-let move_game_object_sliding game_object dir st room : state =
-  match game_object with
-  | Player player ->
-      let players, blocks =
-        move_game_object_helper_player player dir st room
-      in
-      gen_state players blocks (update_filled_holes blocks) st
-  | Block block ->
-      let players, blocks =
-        move_game_object_helper_block_sliding block dir st room
-      in
-      gen_state players blocks (update_filled_holes blocks) st
-  | _ -> raise (Failure "Not possible")
-
-(** Returns a turple of (result, next_pushed_object) with the movement
-    in direction [dir] given that the pushed(moved) object is a block *)
-let check_next_obj_block_sliding (pushed_block : block) st room dir :
-    result * game_object option =
-  match
-    pushed_block_new_block_list_sliding room pushed_block.position dir
-      st
-  with
-  | Illegal, Some block, _ -> (Illegal, Some (Block block))
-  | Illegal, None, _ -> (Illegal, None)
-  | Legal _, Some block, _ -> (Legal st, Some (Block block))
-  | Legal _, None, _ -> (
-      match
-        pushed_block_new_player_lists_sliding room dir
-          pushed_block.position st
-      with
-      | Illegal, Some player, _ -> (Illegal, Some (Player player))
-      | Legal _, Some player, _ -> (Legal st, Some (Player player))
-      | Legal _, None, _ -> (Legal st, None)
-      | _ -> raise (Failure "Impossible"))
-
-(** Returns a turple of (result, next_pushed_object) with the movement
-    in direction [dir] *)
-let check_next_obj_sliding game_object st room dir :
-    result * game_object option =
-  match game_object with
-  | Player pushed_player ->
-      check_next_obj_player pushed_player st room dir
-  | Block pushed_block ->
-      check_next_obj_block_sliding pushed_block st room dir
-  | _ -> raise (Failure "Not_possible")
-
-(** Returns the result given the pushed object in the last round of move
-    [pushed_obj] *)
-let rec move_rec_sliding
-    (st : state)
-    (dir : direction)
-    (pushed_obj : game_object) : result =
-  let room = get_room_by_id st.current_room_id st in
-  match check_next_obj_sliding pushed_obj st room dir with
-  | result, new_push_obj -> (
-      match new_push_obj with
-      | None -> Legal st
-      | Some obj -> (
-          match result with
-          | Illegal -> Legal st
-          | Legal st ->
-              let state_before_check =
-                move_game_object_sliding pushed_obj dir st room
-              in
-              if check_win room state_before_check then
-                next_level state_before_check
-              else move_rec_sliding state_before_check dir obj))
-
-(* match move_rec state_before_check dir obj with | Illegal -> Legal
-   state_before_check | Legal new_st -> Legal new_st *)
-
 (** Returns the updated state in the primary round of move(the first
     round before recursive moves) *)
 let primary_move_update_state (st : state) room loc num pl_lst bl_lst =
+  let limit =
+    if st.mode = Limit then st.steps_left - 1 else st.steps_left
+  in
   {
     st with
     players = update_player { st with players = pl_lst } loc room num;
     blocks = bl_lst;
     filled_holes = update_filled_holes bl_lst;
+    steps_left = limit;
   }
 
 (** Checks whether to call [move_rec] and what goes into the
     [pushed_obj] argument of the [move_rec] function, based on the
     [pushed_player] and [pushed_block] in this round *)
 let checker_move_rec pushed_player pushed_block state_before_check dir =
-  match (pushed_block, pushed_player, state_before_check.mode) with
-  | Some block, None, Normal ->
-      move_rec state_before_check dir (Block block)
-  | None, Some player, Normal ->
-      move_rec state_before_check dir (Player player)
-  | Some block, None, Sliding ->
-      move_rec_sliding state_before_check dir (Block block)
-  | None, Some player, Sliding ->
-      move_rec_sliding state_before_check dir (Player player)
-  | None, None, _ -> Legal state_before_check
+  match (pushed_block, pushed_player) with
+  | Some block, None -> move_rec state_before_check dir (Block block)
+  | None, Some player -> move_rec state_before_check dir (Player player)
+  | None, None -> Legal state_before_check
   | _ -> raise (Failure "Impossible")
 
 (** Checks whether the movement of the player is legal *)
@@ -846,7 +789,6 @@ let move
     (dir : direction)
     (room : room)
     (player_num : player_num) : result =
-  Stdlib.print_int (List.length st.players);
   let current_rm = get_room_by_id st.current_room_id st in
   let player = determine_player_num st player_num in
   if check_player_notlegal player.position st dir current_rm then
@@ -864,6 +806,8 @@ let move
       in
       if check_win room state_before_check then
         next_level state_before_check
+      else if state_before_check.steps_left = 0 then
+        no_steps state_before_check
       else
         checker_move_rec pushed_player pushed_block state_before_check
           dir

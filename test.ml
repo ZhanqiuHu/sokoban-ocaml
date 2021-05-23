@@ -80,16 +80,84 @@ open Types
 open Genmap
 open Text
 
-let text_tests name st expected_value =
+let pp_string s = "\"" ^ s ^ "\""
+
+let pp_list pp_elt lst =
+  let pp_elts lst =
+    let rec loop n acc = function
+      | [] -> acc
+      | [ h ] -> acc ^ pp_elt h
+      | h1 :: (h2 :: t as t') ->
+          if n = 100 then acc ^ "..." (* stop printing long list *)
+          else loop (n + 1) (acc ^ pp_elt h1 ^ "; ") t'
+    in
+    loop 0 "" lst
+  in
+  "[" ^ pp_elts lst ^ "]"
+
+let cmp_set_like_lists lst1 lst2 =
+  let uniq1 = List.sort_uniq compare lst1 in
+  let uniq2 = List.sort_uniq compare lst2 in
+  List.length lst1 = List.length uniq1
+  && List.length lst2 = List.length uniq2
+  && uniq1 = uniq2
+
+let parse_test name dialogue width expected_value =
   name >:: fun ctxt ->
   assert_equal expected_value
-    (parse_dialogue
-       "I somehow have to write something that is more than a hundred \
-        characters and I certainly hope this is enough cause if it's \
-        not I'm gonna be super annoyed."
-       [] 100)
+    (parse_dialogue dialogue [] width)
+    ~printer:(pp_list pp_string)
 
-(* let tests = [ "parse test" [] ] *)
+let width_test name room_id st tile_size expected_value =
+  name >:: fun ctxt ->
+  assert_equal expected_value
+    (snd (get_hw room_id st tile_size))
+    ~printer:string_of_int
+
+let height_test name room_id st tile_size expected_value =
+  name >:: fun ctxt ->
+  assert_equal expected_value
+    (fst (get_hw room_id st tile_size))
+    ~printer:string_of_int
+
+(* let init_state_test name input expected_value = name >:: fun ctxt ->
+   assert_equal expected_value (parse_dialogue dialogue [] width)
+   ~printer:(pp_list pp_string) *)
+
+let tests =
+  [
+    parse_test "parse test"
+      "Press any key to start the game. Use \"asdw\" for player 1 and \
+       \"jkli\" for player 2. Fill all holes on the screen by pushing \
+       blocks into them, then go to the exit to arrive at the next \
+       level."
+      600
+      [
+        "Press any key to start the game. Use \"asdw\" for player 1 \
+         and \"jkli\" for player 2. Fill all";
+        "holes on the screen by pushing blocks into them, then go to \
+         the exit to arrive at the next";
+        "level.";
+      ];
+    parse_test "parse test"
+      "I somehow have to write something that is more than a hundred  \
+       characters and I certainly hope this is enough cause if it's \
+       not I'm gonna be super annoyed."
+      600
+      [
+        "I somehow have to write something that is more than a \
+         hundred  characters and I certainly";
+        "hope this is enough cause if it's not I'm gonna be super \
+         annoyed.";
+      ];
+    width_test "width test" "random"
+      (init_state ("one", "normal"))
+      60 600;
+    height_test "height test" "random"
+      (init_state ("one", "normal"))
+      60 600;
+  ]
+
 let suite = "test suite for Final project" >::: List.flatten [ tests ]
 
 let _ = run_test_tt_main suite

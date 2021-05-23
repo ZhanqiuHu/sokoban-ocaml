@@ -72,11 +72,13 @@ type room = {
   exit_pos : int * int;
   init_pos : int * int;
   init_breaks : breakable1 list;
+  step_limit : int;
 }
 
 type modes =
   | Normal
   | Sliding
+  | Limit
 
 type state = {
   mutable mode : modes;
@@ -87,6 +89,7 @@ type state = {
   mutable blocks : block list;
   mutable breaks : breakable1 list;
   filled_holes : int;
+  mutable steps_left : int;
 }
 
 type history = {

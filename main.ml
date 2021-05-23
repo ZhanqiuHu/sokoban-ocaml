@@ -2,6 +2,7 @@ open Types
 open State
 open Command
 open Gui
+open Text
 
 (** [map_w] is the width of a map. *)
 let map_w = 10
@@ -338,17 +339,23 @@ let change_state st direction room player_num =
   state_of_result st (move st direction room player_num)
 
 (** [print_win st] prints the win message to the screen. *)
-let print_win st =
-  Graphics.set_color Graphics.black;
-  let room = get_room_by_id "win" st in
-  Graphics.moveto
-    (room.height / 2 * tile_size)
-    (room.width / 2 * tile_size);
-  Graphics.draw_string "YOU WIN!"
+
+(* let print_win st = Graphics.set_color Graphics.black; let room =
+   get_room_by_id "win" st in Graphics.moveto (room.height / 2 *
+   tile_size) (room.width / 2 * tile_size); Graphics.draw_string "YOU
+   WIN!" *)
+(* let print_lose st = Graphics.set_color Graphics.black; let room =
+   get_room_by_id "lose" st in Graphics.moveto (room.height / 2 *
+   tile_size) (room.width / 2 * tile_size); Graphics.draw_string "YOU
+   LOSE!" *)
 
 let selected sel1 sel2 =
   let player_mode = if sel1.select then "one" else "two" in
-  let mode = if sel2.select then "normal" else "sliding" in
+  let mode =
+    if sel2.select then "normal"
+    else if slide_select.select then "sliding"
+    else "limited"
+  in
   Stdlib.print_string player_mode;
   (player_mode, mode)
 
@@ -474,8 +481,12 @@ let prompt_command (st : state) (history : history) =
 (** [print_win st] prints the win message to the screen. *)
 
 let print_win st =
-  let width = Text.get_width st st.current_room_id tile_size in
+  let width = Text.get_hw st.current_room_id st tile_size in
   Text.draw_box width "YOU WIN!"
+
+let print_lose st =
+  let width = Text.get_hw st.current_room_id st tile_size in
+  Text.draw_box width "YOU LOSE!"
 
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
@@ -491,12 +502,17 @@ let print_game (st : state) =
   Gui.draw_button pause_button;
   Gui.draw_break_list st tile_size tile_size;
   if st.current_room_id = "win" then print_win st;
+  if st.current_room_id = "lose" then print_lose st;
   Graphics.auto_synchronize true
 
 let draw_new_active_state st is_updated history =
   print_game st;
   Gui.draw_break_list st tile_size tile_size;
-  Gui.draw_player st tile_size tile_size
+  Gui.draw_player st tile_size tile_size;
+  if st.mode = Limit && st.current_room_id <> "lose" then
+    draw_box
+      (get_hw st.current_room_id st tile_size)
+      ("Steps left: " ^ string_of_int st.steps_left)
 
 (** [play_game st is_updated history] executes the game at state [st].
     It prints the map to the screen and prompts the user for a command. *)
@@ -511,6 +527,8 @@ let rec play_game st is_updated history =
     draw_button return_button;
     enable_button return_button;
     draw_button pause_button;
+    (* if st.mode = Limit then draw_box (get_hw st.current_room_id st
+       tile_size) (string_of_int st.steps_left) "step_limit"; *)
     Graphics.auto_synchronize true);
   let new_state = prompt_command st history in
   play_game new_state (new_state = st) history
@@ -615,7 +633,8 @@ let main () =
   (* let init_room = State.get_room_by_id init_state.current_room_id
      init_state in *)
   initialize_window;
-  Text.draw_box (map_w * tile_size)
+  Text.draw_box
+    (map_h * tile_size, map_w * tile_size)
     "Select the mode you want to play in and press \"START\" to begin \
      the game. Use \"asdw\" for player 1 and \"jkli\" for player 2. \
      Fill all holes on the screen by pushing blocks into them, then go \

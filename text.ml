@@ -1,16 +1,11 @@
-open Camlimages
 open State
 open Graphics
-open Png
-open Images
-open Jpeg
 open Types
-open Genmap
 
-(*Returns the width of the current room*)
-let get_width room_id st tile_size =
-  let room = get_room_by_id st room_id in
-  room.width * tile_size
+(*Returns the height, width of the current room*)
+let get_hw (room_id : string) st tile_size =
+  let room = get_room_by_id room_id st in
+  (room.height * tile_size, room.width * tile_size)
 
 (*Draws a text box at the bottom of the screen*)
 let rec parse_dialogue dialogue acc width =
@@ -29,26 +24,18 @@ let rec parse_dialogue dialogue acc width =
         parse_dialogue sub2 (sub1 :: acc) width
       else List.rev (str :: acc)
 
-let rec draw_dialogue dia_list pos width =
+let rec draw_dialogue dia_list pos =
   match dia_list with
   | [] -> ()
   | h :: t ->
       Graphics.moveto 10 pos;
       Graphics.draw_string h;
-      draw_dialogue t (pos - 15) width
+      draw_dialogue t (pos - 15)
 
-let draw_box room_width (dialogue : string) =
-  (* Graphics.draw_rect 0 height width 20; *)
+let draw_box room_dim (dialogue : string) =
+  let width = snd room_dim in
+  let height = fst room_dim in
   Graphics.set_color Graphics.black;
-  Graphics.fill_rect 0 0 room_width 60;
+  Graphics.fill_rect 0 0 width 60;
   Graphics.set_color Graphics.white;
-  draw_dialogue (parse_dialogue dialogue [] room_width) 40 room_width
-
-(* let len = String.length h in if len + 10 <= width - 10 then (
-   Graphics.moveto 10 pos; Graphics.draw_string h; draw_dialogue t (pos
-   - 15) width) else let last_space = String.rindex_from h (width - 10)
-   ' ' in let sub1 = String.sub h 0 last_space in let sub2 = String.sub
-   h (last_space + 1) (len - 1 - last_space) in draw_dialogue (sub1 ::
-   sub2 :: t) pos width *)
-
-(* let check_mouse_pos = fst (Graphics.mouse_pos ()) *)
+  draw_dialogue (parse_dialogue dialogue [] width) 40
