@@ -12,6 +12,8 @@ let map_h = 10
 (** [tile_size ] is the pixel size of a tile. *)
 let tile_size = 60
 
+(* let step_limit = 90 let counter = ref step_limit *)
+
 (** [empty_page] is an empty map used for the background of the start
     and pause pages. *)
 let empty_page =
@@ -257,6 +259,7 @@ let select_button (s : Graphics.status) =
     true)
   else false
 
+(***)
 let state_history = { state_list = []; num_steps = 0 }
 
 (** [open_graph map_w map_h] opens a graphics window with dimensions
