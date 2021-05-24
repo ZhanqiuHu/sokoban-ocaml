@@ -66,7 +66,8 @@ let set (map : tile array array) x_pos y_pos new_val =
 
 (* let rec set_vals_with_same_pos (map : tile array array) pos_list new_val =
   match pos_list with 
-  | h :: t -> let x_pos = fst h in let y_pos = snd h in set_with_same_pos map x_pos y_pos new_val; set_vals_with_same_pos *)
+  | h :: t -> let x_pos = fst h in let y_pos = snd h in set_with_same_pos map 
+  x_pos y_pos new_val; set_vals_with_same_pos *)
 
 let get (map : tile array array) x_pos y_pos new_val =
   let y_end = Array.length map - 1 in
