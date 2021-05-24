@@ -17,6 +17,7 @@
 ## For Mac:
 NOTE: 
 You will need to install X11/XQuartz for Graphics support. 
+Install xquartz according to the 3110 Canvas page and delete/reinstall opam.
 If you installed ocaml with homebrew, it can be done by running
 
 $ brew install Caskroom/cask/xquartz
@@ -46,6 +47,7 @@ $ brew reinstall ocaml --with-x11
     $ opam user-setup install
 
 - Step 4: run 
+    $ brew install libpng
     $ opam install camlimages
 
 ## For Windows:

@@ -64,10 +64,10 @@ let set (map : tile array array) x_pos y_pos new_val =
   map.(y_end - y_pos).(x_pos) <- new_val;
   map
 
-(* let rec set_vals_with_same_pos (map : tile array array) pos_list new_val =
-  match pos_list with 
-  | h :: t -> let x_pos = fst h in let y_pos = snd h in set_with_same_pos map 
-  x_pos y_pos new_val; set_vals_with_same_pos *)
+(* let rec set_vals_with_same_pos (map : tile array array) pos_list
+   new_val = match pos_list with | h :: t -> let x_pos = fst h in let
+   y_pos = snd h in set_with_same_pos map x_pos y_pos new_val;
+   set_vals_with_same_pos *)
 
 let get (map : tile array array) x_pos y_pos new_val =
   let y_end = Array.length map - 1 in
@@ -122,32 +122,38 @@ let iterate map func =
     done
   done
 
+(* let choose_obstacles map path_list path_val tile_val obstacle_val
+   true_prob = let path_map = define_path_map map path_list path_val in
+   let y_end = Array.length map - 1 in let x_end = Array.length map.(0)
+   - 1 in for x = 0 to x_end do for y = 0 to y_end do if
+   map.(y).(x).ttype = tile_val.ttype && path_map.(y).(x).ttype <>
+   path_val.ttype then if random_bool true_prob then map.(y).(x) <- {
+   position = map.(y).(x).position; ttype = obstacle_val.ttype; } else
+   () else () done done *)
+
 let choose_obstacles
     map
-    path_list
+    path_lst
     path_val
     tile_val
     obstacle_val
     true_prob =
-  let path_map = define_path_map map path_list path_val in
-  let y_end = Array.length map - 1 in
-  let x_end = Array.length map.(0) - 1 in
-  for x = 0 to x_end do
-    for y = 0 to y_end do
-      if
-        map.(y).(x).ttype = tile_val.ttype
-        && path_map.(y).(x).ttype <> path_val.ttype
-      then
-        if random_bool true_prob then
-          map.(y).(x) <-
-            {
-              position = map.(y).(x).position;
-              ttype = obstacle_val.ttype;
-            }
-        else ()
+  let path_map = define_path_map map path_lst path_val in
+  let func x y =
+    if
+      map.(y).(x).ttype = tile_val.ttype
+      && path_map.(y).(x).ttype <> path_val.ttype
+    then
+      if random_bool true_prob then
+        map.(y).(x) <-
+          {
+            position = map.(y).(x).position;
+            ttype = obstacle_val.ttype;
+          }
       else ()
-    done
-  done
+    else ()
+  in
+  iterate map func
 
 let generate_breakables map path_list path_val tile_val true_prob =
   let pos_list = { list = [] } in
@@ -189,6 +195,22 @@ let new_map_with_obstacles
   in
   map
 
+let rec generate_path_pos_helper pos_lst path_lst =
+  match pos_lst with
+  | (x1, y1) :: (x2, y2) :: t ->
+      let x_start = if x1 <= x2 then x1 else x2 in
+      let x_end = if x1 <= x2 then x1 else x2 in
+      let y_start = if y1 <= y2 then y1 else y2 in
+      let y_end = if y1 <= y2 then y1 else y2 in
+      for x = x_start to x_end do
+        path_lst.list <- (x, y_start) :: path_lst.list
+      done;
+      for y = y_start to y_end do
+        path_lst.list <- (x_end, y) :: path_lst.list
+      done;
+      generate_path_pos_helper ((x2, y2) :: t) path_lst
+  | _ -> path_lst.list
+
 let generate_path_pos
     exit_pos_list
     init_pos_list
@@ -198,23 +220,7 @@ let generate_path_pos
     exit_pos_list @ init_pos_list @ hole_pos_list @ block_pos_list
   in
   let path_list = { list = new_list } in
-  let rec helper pos_lst path_lst =
-    match pos_lst with
-    | (x1, y1) :: (x2, y2) :: t ->
-        let x_start = if x1 <= x2 then x1 else x2 in
-        let x_end = if x1 <= x2 then x1 else x2 in
-        let y_start = if y1 <= y2 then y1 else y2 in
-        let y_end = if y1 <= y2 then y1 else y2 in
-        for x = x_start to x_end do
-          path_lst.list <- (x, y_start) :: path_lst.list
-        done;
-        for y = y_start to y_end do
-          path_lst.list <- (x_end, y) :: path_lst.list
-        done;
-        helper ((x2, y2) :: t) path_lst
-    | _ -> path_lst.list
-  in
-  helper new_list path_list
+  generate_path_pos_helper new_list path_list
 
 let rec check_valid_object_position map position_list =
   match position_list with

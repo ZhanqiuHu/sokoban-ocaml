@@ -1,7 +1,7 @@
-(* * Representation of state. This module represents the state of a map
-   as it is being played, including the player's current position, the
-   blocks/holes/breakeables, the layout of the rooms, and functions that
-   cause the state to change. *)
+(** Representation of state. This module represents the state of a map
+    as it is being played, including the player's current position, the
+    blocks/holes/breakeables, the layout of the rooms, and functions
+    that cause the state to change. *)
 
 open Types
 

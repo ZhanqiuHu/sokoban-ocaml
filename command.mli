@@ -1,10 +1,6 @@
 (* Parsing of player commands. *)
 open Types
 
-type step = int
-
-type object_phrase = string list
-
 (** Raised when an empty command is parsed. *)
 exception Empty
 
@@ -28,5 +24,5 @@ exception Malformed
 
     Raises: [Malformed] if the command is malformed. A command is
     {i malformed} if the verb is not one of "quit", "start", "w", "a",
-    "s", "d"*)
+    "s", "d" *)
 val parse : string -> command

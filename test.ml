@@ -1,107 +1,3 @@
-(* open OUnit2 open Map open Map_test open Types open State open Command
-
-   let get_tile_list_test name st expected_tile_lst = name >:: fun ctxt
-   -> assert_equal expected_tile_lst (get_tile_list st)
-
-   let move_test name st dir expected_result = name >:: fun ctxt -> let
-   result = move st dir in match result with | Legal t -> assert_equal
-   expected_result t | Illegal -> raise (Failure "created result is
-   Illegal")
-
-   let move_test_fail name st dir = name >:: fun ctxt -> assert_equal
-   Illegal (move st dir)
-
-   let get_tile_list_tests = [ get_tile_list_test "getting the tile list
-   of the starting room" init_state map1.map_tile_list; ]
-
-   let state_step_right = { current_room_id = "beginning"; all_rooms = [
-   map1_step_right ]; player_pos = (2, 1); }
-
-   let state_step_down = { current_room_id = "beginning"; all_rooms = [
-   map1_step_down ]; player_pos = (1, 2); }
-
-   let move_tests = [ move_test "init (1, 1) move right legal"
-   init_state Right state_step_right; move_test "init (1, 1) move down
-   legal" init_state Down state_step_down; move_test_fail "init (1, 1)
-   move left reach boundary" init_state Left; move_test_fail "init (1,
-   1) move up reach boundary" init_state Up; ]
-
-   let compare_command (name : string) (result : command)
-   (expected_output : command) : test = name >:: fun _ -> assert_equal
-   expected_output result
-
-   (** [compare_exception name result expected_except] is a test of name
-   [name] that compares two exceptions [result] and [expected_except].
-   *) let compare_exception (name : string) result (expected_except :
-   exn) : test = name >:: fun _ -> assert_raises expected_except result
-
-   let malformed1 () = parse "Start"
-
-   let malformed2 () = parse "quiT"
-
-   let malformed3 () = parse "hello world"
-
-   let malformed4 () = parse "quit 1"
-
-   let malformed5 () = parse "start 1234"
-
-   let empty1 () = parse ""
-
-   let empty2 () = parse " "
-
-   let command_tests = [ compare_command "Go Left command: a" (parse
-   "a") (Go Left); compare_command "Go Left command: a (with spaces)"
-   (parse " a ") (Go Left); compare_command "Go Right command: d" (parse
-   "d") (Go Right); compare_command "Go Up command: w" (parse "w") (Go
-   Up); compare_command "Go Down command: s" (parse "s") (Go Down);
-   compare_command "Quit command: quit" (parse "quit") Quit;
-   compare_command "Start command: start" (parse "start") Start;
-   compare_command "Start command: start (with spaces)" (parse " start
-   ") Start; compare_exception "Malformed Command 1 (check case
-   sensitivity)" malformed1 Malformed; compare_exception "Malformed
-   Command 2" malformed2 Malformed; compare_exception "Malformed Command
-   3" malformed3 Malformed; compare_exception "Malformed Command 4"
-   malformed4 Malformed; compare_exception "Malformed Command 5"
-   malformed5 Malformed; compare_exception "Empty Command 1" empty1
-   Empty; compare_exception "Empty Command 2" empty2 Empty; ]
-
-   let suite = "test suite for project" >::: List.flatten [
-   get_tile_list_tests; move_tests; command_tests ]
-
-   let _ = run_test_tt_main suite *)
-
-(** test plan:
-
-    - Explain which parts of the system were automatically tested by
-      OUnit vs. manually tested. In general, most of the testing was manual.
-      For example, we tested block pushing, checking win condition, and 
-      other in-game interactions manually. Functions that were responsible
-      for drawing images to the screen (i.e, gui, text) were also tested 
-      manually. However, there are functions that could be tested using OUnit,
-      and we checked some corner cases with OUnit tests. 
-      For the move system: manually tested is
-      visually clear about whether the position of the player gets
-      updated, but these corner cases and need to be go through OUnit
-      test: 
-      1. whether the win condition is correctly implemented, more
-      specifically, for example, when pushing the blocks on and off from
-      the holes, does win condition firmly holds? 
-      2. whether cascading
-      multiple blocks move correctly
-
-    - Explain what modules were tested by OUnit and how test cases were
-      developed (black box, glass box, randomized, etc.). Black box
-      testing was most heavily used: test the corner cases by only
-      calling the functions in the mli and see if they fully work as
-      specified.
-
-    - Provide an argument for why the testing approach demonstrates the
-      correctness of the system. Since we are developing a game, almost
-      all bugs come out of the visible and unprecedanted moves, so we
-      only need the basic functionality specified in the docs to test
-      out whether the moves gets each thing onto correct position and
-      whether the players win exactly when they should win. *)
-
 open Camlimages
 open OUnit2
 open State
@@ -112,6 +8,9 @@ open Jpeg
 open Types
 open Genmap
 open Text
+open Map
+open State
+open Command
 
 let pp_string s = "\"" ^ s ^ "\""
 
@@ -156,10 +55,131 @@ let height_test name room_id st tile_size expected_value =
 (* let init_state_test name input expected_value = name >:: fun ctxt ->
    assert_equal expected_value (parse_dialogue dialogue [] width)
    ~printer:(pp_list pp_string) *)
+let player_one =
+  {
+    position = (1, 1);
+    on_exit = false;
+    player_num = Fst;
+    player_img = "images/link60x60.png";
+  }
+
+let player_two =
+  {
+    position = (3, 3);
+    on_exit = false;
+    player_num = Snd;
+    player_img = "images/player60x60.png";
+  }
+
+let room_list_1 = [ map2; win; lose ]
+
+let player_list_1 = [ player_one ]
+
+let player_list_2 = [ player_one; player_two ]
+
+let room_list_2 = [ testing_map; win; lose ]
+
+let state_gen id mode rooms first_room (player_list : player list) =
+  {
+    mode;
+    active = true;
+    current_room_id = id;
+    all_rooms = rooms;
+    players = player_list;
+    filled_holes = 0;
+    blocks = first_room.init_blocks;
+    breaks = first_room.init_breaks;
+    steps_left = first_room.step_limit;
+  }
+
+let some_state =
+  state_gen "random" Normal room_list_1 map2 player_list_1
+
+let some_state_2_player =
+  state_gen "random" Normal room_list_1 map2 player_list_2
+
+let state_mov_norm =
+  state_gen "test" Normal room_list_2 testing_map player_list_1
+
+let state_mov_norm_two_player =
+  state_gen "test" Normal room_list_2 testing_map player_list_2
+
+let init_state_test name sel_list expected_value =
+  name >:: fun ctxt -> assert_equal expected_value (init_state sel_list)
+
+let get_state_tests name state func expected_value =
+  name >:: fun ctxt -> assert_equal expected_value (func state)
+
+let some_room = get_room_by_id "random" some_state
+
+let p2_3_3 = move state_mov_norm_two_player Down testing_map Snd
+
+let p2_3_2 = move state_mov_norm_two_player Down testing_map Snd
+
+let compare_command
+    (name : string)
+    (result : command)
+    (expected_output : command) : test =
+  name >:: fun _ -> assert_equal expected_output result
+
+let compare_exception (name : string) result (expected_except : exn) :
+    test =
+  name >:: fun _ -> assert_raises expected_except result
+
+let malformed1 () = parse "Start"
+
+let malformed2 () = parse "quiT"
+
+let malformed3 () = parse "hello world"
+
+let malformed4 () = parse "quit 1"
+
+let malformed5 () = parse "start 1234"
+
+let empty1 () = parse ""
+
+let empty2 () = parse " "
+
+let move_test_player (name : string) result player_num expected_result :
+    test =
+  name >:: fun _ ->
+  match result with
+  | Illegal -> failwith "Illegal"
+  | Legal state ->
+      let player_select =
+        List.find
+          (fun (player : player) -> player.player_num = player_num)
+          state.players
+      in
+      assert_equal expected_result player_select.position
+
+let move_test_illegal (name : string) result : test =
+  name >:: fun _ -> assert_equal Illegal result
+
+(* let rec rec_move *)
+
+let move_test_room_id (name : string) result id : test =
+  name >:: fun _ ->
+  match result with
+  | Illegal -> failwith "Illegal"
+  | Legal state ->
+      let current_rm_id = state.current_room_id in
+      assert_equal current_rm_id id
+
+let move_parse result =
+  match result with Legal st -> st | Illegal -> failwith "Illegal"
+
+let move_test_block (name : string) result expected_result : test =
+  name >:: fun _ ->
+  match result with
+  | Illegal -> failwith "Illegal"
+  | Legal state ->
+      assert_equal (List.mem state.blocks expected_result) true
 
 let tests =
   [
-    parse_test "parse test"
+    (*Text module tests *)
+    parse_test "parse test, game intro"
       "Press any key to start the game. Use \"asdw\" for player 1 and \
        \"jkli\" for player 2. Fill all holes on the screen by pushing \
        blocks into them, then go to the exit to arrive at the next \
@@ -172,25 +192,96 @@ let tests =
          the exit to arrive at the next";
         "level.";
       ];
-    parse_test "parse test"
-      "I somehow have to write something that is more than a hundred  \
+    parse_test "parse test random writing"
+      "I somehow have to write something that is more than a hundred \
        characters and I certainly hope this is enough cause if it's \
        not I'm gonna be super annoyed."
       600
       [
-        "I somehow have to write something that is more than a \
-         hundred  characters and I certainly";
+        "I somehow have to write something that is more than a hundred \
+         characters and I certainly";
         "hope this is enough cause if it's not I'm gonna be super \
          annoyed.";
       ];
     width_test "width test" "random"
       (init_state ("one", "normal"))
-      60 600;
+      60 1200;
     height_test "height test" "random"
       (init_state ("one", "normal"))
       60 600;
+    (*State module tests *)
+    init_state_test "init_state test" ("one", "normal") some_state;
+    get_state_tests "get_player" some_state get_player [ player_one ];
+    get_state_tests "get_player two" some_state_2_player get_player
+      [ player_one; player_two ];
+    get_state_tests "get_tile_list" some_state get_tile_list
+      (get_room_by_id "random" some_state).map_tile_list;
+    get_state_tests "get_hole_list" some_room get_hole_list
+      some_room.holes;
+    get_state_tests "get_breaks" some_state get_breaks map2.init_breaks;
+    get_state_tests "duplicate_state" some_state duplicate_state
+      some_state;
+    (*Command module tests*)
+    compare_command "Go Left command: a" (parse "a") (Fst Left);
+    compare_command "Go Left command: a (with spaces)" (parse " a ")
+      (Fst Left);
+    compare_command "Go Right command: d" (parse "d") (Fst Right);
+    compare_command "Go Up command: w" (parse "w") (Fst Up);
+    compare_command "Go Down command: s" (parse "s") (Fst Down);
+    compare_command "Go Left command: j" (parse "j") (Snd Left);
+    compare_command "Go Right command: l" (parse "l") (Snd Right);
+    compare_command "Go Up command: i" (parse "i") (Snd Up);
+    compare_command "Go Down command: k" (parse "k") (Snd Down);
+    compare_command "Quit command: quit" (parse "quit") Quit;
+    compare_command "Start command: start" (parse "start") Start;
+    compare_command "Start command: start (with spaces)"
+      (parse "   start   ") Start;
+    compare_exception "Malformed Command 1 (check case sensitivity)"
+      malformed1 Malformed;
+    compare_exception "Malformed Command 2" malformed2 Malformed;
+    compare_exception "Malformed Command 3" malformed3 Malformed;
+    compare_exception "Malformed Command 4" malformed4 Malformed;
+    compare_exception "Malformed Command 5" malformed5 Malformed;
+    compare_exception "Empty Command 1" empty1 Empty;
+    compare_exception "Empty Command 2" empty2 Empty;
+    (* Move player tests *)
+    move_test_player "Move up"
+      (move state_mov_norm Up testing_map Fst)
+      Fst (1, 2);
+    move_test_player "Move right"
+      (move state_mov_norm Right testing_map Fst)
+      Fst (2, 1);
+    move_test_illegal "Move down"
+      (move state_mov_norm Down testing_map Fst);
+    move_test_illegal "Move left"
+      (move state_mov_norm Left testing_map Fst);
+    move_test_player "Move up p2"
+      (move state_mov_norm_two_player Up testing_map Snd)
+      Snd (3, 4);
+    move_test_player "Move right p2"
+      (move state_mov_norm_two_player Right testing_map Snd)
+      Snd (4, 3);
+    move_test_player "Move down p2"
+      (move state_mov_norm_two_player Down testing_map Snd)
+      Snd (3, 2);
+    move_test_player "Move left p2"
+      (move state_mov_norm_two_player Left testing_map Snd)
+      Snd (2, 3);
+    move_test_room_id "Move win rm_id = win";
+    (* Move block tests *)
+    move_test_block "Move down block at (3,2)" ()
+      { pos = (3, 1); in_hole = false };
   ]
 
 let suite = "test suite for Final project" >::: List.flatten [ tests ]
 
 let _ = run_test_tt_main suite
+
+(* Normal mode,one player, success, room_id = "win"; Normal mode,one
+   player, pushed on and off, room_id != "win"; Normal mode,one player,
+   cascading blocks, player pos does not change; Normal mode,two
+   players, success, room_id = "win"; Normal mode,two player: player
+   pushing each other; Sliding mode,one players; 4 Sliding mode,two
+   players; 4 Sliding mode,two player: player pushing each other; Limit
+   mode, one player, fail and room_id = "lose"; Limit mode, two players,
+   fail and room_id = "lose"; *)

@@ -45,6 +45,7 @@ Click on the "QUIT" button to quit the game.
 ## For Mac:
 NOTE: 
 You will need to install X11/XQuartz for Graphics support. 
+Install xquartz according to the 3110 Canvas page and delete/reinstall opam.
 If you installed ocaml with homebrew, it can be done by running
 
 `$ brew install Caskroom/cask/xquartz`
@@ -81,6 +82,8 @@ If you installed ocaml with homebrew, it can be done by running
     `$ opam user-setup install`
 
 - Step 4: run 
+
+    `$ brew install libpng`
 
     `$ opam install camlimages`
 
@@ -148,4 +151,10 @@ Contains functions that parse command line input to a command type.
 
 ## Gui:
 Contains functions used to print the game to the screen.
+
+## Text:
+Contains functions used to print text to the screen.
+
+## Genmap:
+Contains functions used to generate maps for the game.
 

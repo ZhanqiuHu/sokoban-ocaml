@@ -25,9 +25,7 @@ let duplicate_state st =
 
 (** Returns the id of the room given in this state. *)
 let get_room_by_id room_id st =
-  st.all_rooms
-  |> List.filter (fun room -> room.room_id = room_id)
-  |> List.hd
+  List.find (fun room -> room.room_id = room_id) st.all_rooms
 
 let player_one =
   {
@@ -75,9 +73,9 @@ let initialize_state init_state breaks_hp =
   init_state
 
 let get_tile_by_loc loc room =
-  room.map_tile_list |> List.flatten
-  |> List.filter (fun tile -> tile.position = loc)
-  |> List.hd
+  List.find
+    (fun tile -> tile.position = loc)
+    (room.map_tile_list |> List.flatten)
 
 (** Returns the new position of the object position given the direction
     of movement. *)
@@ -230,18 +228,19 @@ and block_helper (block_list : block list) new_position tile_list st dir
       tile_list
       st
       dir =
+    let tile_break_player_check_legal =
+      (not (tile_helper tile_list (new_pos new_position dir)))
+      || (not (break_helper st.breaks (new_pos new_position dir)))
+      || not
+           (player_helper st.players
+              (new_pos new_position dir)
+              dir tile_list st)
+    in
     match block_list with
     | [] -> true
     | h :: t ->
         let if_block_legal_move =
-          h.position = new_position
-          && ((not (tile_helper tile_list (new_pos new_position dir)))
-             || (not
-                   (break_helper st.breaks (new_pos new_position dir)))
-             || not
-                  (player_helper st.players
-                     (new_pos new_position dir)
-                     dir tile_list st))
+          h.position = new_position && tile_break_player_check_legal
         in
         if if_block_legal_move then false
         else block_helper t new_position tile_list st dir
@@ -350,6 +349,7 @@ let next_level st =
       steps_left = next_rm.step_limit;
     }
 
+(**Returns the new state with the player in the lose room.*)
 let no_steps st =
   let next_rm = get_room_by_id "lose" st in
   Legal
@@ -366,9 +366,7 @@ let no_steps st =
 (** Returns the player in st.players with the corrresponding
     [player_num] *)
 let determine_player_num st player_num =
-  st.players
-  |> List.filter (fun player -> player.player_num = player_num)
-  |> List.hd
+  List.find (fun player -> player.player_num = player_num) st.players
 
 (** Returns the updated player list with the player with the
     corresponding [player_num] moved to [new_loc] *)
@@ -788,6 +786,11 @@ let check_pushed_legal current_rm new_loc player dir st =
         new_player_list,
         new_block_list )
 
+(** [move st dir room player_num] returns a [result] given the current
+    state [st], direction [dir], room [room], and player_num
+    [player_num]. If the movement is allowed, it returns a result
+    [Legal state] with the new state. If the movement is not allowed, it
+    returns [Illegal]. *)
 let move
     (st : state)
     (dir : direction)

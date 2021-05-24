@@ -1,9 +1,5 @@
 open Types
 
-type step = int
-
-type object_phrase = string list
-
 exception Empty
 
 exception Malformed

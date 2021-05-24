@@ -5,10 +5,10 @@ open Gui
 open Text
 
 (** [map_w] is the width of a map. *)
-let map_w = 15
+let map_w = 20
 
 (**[map_h] is the height of a map. *)
-let map_h = 15
+let map_h = 10
 
 (** [tile_size ] is the pixel size of a tile. *)
 let tile_size = 60
@@ -274,7 +274,7 @@ let state_history = { state_list = []; num_steps = 0 }
     map_h))*)
 let open_graph map_w map_h =
   Graphics.open_graph
-    ("localhost:0.0 " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
+    (" " ^ string_of_int map_w ^ "x" ^ string_of_int map_h)
 
 (** [initialize_window ()] draws the start menu to the screen and
     enables the select buttons and start button. It also assigns
@@ -488,8 +488,6 @@ let print_lose st =
 (** [print_game st] prints a state [st] to the screen using its [map]
     attribute. *)
 let print_game (st : state) =
-  Graphics.auto_synchronize false;
-  Graphics.clear_graph ();
   Gui.draw_rect_images st tile_size tile_size;
   Gui.draw_hole_list st tile_size tile_size;
   Gui.draw_block_list st tile_size tile_size;
@@ -499,19 +497,21 @@ let print_game (st : state) =
   Gui.draw_button pause_button;
   Gui.draw_break_list st tile_size tile_size;
   if st.current_room_id = "win" then print_win st;
-  if st.current_room_id = "lose" then print_lose st;
-  Graphics.auto_synchronize true
+  if st.current_room_id = "lose" then print_lose st
 
 (** [draw_new_active_state st is_updated history] draws the new state
     [st] to the screen. *)
 let draw_new_active_state st is_updated history =
+  Graphics.auto_synchronize false;
+  Graphics.clear_graph ();
   print_game st;
   Gui.draw_break_list st tile_size tile_size;
   Gui.draw_player st tile_size tile_size;
   if st.mode = Limit && st.current_room_id <> "lose" then
     draw_box
       (get_hw st.current_room_id st tile_size)
-      ("Steps left: " ^ string_of_int st.steps_left)
+      ("Steps left: " ^ string_of_int st.steps_left);
+  Graphics.auto_synchronize true
 
 (** [play_game st is_updated history] executes the game at state [st].
     It prints the map to the screen and prompts the user for a command. *)
