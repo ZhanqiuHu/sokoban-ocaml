@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="State.html">
+<link rel="next" href="Authors.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Map" rel="Chapter" href="Map.html">
+<link title="Types" rel="Chapter" href="Types.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Genmap" rel="Chapter" href="Genmap.html">
+<link title="Gui" rel="Chapter" href="Gui.html">
+<link title="Text" rel="Chapter" href="Text.html"><title>Main</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="State.html" title="State">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Authors.html" title="Authors">Next</a>
+</div>
+<h1>Module <a href="type_Main.html">Main</a></h1>
+
+<pre><span id="MODULEMain"><span class="keyword">module</span> Main</span>: <code class="code">sig</code> <a href="Main.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p>Blank file</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><span id="VALmap_w"><span class="keyword">val</span> map_w</span> : <code class="type">int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">map_w</code> is the width of a map.</p>
+</div>
+</div>
+
+<pre><span id="VALmap_h"><span class="keyword">val</span> map_h</span> : <code class="type">int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">map_h</code> is the height of a map.</p>
+</div>
+</div>
+
+<pre><span id="VALtile_size"><span class="keyword">val</span> tile_size</span> : <code class="type">int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">tile_size </code> is the pixel size of a tile.</p>
+</div>
+</div>
+
+<pre><span id="VALempty_page"><span class="keyword">val</span> empty_page</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> list list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">empty_page</code> is an empty map used for the background of the start
+    and pause pages.</p>
+</div>
+</div>
+
+<pre><span id="VALquit_button"><span class="keyword">val</span> quit_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">quit_button</code> is the button for quitting the game.</p>
+</div>
+</div>
+
+<pre><span id="VALreset_button"><span class="keyword">val</span> reset_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">reset_button</code> is the button for resetting the game.</p>
+</div>
+</div>
+
+<pre><span id="VALback_button"><span class="keyword">val</span> back_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">back_button</code> is the button for undoing the previous step.</p>
+</div>
+</div>
+
+<pre><span id="VALpause_button"><span class="keyword">val</span> pause_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">pause_button</code> is the button for opening the pause menu.</p>
+</div>
+</div>
+
+<pre><span id="VALstart_button"><span class="keyword">val</span> start_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">start_button</code> is the button for starting the game.</p>
+</div>
+</div>
+
+<pre><span id="VALreturn_button"><span class="keyword">val</span> return_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">return_button</code> is the button for returning to the start menu to
+    select the mode. It is accessible through the pause menu.</p>
+</div>
+</div>
+
+<pre><span id="VALone_player_select"><span class="keyword">val</span> one_player_select</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">one_player_select</code> is the select button for playing in one player
+    mode. It is exclusive to <code class="code">two_player_select</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALtwo_player_select"><span class="keyword">val</span> two_player_select</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">two_player_select</code> is the select button for playing in two player
+    mode. It is exclusive to <code class="code">one_player_select</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALslide_select"><span class="keyword">val</span> slide_select</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">slide_select</code> is the select button for playing in sliding blocks
+    mode. It is exclusive to <code class="code">step_select</code> and <code class="code">normal_select</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALstep_select"><span class="keyword">val</span> step_select</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">step_select</code> is the select button for playing in step limitting
+    mode. It is exclusive to <code class="code">slide_select</code> and <code class="code">normal_select</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALnormal_select"><span class="keyword">val</span> normal_select</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">normal_select</code> is the select button for playing in normal mode. It
+    is exclusive to <code class="code">step_select</code> and <code class="code">slide_select</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALselect_list"><span class="keyword">val</span> select_list</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">select_list</code> is the list of all select buttons.</p>
+</div>
+</div>
+
+<pre><span id="VALassign_exclusives"><span class="keyword">val</span> assign_exclusives</span> : <code class="type">unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">assign_exclusives</code> assigns to each select button the selects that
+    it is exclusive to.</p>
+</div>
+</div>
+
+<pre><span id="VALenable_button"><span class="keyword">val</span> enable_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">enable_button</code> sets enable of <code class="code">button</code> to be true.</p>
+</div>
+</div>
+
+<pre><span id="VALdisable_button"><span class="keyword">val</span> disable_button</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">disable_button</code> sets enable of <code class="code">button</code> to be false.</p>
+</div>
+</div>
+
+<pre><span id="VALpos_condition"><span class="keyword">val</span> pos_condition</span> : <code class="type">int -> int -> int -> int -> int * int -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">pos_condition x_low x_high y_low y_high pos</code> returns true if <code class="code">pos</code>
+    is inside <code class="code">[x_low, x_high]</code> and <code class="code">[y_low, y_high]</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALbutton_cond"><span class="keyword">val</span> button_cond</span> : <code class="type">int * int -> int * int -> bool -> int * int -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">button_cond butt_pos butt_dim enable mouse_pos</code> returns true if the
+    button it references has been pressed and it is enabled.</p>
+</div>
+</div>
+
+<pre><span id="VALbutton_press"><span class="keyword">val</span> button_press</span> : <code class="type"><a href="Types.html#TYPEbutton">Types.button</a> -> Graphics.status -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">button_press button s</code> returns true if <code class="code">button</code> has been pressed
+    given the event <code class="code">s</code> in this frame and false otherwise.</p>
+</div>
+</div>
+
+<pre><span id="VALselect_press"><span class="keyword">val</span> select_press</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a> -> Graphics.status -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">select_press sel s</code> returns true if select button <code class="code">sel</code> has been
+    pressed given the event <code class="code">s</code> in this frame and false otherwise.</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_select"><span class="keyword">val</span> update_select</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_select sel</code> updates the <code class="code">select</code> field of <code class="code">sel</code> to true and
+    unselects all other other select buttons that are exclusive to it.</p>
+</div>
+</div>
+
+<pre><span id="VALselect_button"><span class="keyword">val</span> select_button</span> : <code class="type">Graphics.status -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">select_button s</code> returns true if a select button has been pushed
+    given the event <code class="code">s</code>. If so, then it returns true and updates the
+    select field of that button to true and unselects all other other
+    select buttons that are exclusive to it. False otherwise.</p>
+</div>
+</div>
+
+<pre><span id="VALstate_history"><span class="keyword">val</span> state_history</span> : <code class="type"><a href="Types.html#TYPEhistory">Types.history</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">state_history</code> is the empty history.</p>
+</div>
+</div>
+
+<pre><span id="VALopen_graph"><span class="keyword">val</span> open_graph</span> : <code class="type">int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">open_graph map_w map_h</code> opens a graphics window with dimensions
+    <code class="code">map_w</code>x<code class="code">map_h</code>. For Windows users: Graphics.open_graph
+    ("localhost:0.0 " ^ (string_of_int map_w) ^ "x" ^ (string_of_int
+    map_h))</p>
+</div>
+</div>
+
+<pre><span id="VALinitialize_window"><span class="keyword">val</span> initialize_window</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">initialize_window ()</code> draws the start menu to the screen and
+    enables the select buttons and start button. It also assigns
+    exclusive select buttons i.e. one player vs two player, etc.</p>
+</div>
+</div>
+
+<pre><span id="VALread_key_button"><span class="keyword">val</span> read_key_button</span> : <code class="type">unit -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">read_key_button ()</code> returns the command in string when a key or a
+    button is pressed</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_back"><span class="keyword">val</span> update_back</span> : <code class="type">'a -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_back history</code> returns the state corresponding to taking one
+    step if there are steps left or the state with 0 steps left.</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_history"><span class="keyword">val</span> update_history</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> 'a -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_history st history</code> updates the current state history
+    according to the number of steps left after this turn.</p>
+</div>
+</div>
+
+<pre><span id="VALchange_state"><span class="keyword">val</span> change_state</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEplayer_num">Types.player_num</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">change_state st direction</code> returns a new state given the current
+    state <code class="code">st</code> and the direction of movement <code class="code">direction</code>. If the
+    movement is <code class="code">Illegal</code> then this function returns the old state.</p>
+</div>
+</div>
+
+<pre><span id="VALselected"><span class="keyword">val</span> selected</span> : <code class="type">unit -> string * string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">selected ())</code> returns a tuple containing (player mode, block mode)
+    depending on which selects are chosen.</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_select"><span class="keyword">val</span> check_select</span> : <code class="type">unit -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">check_select ()</code> returns true if a valid selection of select
+    buttons has been made.</p>
+</div>
+</div>
+
+<pre><span id="VALstart_game_buttons"><span class="keyword">val</span> start_game_buttons</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">start_game_buttons ()</code> disables and enables certains buttons to
+    allow for game play.</p>
+</div>
+</div>
+
+<pre><span id="VALwait_restart"><span class="keyword">val</span> wait_restart</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">wait_restart st</code> waits for the player to finish selecting and
+    presses the <code class="code">start_button</code> to start the game after returning to the
+    start menu in the pause menu.</p>
+</div>
+</div>
+
+<pre><span id="VALhandle_return"><span class="keyword">val</span> handle_return</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">handle_return st</code> reconfigures the buttons and selects for when the
+    player wants to return to the start menu.</p>
+</div>
+</div>
+
+<pre><span id="VALprompt_command_active"><span class="keyword">val</span> prompt_command_active</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> 'a -> <a href="Types.html#TYPEcommand">Types.command</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">prompt_command st</code> prompts the user for a command while in state
+    <code class="code">st</code> and returns the new state given the command. If the player
+    enters an <code class="code">Empty</code> or <code class="code">Malformed</code> command then a message is printed
+    to the screen and the old state is returned.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_help"><span class="keyword">val</span> print_help</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_help ()</code> prints the help message to the terminal.</p>
+</div>
+</div>
+
+<pre><span id="VALrelabel_pause"><span class="keyword">val</span> relabel_pause</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">relabel_pause ()</code> reconfigures the pause button to be pause.</p>
+</div>
+</div>
+
+<pre><span id="VALrelabel_resume"><span class="keyword">val</span> relabel_resume</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">relabel_resume ()</code> reconfigures the pause button to be resume.</p>
+</div>
+</div>
+
+<pre><span id="VALprompt_command"><span class="keyword">val</span> prompt_command</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEhistory">Types.history</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">prompt_command st history</code> waits for a command, keyboard push or
+    mouse click, to continue the game.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_win"><span class="keyword">val</span> print_win</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_win st</code> prints the win message to the screen.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_lose"><span class="keyword">val</span> print_lose</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_lose st</code> prints the lose message to the screen.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_game"><span class="keyword">val</span> print_game</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_game st</code> prints a state <code class="code">st</code> to the screen using its <code class="code">map</code>
+    attribute.</p>
+</div>
+</div>
+
+<pre><span id="VALdraw_new_active_state"><span class="keyword">val</span> draw_new_active_state</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> 'a -> 'b -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">draw_new_active_state st is_updated history</code> draws the new state
+    <code class="code">st</code> to the screen.</p>
+</div>
+</div>
+
+<pre><span id="VALplay_game"><span class="keyword">val</span> play_game</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> bool -> <a href="Types.html#TYPEhistory">Types.history</a> -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">play_game st is_updated history</code> executes the game at state <code class="code">st</code>.
+    It prints the map to the screen and prompts the user for a command.</p>
+</div>
+</div>
+
+<pre><span id="VALprompt_start"><span class="keyword">val</span> prompt_start</span> : <code class="type">string -> <a href="Types.html#TYPEhistory">Types.history</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">prompt_start s history</code> repeatedly prompts the user to press a key
+    to start the game.</p>
+</div>
+</div>
+
+<pre><span id="VALstart_game"><span class="keyword">val</span> start_game</span> : <code class="type">string -> <a href="Types.html#TYPEhistory">Types.history</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">start_game s history</code> starts the game if <code class="code">s</code> is 'start'. If <code class="code">s</code> is
+    'quit' then the game stops. Otherwise, it prompts for a valid
+    start/quit command. <code class="code">history</code> represents the state history the
+    player has gone through so far.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_start"><span class="keyword">val</span> print_start</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Prints the start game instructions/message to the screen given the
+    current state <code class="code">st</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALwait_button"><span class="keyword">val</span> wait_button</span> : <code class="type"><a href="Types.html#TYPEhistory">Types.history</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">wait_button state history</code> waits to start the game which is
+    signalled when the user makes a valid selection of modes and hits
+    the start button.</p>
+</div>
+</div>
+
+<pre><span id="VALmain"><span class="keyword">val</span> main</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">main ()</code> starts the game engine.</p>
+</div>
+</div>
+</body></html>

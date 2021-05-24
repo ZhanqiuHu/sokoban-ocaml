@@ -26,18 +26,18 @@ clean:
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
-docs: docs-public docs-private
+docs: docs-public 
 
 docs-public: build
 	mkdir -p _doc.public
 	ocamlfind ocamldoc -I _build -package $(PKGS) \
 		-html -stars -d _doc.public $(MLIS)
 
-docs-private: build
-	mkdir -p _doc.private
-	ocamlfind ocamldoc -I _build -package $(PKGS) \
-		-html -stars -d _doc.private \
-		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
+# docs-private: build
+# 	mkdir -p _doc.private
+# 	ocamlfind ocamldoc -I _build -package $(PKGS) \
+# 		-html -stars -d _doc.private \
+# 		-inv-merge-ml-mli -m A -hide-warnings $(MLIS) $(MLS)
 
 
 zip:

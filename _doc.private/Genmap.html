@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Authors.html">
+<link rel="next" href="Gui.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Map" rel="Chapter" href="Map.html">
+<link title="Types" rel="Chapter" href="Types.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Genmap" rel="Chapter" href="Genmap.html">
+<link title="Gui" rel="Chapter" href="Gui.html">
+<link title="Text" rel="Chapter" href="Text.html"><title>Genmap</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Authors.html" title="Authors">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Gui.html" title="Gui">Next</a>
+</div>
+<h1>Module <a href="type_Genmap.html">Genmap</a></h1>
+
+<pre><span id="MODULEGenmap"><span class="keyword">module</span> Genmap</span>: <code class="code">sig</code> <a href="Genmap.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><code><span id="TYPEmutable_pos_list"><span class="keyword">type</span> <code class="type">'a</code> mutable_pos_list</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTmutable_pos_list.list">list</span>&nbsp;: <code class="type">'a list</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p>type for a mutable list</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEbool_box"><span class="keyword">type</span> <code class="type"></code>bool_box</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbool_box.bool_val">bool_val</span>&nbsp;: <code class="type">bool</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p>type for a mutable bool object</p>
+</div>
+</div>
+
+
+<pre><span id="VALinit_breakables"><span class="keyword">val</span> init_breakables</span> : <code class="type">(int * int) list -> int -> <a href="Types.html#TYPEbreakable1">Types.breakable1</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_breakables pos_list hp_val</code> generate breakables given their
+    positions <code class="code">pos_list</code> and <code class="code">hp</code> value</p>
+</div>
+</div>
+
+<pre><span id="VALinit_blocks"><span class="keyword">val</span> init_blocks</span> : <code class="type">(int * int) list -> <a href="Types.html#TYPEblock">Types.block</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_blocks pos_list</code> generate blocks given their positions
+    <code class="code">pos_list</code></p>
+</div>
+</div>
+
+<pre><span id="VALinit_holes"><span class="keyword">val</span> init_holes</span> : <code class="type">(int * int) list -> <a href="Types.html#TYPEhole">Types.hole</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_holes pos_list</code> generate holes given their positions
+    <code class="code">pos_list</code></p>
+</div>
+</div>
+
+<pre><span id="VALupdate_positions"><span class="keyword">val</span> update_positions</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -> <a href="Types.html#TYPEtile">Types.tile</a> array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_positions tile_map</code> update positions of tiles in <code class="code">tiles_map</code>
+    according to their positions in the array <code class="code">tile_map</code></p>
+</div>
+</div>
+
+<pre><span id="VALmap_init"><span class="keyword">val</span> map_init</span> : <code class="type">int -> int -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">map_init map_w map_h init_val</code> create a map with width <code class="code">map_w</code>
+    height <code class="code">map_h</code> and initial value <code class="code">init_val</code></p>
+</div>
+</div>
+
+<pre><span id="VALrandom_bool"><span class="keyword">val</span> random_bool</span> : <code class="type">float -> bool</code></pre>
+<pre><span id="VALinit_boundary"><span class="keyword">val</span> init_boundary</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_boundary init_map bound_val</code> generate a map with boundaries
+    <code class="code">bound_val</code> based on <code class="code">init_map</code></p>
+</div>
+</div>
+
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -> int -> int -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set map x_pos y_pos new_val</code> set the value in <code class="code">map</code> with position
+    <code class="code">x_pos</code> and <code class="code">y_pos</code> to <code class="code">new_val</code></p>
+</div>
+</div>
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a array array -> int -> int -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get map x_pos y_pos</code> get the value in <code class="code">map</code> with position <code class="code">x_pos</code>
+    and <code class="code">y_pos</code></p>
+</div>
+</div>
+
+<pre><span id="VALset_with_same_pos"><span class="keyword">val</span> set_with_same_pos</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -> int -> int -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_with_same_pos map x_pos y_pos new_val</code> set the value in <code class="code">map</code>
+    with position <code class="code">x_pos</code> and <code class="code">y_pos</code> to <code class="code">new_val</code> but keeps the
+    original position of the value</p>
+</div>
+</div>
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a array array -> int -> int -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get map x_pos y_pos</code> get the value in <code class="code">map</code> with position <code class="code">x_pos</code>
+    and <code class="code">y_pos</code></p>
+</div>
+</div>
+
+<pre><span id="VALcopy_map"><span class="keyword">val</span> copy_map</span> : <code class="type">'a array array -> 'a array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">copy_map map</code> returns a copy of map</p>
+</div>
+</div>
+
+<pre><span id="VALdefine_path_map"><span class="keyword">val</span> define_path_map</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -><br>       (int * int) list -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">define_path_map map path_list path_val</code> returns a copy of the map
+    with a path defined by <code class="code">path_list</code> and <code class="code">path_val</code></p>
+</div>
+</div>
+
+<pre><span id="VALiterate"><span class="keyword">val</span> iterate</span> : <code class="type">'a array array -> (int -> int -> 'b) -> unit</code></pre>
+<pre><span id="VALchoose_obstacles"><span class="keyword">val</span> choose_obstacles</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -><br>       (int * int) list -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> -> float -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">choose_obstacles map path_list path_val tile_val obstacle_val true_prob</code>
+    updates a map with obstacles <code class="code">obstacle_val</code> randomly chosen with a
+    probablity of <code class="code">true_prob</code>, given defined <code class="code">path_list</code>, <code class="code">path_val</code>,
+    and <code class="code">tile_val</code>. The map should have its boundaries defined.</p>
+</div>
+</div>
+
+<pre><span id="VALgenerate_breakables"><span class="keyword">val</span> generate_breakables</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -><br>       (int * int) list -> <a href="Types.html#TYPEtile">Types.tile</a> -> <a href="Types.html#TYPEtile">Types.tile</a> -> float -> (int * int) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">generate_breakables map path_list path_val tile_val true_prob</code>
+    returns breakables randomly chosen with a probablity of <code class="code">true_prob</code>,
+    given defined <code class="code">map</code> with boundaries and obstacles, <code class="code">path_list</code>,
+    <code class="code">path_val</code>, and <code class="code">tile_val</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALmap_to_list"><span class="keyword">val</span> map_to_list</span> : <code class="type">'a array array -> 'a list list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">map_to_list map</code> returns a immutable copy of the map.</p>
+</div>
+</div>
+
+<pre><span id="VALnew_map_with_obstacles"><span class="keyword">val</span> new_map_with_obstacles</span> : <code class="type">int -><br>       int -><br>       <a href="Types.html#TYPEtile">Types.tile</a> -><br>       <a href="Types.html#TYPEtile">Types.tile</a> -><br>       <a href="Types.html#TYPEtile">Types.tile</a> -><br>       <a href="Types.html#TYPEtile">Types.tile</a> -> (int * int) list -> float -> <a href="Types.html#TYPEtile">Types.tile</a> array array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">new_map_with_obstacles map_w map_h tile_val bound_val path_val 
+    obstacle_val path_pos_list obstacle_prob</code>
+    generate a map with width <code class="code">map_w</code> and height <code class="code">map_h</code>. The map has
+    tile value <code class="code">tile_val</code>, boundary value <code class="code">bound_val</code>, and path value
+    <code class="code">path_val</code>. Obstacles <code class="code">obstacle_val</code> will be chosen at places that
+    are not pathes or boundaries. The probability of obstacles appearing
+    is defined by <code class="code">obstacle_prob</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALgenerate_path_pos"><span class="keyword">val</span> generate_path_pos</span> : <code class="type">(int * int) list -><br>       (int * int) list -> (int * int) list -> (int * int) list -> (int * int) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">generate_path_pos exit_pos_list init_pos_list hole_pos_list
+    block_pos_list</code>
+    returns a path so all exits <code class="code">exit_pos_list</code>, inital positions
+    <code class="code">init_pos_list</code>, holes <code class="code">hole_pos_list</code>, and blocks <code class="code">blocks_pos_list</code>
+    are connected by the path.</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_valid_object_position"><span class="keyword">val</span> check_valid_object_position</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -> (int * int) list -> bool</code></pre>
+<pre><span id="VALcheck_valid_boundary"><span class="keyword">val</span> check_valid_boundary</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -> bool</code></pre></body></html>

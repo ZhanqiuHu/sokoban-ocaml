@@ -1,0 +1,393 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Command.html">
+<link rel="next" href="Main.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Map" rel="Chapter" href="Map.html">
+<link title="Types" rel="Chapter" href="Types.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Genmap" rel="Chapter" href="Genmap.html">
+<link title="Gui" rel="Chapter" href="Gui.html">
+<link title="Text" rel="Chapter" href="Text.html"><title>State</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Command.html" title="Command">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Main.html" title="Main">Next</a>
+</div>
+<h1>Module <a href="type_State.html">State</a></h1>
+
+<pre><span id="MODULEState"><span class="keyword">module</span> State</span>: <code class="code">sig</code> <a href="State.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="VALget_player"><span class="keyword">val</span> get_player</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEplayer">Types.player</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the tuple position of the player.</p>
+
+<p><code class="code">get_player st</code> returns the <code class="code">player list</code> in the current state <code class="code">st</code></p>
+</div>
+</div>
+
+<pre><span id="VALcopy_breaks"><span class="keyword">val</span> copy_breaks</span> : <code class="type"><a href="Types.html#TYPEbreakable1">Types.breakable1</a> list -> <a href="Types.html#TYPEbreakable1">Types.breakable1</a> list</code></pre>
+<pre><span id="VALduplicate_state"><span class="keyword">val</span> duplicate_state</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">duplicate_state st</code> returns the <code class="code">state</code> with the same fields and
+    field contents as <code class="code">st</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALget_room_by_id"><span class="keyword">val</span> get_room_by_id</span> : <code class="type">string -> <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEroom">Types.room</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the id of the room given in this state.</p>
+
+<p><code class="code">get_room_by_id room_id state</code> returns the <code class="code">room</code> associated with
+    the <code class="code">room_id</code> in the current <code class="code">state</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALplayer_one"><span class="keyword">val</span> player_one</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a></code></pre>
+<pre><span id="VALplayer_two"><span class="keyword">val</span> player_two</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a></code></pre>
+<pre><span id="VALinit_state"><span class="keyword">val</span> init_state</span> : <code class="type">string * string -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">init_state sel_list</code> returns the initial <code class="code">state</code> when the game is
+    started. <code class="code">sel_list</code> is the tuple of selections, with the first
+    element being the number of players, and the second element being
+    the game mode.</p>
+</div>
+</div>
+
+<pre><span id="VALinit_breaks"><span class="keyword">val</span> init_breaks</span> : <code class="type">int -> <a href="Types.html#TYPEbreakable1">Types.breakable1</a> list -> unit</code></pre>
+<pre><span id="VALinitialize_state"><span class="keyword">val</span> initialize_state</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> int -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">initialize_state st</code> returns the <code class="code">st</code> with breakeable hp
+    intialized.</p>
+</div>
+</div>
+
+<pre><span id="VALget_tile_by_loc"><span class="keyword">val</span> get_tile_by_loc</span> : <code class="type">int * int -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEtile">Types.tile</a></code></pre>
+<pre><span id="VALnew_pos"><span class="keyword">val</span> new_pos</span> : <code class="type">int * int -> <a href="Types.html#TYPEdirection">Types.direction</a> -> int * int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the new position of the object position given the direction
+    of movement.</p>
+</div>
+</div>
+
+<pre><span id="VALcollide"><span class="keyword">val</span> collide</span> : <code class="type">int * int -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns true if the new position of the given object with the given
+    direction of movement moves to an obstacle. False otherwise.</p>
+</div>
+</div>
+
+<pre><span id="VALbreak"><span class="keyword">val</span> break</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> int * int -> <a href="Types.html#TYPEdirection">Types.direction</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Updates st.breaks to be the correct hp given that the player will
+    move according to the direction given. Returns whether the player is
+    blocked</p>
+</div>
+</div>
+
+<pre><span id="VALget_tile_list"><span class="keyword">val</span> get_tile_list</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEtile">Types.tile</a> list list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_tile_list st</code> returns the 2D <code class="code">tile list list</code> of tiles that map
+    the current room state <code class="code">st</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALget_blocks"><span class="keyword">val</span> get_blocks</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEblock">Types.block</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_blocks st</code> returns the <code class="code">block list</code> in the current <code class="code">st</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALget_hole_list"><span class="keyword">val</span> get_hole_list</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEhole">Types.hole</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_hole_list room</code> returns the <code class="code">hole list</code> in the current <code class="code">room</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALget_breaks"><span class="keyword">val</span> get_breaks</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEbreakable1">Types.breakable1</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_breaks st</code> returns the <code class="code">breakeable1 list</code> in the current <code class="code">st</code>.</p>
+</div>
+</div>
+
+<pre><code><span id="TYPEresult"><span class="keyword">type</span> <code class="type"></code>result</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTresult.Legal"><span class="constructor">Legal</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEstate">Types.state</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTresult.Illegal"><span class="constructor">Illegal</span></span></code></td>
+
+</tr></table>
+
+<div class="info ">
+<div class="info-desc">
+<p>The type <code class="code">result</code> representing the result of an attempted movement.</p>
+</div>
+</div>
+
+
+<pre><span id="VALcheck_on_exit"><span class="keyword">val</span> check_on_exit</span> : <code class="type">int * int -> <a href="Types.html#TYPEroom">Types.room</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns true if the player is currently on the exit in the current
+    state.</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_full"><span class="keyword">val</span> check_full</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns true if all the holes in the room have been filled.</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_filled_holes"><span class="keyword">val</span> update_filled_holes</span> : <code class="type"><a href="Types.html#TYPEblock">Types.block</a> list -> int</code></pre>
+<pre><span id="VALget_next_room"><span class="keyword">val</span> get_next_room</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the next room given the current state. Assumes the win room
+    is always at the end. (at least two rooms in the game)</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_blocks"><span class="keyword">val</span> check_blocks</span> : <code class="type">int * int -> <a href="Types.html#TYPEblock">Types.block</a> list -> <a href="Types.html#TYPEblock">Types.block</a> option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks if new position to move to is the same as the position of any
+    of the other blocks and returns that block. Otherwise, it returns
+    None.</p>
+</div>
+</div>
+
+<pre><span id="VALis_not_normal"><span class="keyword">val</span> is_not_normal</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks if block has been moved onto an exit or obstacle.</p>
+</div>
+</div>
+
+<pre><span id="VALtile_helper"><span class="keyword">val</span> tile_helper</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> list -> int * int -> bool</code></pre>
+<pre><span id="VALbreak_helper"><span class="keyword">val</span> break_helper</span> : <code class="type"><a href="Types.html#TYPEbreakable1">Types.breakable1</a> list -> int * int -> bool</code></pre>
+<pre><span id="VALplayer_helper"><span class="keyword">val</span> player_helper</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a> list -><br>       int * int -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEtile">Types.tile</a> list -> <a href="Types.html#TYPEstate">Types.state</a> -> bool</code></pre>
+<pre><span id="VALblock_helper"><span class="keyword">val</span> block_helper</span> : <code class="type"><a href="Types.html#TYPEblock">Types.block</a> list -><br>       int * int -> <a href="Types.html#TYPEtile">Types.tile</a> list -> <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> bool</code></pre>
+<pre><span id="VALblock_legal_sliding"><span class="keyword">val</span> block_legal_sliding</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -> int * int -> <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks if block movement is legal. That is, the block should not be
+   moved onto an exit, block, obstacle, or breakable.</p>
+</div>
+</div>
+
+<pre><span id="VALblock_legal"><span class="keyword">val</span> block_legal</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -> int * int -> <a href="Types.html#TYPEstate">Types.state</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks if block movement is legal. That is, the block should not be
+   moved onto an exit, block, obstacle, or breakable.</p>
+</div>
+</div>
+
+<pre><span id="VALnew_block"><span class="keyword">val</span> new_block</span> : <code class="type"><a href="Types.html#TYPEblock">Types.block</a> -> int * int -> <a href="Types.html#TYPEhole">Types.hole</a> list -> <a href="Types.html#TYPEblock">Types.block</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the block with the new position it is in and its in_hole
+    attribute updated with the new position .</p>
+</div>
+</div>
+
+<pre><span id="VALmove_blocks"><span class="keyword">val</span> move_blocks</span> : <code class="type">int * int -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEstate">Types.state</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns true if new player position <code class="code">p_pos</code> is not a block or if it
+    is a block but the block can be moved in the given direction <code class="code">dir</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALmove_blocks_sliding"><span class="keyword">val</span> move_blocks_sliding</span> : <code class="type">int * int -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEstate">Types.state</a> -> bool</code></pre>
+<pre><span id="VALnew_break_list"><span class="keyword">val</span> new_break_list</span> : <code class="type"><a href="Types.html#TYPEbreakable1">Types.breakable1</a> list -> <a href="Types.html#TYPEbreakable1">Types.breakable1</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the new breakables list</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_win"><span class="keyword">val</span> check_win</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEstate">Types.state</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks the win condition: all players in the player_list need to be
+    on the exit, and all holes must be filled</p>
+</div>
+</div>
+
+<pre><span id="VALupdate_player_next_level"><span class="keyword">val</span> update_player_next_level</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> string -> <a href="Types.html#TYPEplayer">Types.player</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the updated player list when win condition is achieved</p>
+</div>
+</div>
+
+<pre><span id="VALnext_level"><span class="keyword">val</span> next_level</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="State.html#TYPEresult">result</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks if the level is finished. That is the player is on the exit
+    and all the holes are filled.</p>
+</div>
+</div>
+
+<pre><span id="VALno_steps"><span class="keyword">val</span> no_steps</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="State.html#TYPEresult">result</a></code></pre>
+<pre><span id="VALdetermine_player_num"><span class="keyword">val</span> determine_player_num</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEplayer_num">Types.player_num</a> -> <a href="Types.html#TYPEplayer">Types.player</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the player in st.players with the corrresponding
+    <code class="code">player_num</code></p>
+</div>
+</div>
+
+<pre><span id="VALupdate_player"><span class="keyword">val</span> update_player</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -><br>       int * int -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEplayer_num">Types.player_num</a> -> <a href="Types.html#TYPEplayer">Types.player</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the updated player list with the player with the
+    corresponding <code class="code">player_num</code> moved to <code class="code">new_loc</code></p>
+</div>
+</div>
+
+<pre><span id="VALupdated_player"><span class="keyword">val</span> updated_player</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a> -> int * int -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEplayer">Types.player</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the updated player with the position <code class="code">new_loc</code> and updated
+    field on_exit</p>
+</div>
+</div>
+
+<pre><span id="VALmodify_block_helper"><span class="keyword">val</span> modify_block_helper</span> : <code class="type"><a href="Types.html#TYPEblock">Types.block</a> -><br>       int * int -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="State.html#TYPEresult">result</a> -><br>       <a href="Types.html#TYPEblock">Types.block</a> list -><br>       bool -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEblock">Types.block</a> option * <a href="Types.html#TYPEblock">Types.block</a> list</code></pre>
+<pre><span id="VALpushed_player_new_block_list"><span class="keyword">val</span> pushed_player_new_block_list</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -><br>       int * int -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEblock">Types.block</a> option * <a href="Types.html#TYPEblock">Types.block</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a tuple of (result, block_pushed, new_block_list) given that
+    the pushed(moved) object in this round is a player</p>
+</div>
+</div>
+
+<pre><span id="VALmodify_player_helper"><span class="keyword">val</span> modify_player_helper</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a> -><br>       int * int -><br>       'a -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="State.html#TYPEresult">result</a> -><br>       <a href="Types.html#TYPEplayer">Types.player</a> list -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEplayer">Types.player</a> option * <a href="Types.html#TYPEplayer">Types.player</a> list</code></pre>
+<pre><span id="VALpushed_player_new_player_list"><span class="keyword">val</span> pushed_player_new_player_list</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       int * int -><br>       <a href="Types.html#TYPEplayer">Types.player</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEplayer">Types.player</a> option * <a href="Types.html#TYPEplayer">Types.player</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a tuple of (result, player_pushed, new_player_list) given
+    that the pushed(moved) object in this round is a player</p>
+</div>
+</div>
+
+<pre><span id="VALpushed_block_new_block_moveable_helper"><span class="keyword">val</span> pushed_block_new_block_moveable_helper</span> : <code class="type"><a href="State.html#TYPEresult">result</a> * 'a * <a href="Types.html#TYPEblock">Types.block</a> list -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       int * int -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEblock">Types.block</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -> bool -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEblock">Types.block</a> option * <a href="Types.html#TYPEblock">Types.block</a> list</code></pre>
+<pre><span id="VALpushed_block_block_branch_helper"><span class="keyword">val</span> pushed_block_block_branch_helper</span> : <code class="type">(int -> 'a -> 'b -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEblock">Types.block</a> option * <a href="Types.html#TYPEblock">Types.block</a> list) -><br>       bool -><br>       int -><br>       'a -><br>       'b -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       int * int -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEblock">Types.block</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEblock">Types.block</a> option * <a href="Types.html#TYPEblock">Types.block</a> list</code></pre>
+<pre><span id="VALpushed_block_new_block_list"><span class="keyword">val</span> pushed_block_new_block_list</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -><br>       int * int -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEblock">Types.block</a> option * <a href="Types.html#TYPEblock">Types.block</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a tuple of (result, block_pushed, new block list) given that
+    the pushed(moved) object in this round is a block</p>
+</div>
+</div>
+
+<pre><span id="VALmodify_player_helper'"><span class="keyword">val</span> modify_player_helper'</span> : <code class="type">int * int -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       bool -> <a href="State.html#TYPEresult">result</a> -> 'a -> 'a list -> <a href="State.html#TYPEresult">result</a> * 'a option * 'a list</code></pre>
+<pre><span id="VALpushed_block_new_player_list"><span class="keyword">val</span> pushed_block_new_player_list</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       int * int -><br>       <a href="Types.html#TYPEstate">Types.state</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEplayer">Types.player</a> option * <a href="Types.html#TYPEplayer">Types.player</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a tuple of (result, player_pushed, new_player_list) given
+    that the pushed(moved) object in this round is a block</p>
+</div>
+</div>
+
+<pre><span id="VALgen_state"><span class="keyword">val</span> gen_state</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a> list -> <a href="Types.html#TYPEblock">Types.block</a> list -> int -> <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the new state given the updated player list <code class="code">players</code>, the
+    updated block list <code class="code">blocks</code> and the updated #
+    filled_holes<code class="code">filled_holes</code></p>
+</div>
+</div>
+
+<pre><span id="VALmove_game_object_helper_player"><span class="keyword">val</span> move_game_object_helper_player</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEplayer">Types.player</a> list * <a href="Types.html#TYPEblock">Types.block</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a turple of updated player list and updated block list after
+    the movement given that the pushed(moved) object is a player</p>
+</div>
+</div>
+
+<pre><span id="VALmove_game_object_helper_block"><span class="keyword">val</span> move_game_object_helper_block</span> : <code class="type"><a href="Types.html#TYPEblock">Types.block</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEplayer">Types.player</a> list * <a href="Types.html#TYPEblock">Types.block</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a turple of updated player list and updated block list after
+    the movement given that the pushed(moved) object is a block</p>
+</div>
+</div>
+
+<pre><span id="VALmove_game_object"><span class="keyword">val</span> move_game_object</span> : <code class="type"><a href="Types.html#TYPEgame_object">Types.game_object</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the new state after the movement in the direction <code class="code">dir</code> given
+   the pushed(moved) <code class="code">game_object</code></p>
+</div>
+</div>
+
+<pre><span id="VALcheck_next_obj_player"><span class="keyword">val</span> check_next_obj_player</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEgame_object">Types.game_object</a> option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a turple of (result, next_pushed_object) with the movement
+    in direction <code class="code">dir</code> given that the pushed(moved) object is a player</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_next_obj_block"><span class="keyword">val</span> check_next_obj_block</span> : <code class="type"><a href="Types.html#TYPEblock">Types.block</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEgame_object">Types.game_object</a> option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a turple of (result, next_pushed_object) with the movement
+    in direction <code class="code">dir</code> given that the pushed(moved) object is a block</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_next_obj"><span class="keyword">val</span> check_next_obj</span> : <code class="type"><a href="Types.html#TYPEgame_object">Types.game_object</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEgame_object">Types.game_object</a> option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a turple of (result, next_pushed_object) with the movement
+    in direction <code class="code">dir</code></p>
+</div>
+</div>
+
+<pre><span id="VALmove_rec"><span class="keyword">val</span> move_rec</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEgame_object">Types.game_object</a> -> <a href="State.html#TYPEresult">result</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the result given the pushed object in the last round of move
+    <code class="code">pushed_obj</code></p>
+</div>
+</div>
+
+<pre><span id="VALprimary_move_update_state"><span class="keyword">val</span> primary_move_update_state</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="Types.html#TYPEroom">Types.room</a> -><br>       int * int -><br>       <a href="Types.html#TYPEplayer_num">Types.player_num</a> -> <a href="Types.html#TYPEplayer">Types.player</a> list -> <a href="Types.html#TYPEblock">Types.block</a> list -> <a href="Types.html#TYPEstate">Types.state</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns the updated state in the primary round of move(the first
+    round before recursive moves)</p>
+</div>
+</div>
+
+<pre><span id="VALchecker_move_rec"><span class="keyword">val</span> checker_move_rec</span> : <code class="type"><a href="Types.html#TYPEplayer">Types.player</a> option -><br>       <a href="Types.html#TYPEblock">Types.block</a> option -> <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="State.html#TYPEresult">result</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks whether to call <code class="code">move_rec</code> and what goes into the
+    <code class="code">pushed_obj</code> argument of the <code class="code">move_rec</code> function, based on the
+    <code class="code">pushed_player</code> and <code class="code">pushed_block</code> in this round</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_player_notlegal"><span class="keyword">val</span> check_player_notlegal</span> : <code class="type">int * int -> <a href="Types.html#TYPEstate">Types.state</a> -> <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Checks whether the movement of the player is legal</p>
+</div>
+</div>
+
+<pre><span id="VALcheck_pushed_legal"><span class="keyword">val</span> check_pushed_legal</span> : <code class="type"><a href="Types.html#TYPEroom">Types.room</a> -><br>       int * int -><br>       <a href="Types.html#TYPEplayer">Types.player</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -><br>       <a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="State.html#TYPEresult">result</a> * <a href="Types.html#TYPEplayer">Types.player</a> option * <a href="Types.html#TYPEblock">Types.block</a> option * <a href="Types.html#TYPEplayer">Types.player</a> list *<br>       <a href="Types.html#TYPEblock">Types.block</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Returns a tuple of (result, pushed_player, pushed_block,
+    new_player_list, new_block_list) given the <code class="code">player</code> before move and
+    the <code class="code">dir</code></p>
+</div>
+</div>
+
+<pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -><br>       <a href="Types.html#TYPEdirection">Types.direction</a> -> <a href="Types.html#TYPEroom">Types.room</a> -> <a href="Types.html#TYPEplayer_num">Types.player_num</a> -> <a href="State.html#TYPEresult">result</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">move st dir room player_num</code> returns a <code class="code">result</code> given the current
+    state <code class="code">st</code>, direction <code class="code">dir</code>, room <code class="code">room</code>, and player_num
+    <code class="code">player_num</code>. If the movement is allowed, it returns a result
+    <code class="code">Legal state</code> with the new state. If the movement is not allowed, it
+    returns <code class="code">Illegal</code>.</p>
+</div>
+</div>
+</body></html>

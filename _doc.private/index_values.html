@@ -1,0 +1,1040 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Map" rel="Chapter" href="Map.html">
+<link title="Types" rel="Chapter" href="Types.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Genmap" rel="Chapter" href="Genmap.html">
+<link title="Gui" rel="Chapter" href="Gui.html">
+<link title="Text" rel="Chapter" href="Text.html"><title>Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><div>A</div></td></tr>
+<tr><td><a href="Main.html#VALassign_exclusives">assign_exclusives</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">assign_exclusives</code> assigns to each select button the selects that
+    it is exclusive to.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>B</div></td></tr>
+<tr><td><a href="Main.html#VALback_button">back_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">back_button</code> is the button for undoing the previous step.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALblock_helper">block_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALblock_legal">block_legal</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks if block movement is legal.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALblock_legal_sliding">block_legal_sliding</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks if block movement is legal.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALbreak">break</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Updates st.breaks to be the correct hp given that the player will
+    move according to the direction given.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALbreak_helper">break_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALbreakable_list">breakable_list</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALbreakable_list3">breakable_list3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALbreakable_pos_list">breakable_pos_list</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALbreakable_pos_list3">breakable_pos_list3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALbutton_cond">button_cond</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">button_cond butt_pos butt_dim enable mouse_pos</code> returns true if the
+    button it references has been pressed and it is enabled.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALbutton_press">button_press</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">button_press button s</code> returns true if <code class="code">button</code> has been pressed
+    given the event <code class="code">s</code> in this frame and false otherwise.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>C</div></td></tr>
+<tr><td><a href="Main.html#VALchange_state">change_state</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">change_state st direction</code> returns a new state given the current
+    state <code class="code">st</code> and the direction of movement <code class="code">direction</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_blocks">check_blocks</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks if new position to move to is the same as the position of any
+    of the other blocks and returns that block.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_full">check_full</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns true if all the holes in the room have been filled.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_next_obj">check_next_obj</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a turple of (result, next_pushed_object) with the movement
+    in direction <code class="code">dir</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_next_obj_block">check_next_obj_block</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a turple of (result, next_pushed_object) with the movement
+    in direction <code class="code">dir</code> given that the pushed(moved) object is a block</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_next_obj_player">check_next_obj_player</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a turple of (result, next_pushed_object) with the movement
+    in direction <code class="code">dir</code> given that the pushed(moved) object is a player</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_on_exit">check_on_exit</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns true if the player is currently on the exit in the current
+    state.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_player_notlegal">check_player_notlegal</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks whether the movement of the player is legal</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcheck_pushed_legal">check_pushed_legal</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a tuple of (result, pushed_player, pushed_block,
+    new_player_list, new_block_list) given the <code class="code">player</code> before move and
+    the <code class="code">dir</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALcheck_select">check_select</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">check_select ()</code> returns true if a valid selection of select
+    buttons has been made.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALcheck_valid_boundary">check_valid_boundary</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td></td></tr>
+<tr><td><a href="Genmap.html#VALcheck_valid_object_position">check_valid_object_position</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALcheck_win">check_win</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks the win condition: all players in the player_list need to be
+    on the exit, and all holes must be filled</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALchecker_move_rec">checker_move_rec</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks whether to call <code class="code">move_rec</code> and what goes into the
+    <code class="code">pushed_obj</code> argument of the <code class="code">move_rec</code> function, based on the
+    <code class="code">pushed_player</code> and <code class="code">pushed_block</code> in this round</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALchoose_obstacles">choose_obstacles</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">choose_obstacles map path_list path_val tile_val obstacle_val true_prob</code>
+    updates a map with obstacles <code class="code">obstacle_val</code> randomly chosen with a
+    probablity of <code class="code">true_prob</code>, given defined <code class="code">path_list</code>, <code class="code">path_val</code>,
+    and <code class="code">tile_val</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcollide">collide</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns true if the new position of the given object with the given
+    direction of movement moves to an obstacle.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcopy_breaks">copy_breaks</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Genmap.html#VALcopy_map">copy_map</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">copy_map map</code> returns a copy of map</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>D</div></td></tr>
+<tr><td><a href="Genmap.html#VALdefine_path_map">define_path_map</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">define_path_map map path_list path_val</code> returns a copy of the map
+    with a path defined by <code class="code">path_list</code> and <code class="code">path_val</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_player_num">determine_player_num</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the player in st.players with the corrresponding
+    <code class="code">player_num</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALdisable_button">disable_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">disable_button</code> sets enable of <code class="code">button</code> to be false.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_block_list">draw_block_list</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_block_list st wt ht</code> draws the blocks in the state <code class="code">st</code> to the screen 
+given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Text.html#VALdraw_box">draw_box</a> [<a href="Text.html">Text</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_box room_width dialogue</code> takes a string <code class="code">dialogue</code> and draws
+    it to the screen after drawing a box and setting the text color.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_break_list">draw_break_list</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_break_list st wt ht</code> draws the current breakables in the state <code class="code">st</code> 
+to the screen given tile width <code class="code">wt</code> and tile height <code class="code">ht</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_button">draw_button</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_button b</code> draws the button <code class="code">b</code> onto the canvas</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Text.html#VALdraw_dialogue">draw_dialogue</a> [<a href="Text.html">Text</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_dialogue dia_list pos</code> moves the cursor to <code class="code">pos</code> and draws
+    each string in <code class="code">dia_list</code> onto the screen.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_hole_list">draw_hole_list</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_hole_list st width height</code> draws the holes in the state <code class="code">st</code> to the 
+screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALdraw_new_active_state">draw_new_active_state</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_new_active_state st is_updated history</code> draws the new state
+    <code class="code">st</code> to the screen.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_player">draw_player</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_player st wt ht</code> draws the current players in the state <code class="code">st</code> to the 
+screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_rect_images">draw_rect_images</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_rect_images st width height</code> draws the tile list list within state 
+<code class="code">st</code> onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_select">draw_select</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_select select_list</code> draws the select list <code class="code">select_list</code> onto the canvas</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Gui.html#VALdraw_tiles">draw_tiles</a> [<a href="Gui.html">Gui</a>]</td>
+<td><div class="info">
+<p><code class="code">draw_tiles width height tile_list</code> draws the tile list list <code class="code">tile_list</code> 
+onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALduplicate_state">duplicate_state</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">duplicate_state st</code> returns the <code class="code">state</code> with the same fields and
+    field contents as <code class="code">st</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="Main.html#VALempty_page">empty_page</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">empty_page</code> is an empty map used for the background of the start
+    and pause pages.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALenable_button">enable_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">enable_button</code> sets enable of <code class="code">button</code> to be true.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALexit_pos3">exit_pos3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>F</div></td></tr>
+<tr><td><a href="Command.html#VALform_go_command">form_go_command</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">form_go_command str_list</code> generates a command given <code class="code">str_list</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>G</div></td></tr>
+<tr><td><a href="State.html#VALgen_state">gen_state</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the new state given the updated player list <code class="code">players</code>, the
+    updated block list <code class="code">blocks</code> and the updated #
+    filled_holes<code class="code">filled_holes</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALgenerate_breakables">generate_breakables</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">generate_breakables map path_list path_val tile_val true_prob</code>
+    returns breakables randomly chosen with a probablity of <code class="code">true_prob</code>,
+    given defined <code class="code">map</code> with boundaries and obstacles, <code class="code">path_list</code>,
+    <code class="code">path_val</code>, and <code class="code">tile_val</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALgenerate_path_pos">generate_path_pos</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">generate_path_pos exit_pos_list init_pos_list hole_pos_list
+    block_pos_list</code>
+    returns a path so all exits <code class="code">exit_pos_list</code>, inital positions
+    <code class="code">init_pos_list</code>, holes <code class="code">hole_pos_list</code>, and blocks <code class="code">blocks_pos_list</code>
+    are connected by the path.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALgenerate_path_pos_labyrinth">generate_path_pos_labyrinth</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Genmap.html#VALget">get</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">get map x_pos y_pos</code> get the value in <code class="code">map</code> with position <code class="code">x_pos</code>
+    and <code class="code">y_pos</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_blocks">get_blocks</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_blocks st</code> returns the <code class="code">block list</code> in the current <code class="code">st</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_breaks">get_breaks</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_breaks st</code> returns the <code class="code">breakeable1 list</code> in the current <code class="code">st</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_hole_list">get_hole_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_hole_list room</code> returns the <code class="code">hole list</code> in the current <code class="code">room</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Text.html#VALget_hw">get_hw</a> [<a href="Text.html">Text</a>]</td>
+<td><div class="info">
+<p><code class="code">get_hw room_id st tile_size</code> takes the height and width of the room
+    given by <code class="code">room_id</code> in the given <code class="code">st</code> and scales them according to
+    <code class="code">tile_size</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_next_room">get_next_room</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the next room given the current state.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_player">get_player</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the tuple position of the player.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_room_by_id">get_room_by_id</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the id of the room given in this state.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_tile_by_loc">get_tile_by_loc</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALget_tile_list">get_tile_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_tile_list st</code> returns the 2D <code class="code">tile list list</code> of tiles that map
+    the current room state <code class="code">st</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>H</div></td></tr>
+<tr><td><a href="Main.html#VALhandle_return">handle_return</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">handle_return st</code> reconfigures the buttons and selects for when the
+    player wants to return to the start menu.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Authors.html#VALhx_hours_worked">hx_hours_worked</a> [<a href="Authors.html">Authors</a>]</td>
+<td><div class="info">
+<p><code class="code">hours_worked</code> is the number of hours you worked on this assignment.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>I</div></td></tr>
+<tr><td><a href="Map.html#VALinit_block_pos3">init_block_pos3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Genmap.html#VALinit_blocks">init_blocks</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">init_blocks pos_list</code> generate blocks given their positions
+    <code class="code">pos_list</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALinit_boundary">init_boundary</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">init_boundary init_map bound_val</code> generate a map with boundaries
+    <code class="code">bound_val</code> based on <code class="code">init_map</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALinit_breakables">init_breakables</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">init_breakables pos_list hp_val</code> generate breakables given their
+    positions <code class="code">pos_list</code> and <code class="code">hp</code> value</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALinit_breaks">init_breaks</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALinit_hole_pos3">init_hole_pos3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Genmap.html#VALinit_holes">init_holes</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">init_holes pos_list</code> generate holes given their positions
+    <code class="code">pos_list</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALinit_state">init_state</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">init_state sel_list</code> returns the initial <code class="code">state</code> when the game is
+    started.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALinitialize_state">initialize_state</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">initialize_state st</code> returns the <code class="code">st</code> with breakeable hp
+    intialized.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALinitialize_window">initialize_window</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">initialize_window ()</code> draws the start menu to the screen and
+    enables the select buttons and start button.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Command.html#VALis_empty">is_empty</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">is_empty str</code> returns true if <code class="code">str</code> is empty or only contains
+    spaces.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Command.html#VALis_invalid_dir">is_invalid_dir</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">is_invalid_go str_list</code> is true only if <code class="code">str_list</code> only contains
+    one element: "go"</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Command.html#VALis_malformed">is_malformed</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">is_malformed str</code> is true if <code class="code">str</code> is not in the form of "go &lt;arg1&gt;
+    ...</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALis_not_normal">is_not_normal</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks if block has been moved onto an exit or obstacle.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALiterate">iterate</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>K</div></td></tr>
+<tr><td><a href="Authors.html#VALkz_hours_worked">kz_hours_worked</a> [<a href="Authors.html">Authors</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>L</div></td></tr>
+<tr><td><a href="Map.html#VALloop">loop</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALlose">lose</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>M</div></td></tr>
+<tr><td><a href="Main.html#VALmain">main</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">main ()</code> starts the game engine.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALmap2">map2</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALmap3">map3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALmap_array3">map_array3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALmap_h">map_h</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">map_h</code> is the height of a map.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALmap_init">map_init</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">map_init map_w map_h init_val</code> create a map with width <code class="code">map_w</code>
+    height <code class="code">map_h</code> and initial value <code class="code">init_val</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALmap_to_list">map_to_list</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">map_to_list map</code> returns a immutable copy of the map.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALmap_try">map_try</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALmap_w">map_w</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">map_w</code> is the width of a map.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALmodify_block_helper">modify_block_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALmodify_player_helper">modify_player_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALmodify_player_helper'">modify_player_helper'</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALmove">move</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">move st dir room player_num</code> returns a <code class="code">result</code> given the current
+    state <code class="code">st</code>, direction <code class="code">dir</code>, room <code class="code">room</code>, and player_num
+    <code class="code">player_num</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALmove_blocks">move_blocks</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns true if new player position <code class="code">p_pos</code> is not a block or if it
+    is a block but the block can be moved in the given direction <code class="code">dir</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALmove_blocks_sliding">move_blocks_sliding</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALmove_game_object">move_game_object</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the new state after the movement in the direction <code class="code">dir</code> given
+   the pushed(moved) <code class="code">game_object</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALmove_game_object_helper_block">move_game_object_helper_block</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a turple of updated player list and updated block list after
+    the movement given that the pushed(moved) object is a block</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALmove_game_object_helper_player">move_game_object_helper_player</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a turple of updated player list and updated block list after
+    the movement given that the pushed(moved) object is a player</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALmove_rec">move_rec</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the result given the pushed object in the last round of move
+    <code class="code">pushed_obj</code></p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>N</div></td></tr>
+<tr><td><a href="State.html#VALnew_block">new_block</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the block with the new position it is in and its in_hole
+    attribute updated with the new position .</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALnew_break_list">new_break_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the new breakables list</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALnew_map_with_obstacles">new_map_with_obstacles</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">new_map_with_obstacles map_w map_h tile_val bound_val path_val 
+    obstacle_val path_pos_list obstacle_prob</code>
+    generate a map with width <code class="code">map_w</code> and height <code class="code">map_h</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALnew_pos">new_pos</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the new position of the object position given the direction
+    of movement.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALnext_level">next_level</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Checks if the level is finished.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALno_steps">no_steps</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALnormal_select">normal_select</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">normal_select</code> is the select button for playing in normal mode.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>O</div></td></tr>
+<tr><td><a href="Main.html#VALone_player_select">one_player_select</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">one_player_select</code> is the select button for playing in one player
+    mode.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALopen_graph">open_graph</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">open_graph map_w map_h</code> opens a graphics window with dimensions
+    <code class="code">map_w</code>x<code class="code">map_h</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>P</div></td></tr>
+<tr><td><a href="Command.html#VALparse">parse</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">parse str</code> parses a player's input into a <code class="code">command</code>, as follows.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Text.html#VALparse_dialogue">parse_dialogue</a> [<a href="Text.html">Text</a>]</td>
+<td><div class="info">
+<p><code class="code">parse_dialogue dialogue acc width</code> takes a string <code class="code">dialogue</code> and
+    breaks it into a string list <code class="code">acc</code> according to the <code class="code">width</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALpath_pos_list">path_pos_list</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALpath_pos_list3">path_pos_list3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALpath_val">path_val</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALpath_val3">path_val3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALpause_button">pause_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">pause_button</code> is the button for opening the pause menu.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALplay_game">play_game</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">play_game st is_updated history</code> executes the game at state <code class="code">st</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALplayer_helper">player_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALplayer_one">player_one</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALplayer_two">player_two</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALpos_condition">pos_condition</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">pos_condition x_low x_high y_low y_high pos</code> returns true if <code class="code">pos</code>
+    is inside <code class="code">[x_low, x_high]</code> and <code class="code">[y_low, y_high]</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALprimary_move_update_state">primary_move_update_state</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the updated state in the primary round of move(the first
+    round before recursive moves)</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprint_game">print_game</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">print_game st</code> prints a state <code class="code">st</code> to the screen using its <code class="code">map</code>
+    attribute.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprint_help">print_help</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">print_help ()</code> prints the help message to the terminal.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprint_lose">print_lose</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">print_lose st</code> prints the lose message to the screen.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprint_start">print_start</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p>Prints the start game instructions/message to the screen given the
+    current state <code class="code">st</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprint_win">print_win</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">print_win st</code> prints the win message to the screen.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprompt_command">prompt_command</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">prompt_command st history</code> waits for a command, keyboard push or
+    mouse click, to continue the game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprompt_command_active">prompt_command_active</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">prompt_command st</code> prompts the user for a command while in state
+    <code class="code">st</code> and returns the new state given the command.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprompt_start">prompt_start</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">prompt_start s history</code> repeatedly prompts the user to press a key
+    to start the game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALpushed_block_block_branch_helper">pushed_block_block_branch_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALpushed_block_new_block_list">pushed_block_new_block_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a tuple of (result, block_pushed, new block list) given that
+    the pushed(moved) object in this round is a block</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALpushed_block_new_block_moveable_helper">pushed_block_new_block_moveable_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALpushed_block_new_player_list">pushed_block_new_player_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a tuple of (result, player_pushed, new_player_list) given
+    that the pushed(moved) object in this round is a block</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALpushed_player_new_block_list">pushed_player_new_block_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a tuple of (result, block_pushed, new_block_list) given that
+    the pushed(moved) object in this round is a player</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALpushed_player_new_player_list">pushed_player_new_player_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns a tuple of (result, player_pushed, new_player_list) given
+    that the pushed(moved) object in this round is a player</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>Q</div></td></tr>
+<tr><td><a href="Main.html#VALquit_button">quit_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">quit_button</code> is the button for quitting the game.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>R</div></td></tr>
+<tr><td><a href="Genmap.html#VALrandom_bool">random_bool</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALread_key_button">read_key_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">read_key_button ()</code> returns the command in string when a key or a
+    button is pressed</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALrelabel_pause">relabel_pause</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">relabel_pause ()</code> reconfigures the pause button to be pause.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALrelabel_resume">relabel_resume</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">relabel_resume ()</code> reconfigures the pause button to be resume.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Command.html#VALremove_spaces">remove_spaces</a> [<a href="Command.html">Command</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALreset_button">reset_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">reset_button</code> is the button for resetting the game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALreturn_button">return_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">return_button</code> is the button for returning to the start menu to
+    select the mode.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>S</div></td></tr>
+<tr><td><a href="Main.html#VALselect_button">select_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">select_button s</code> returns true if a select button has been pushed
+    given the event <code class="code">s</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALselect_list">select_list</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">select_list</code> is the list of all select buttons.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALselect_press">select_press</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">select_press sel s</code> returns true if select button <code class="code">sel</code> has been
+    pressed given the event <code class="code">s</code> in this frame and false otherwise.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALselected">selected</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">selected ())</code> returns a tuple containing (player mode, block mode)
+    depending on which selects are chosen.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALset">set</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">set map x_pos y_pos new_val</code> set the value in <code class="code">map</code> with position
+    <code class="code">x_pos</code> and <code class="code">y_pos</code> to <code class="code">new_val</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALset_with_same_pos">set_with_same_pos</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">set_with_same_pos map x_pos y_pos new_val</code> set the value in <code class="code">map</code>
+    with position <code class="code">x_pos</code> and <code class="code">y_pos</code> to <code class="code">new_val</code> but keeps the
+    original position of the value</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALslide_select">slide_select</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">slide_select</code> is the select button for playing in sliding blocks
+    mode.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Authors.html#VALslt_hours_worked">slt_hours_worked</a> [<a href="Authors.html">Authors</a>]</td>
+<td></td></tr>
+<tr><td><a href="Command.html#VALsplit">split</a> [<a href="Command.html">Command</a>]</td>
+<td><div class="info">
+<p><code class="code">split string</code> returns a string list containg the continuous
+    segments separated by spaces in <code class="code">string</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALstart_button">start_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">start_button</code> is the button for starting the game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALstart_game">start_game</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">start_game s history</code> starts the game if <code class="code">s</code> is 'start'.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALstart_game_buttons">start_game_buttons</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">start_game_buttons ()</code> disables and enables certains buttons to
+    allow for game play.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALstate_history">state_history</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">state_history</code> is the empty history.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALstep_select">step_select</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">step_select</code> is the select button for playing in step limitting
+    mode.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>T</div></td></tr>
+<tr><td><a href="State.html#VALtile_helper">tile_helper</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALtile_size">tile_size</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">tile_size </code> is the pixel size of a tile.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALtile_val">tile_val</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Map.html#VALtile_val3">tile_val3</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALtwo_player_select">two_player_select</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">two_player_select</code> is the select button for playing in two player
+    mode.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>U</div></td></tr>
+<tr><td><a href="Main.html#VALupdate_back">update_back</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">update_back history</code> returns the state corresponding to taking one
+    step if there are steps left or the state with 0 steps left.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_filled_holes">update_filled_holes</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALupdate_history">update_history</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">update_history st history</code> updates the current state history
+    according to the number of steps left after this turn.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_player">update_player</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the updated player list with the player with the
+    corresponding <code class="code">player_num</code> moved to <code class="code">new_loc</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdate_player_next_level">update_player_next_level</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the updated player list when win condition is achieved</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALupdate_positions">update_positions</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">update_positions tile_map</code> update positions of tiles in <code class="code">tiles_map</code>
+    according to their positions in the array <code class="code">tile_map</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALupdate_select">update_select</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">update_select sel</code> updates the <code class="code">select</code> field of <code class="code">sel</code> to true and
+    unselects all other other select buttons that are exclusive to it.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALupdated_player">updated_player</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p>Returns the updated player with the position <code class="code">new_loc</code> and updated
+    field on_exit</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>W</div></td></tr>
+<tr><td><a href="Main.html#VALwait_button">wait_button</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">wait_button state history</code> waits to start the game which is
+    signalled when the user makes a valid selection of modes and hits
+    the start button.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALwait_restart">wait_restart</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">wait_restart st</code> waits for the player to finish selecting and
+    presses the <code class="code">start_button</code> to start the game after returning to the
+    start menu in the pause menu.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALwin">win</a> [<a href="Map.html">Map</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>Z</div></td></tr>
+<tr><td><a href="Authors.html#VALzh_hours_worked">zh_hours_worked</a> [<a href="Authors.html">Authors</a>]</td>
+<td></td></tr>
+</table>
+</body>
+</html>

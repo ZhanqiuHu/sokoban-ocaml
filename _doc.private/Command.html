@@ -51,6 +51,44 @@
 </div>
 </div>
 
+<pre><span id="VALremove_spaces"><span class="keyword">val</span> remove_spaces</span> : <code class="type">string list -> string list</code></pre>
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> string list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">split string</code> returns a string list containg the continuous
+    segments separated by spaces in <code class="code">string</code>. The returned string list
+    does not contain any empty string or any string contianing spaces.</p>
+</div>
+</div>
+
+<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">string -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_empty str</code> returns true if <code class="code">str</code> is empty or only contains
+    spaces. Otherwise returns false.</p>
+</div>
+</div>
+
+<pre><span id="VALis_invalid_dir"><span class="keyword">val</span> is_invalid_dir</span> : <code class="type">string list -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_invalid_go str_list</code> is true only if <code class="code">str_list</code> only contains
+    one element: "go"</p>
+</div>
+</div>
+
+<pre><span id="VALis_malformed"><span class="keyword">val</span> is_malformed</span> : <code class="type">string -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_malformed str</code> is true if <code class="code">str</code> is not in the form of "go &lt;arg1&gt;
+    ... &lt;argn&gt;" or "quit" aftering removing spaces at the begining and
+    at the end.</p>
+</div>
+</div>
+
+<pre><span id="VALform_go_command"><span class="keyword">val</span> form_go_command</span> : <code class="type">string list -> <a href="Types.html#TYPEcommand">Types.command</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">form_go_command str_list</code> generates a command given <code class="code">str_list</code>.
+    Requires: str_list is a valid object phrase starting with go.</p>
+</div>
+</div>
+
 <pre><span id="VALparse"><span class="keyword">val</span> parse</span> : <code class="type">string -> <a href="Types.html#TYPEcommand">Types.command</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">parse str</code> parses a player's input into a <code class="code">command</code>, as follows.

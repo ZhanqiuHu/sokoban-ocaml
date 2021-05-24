@@ -1,3 +1,5 @@
+(** types.mli contains all the types used for the game. *)
+
 (** [player_num] is [Fst] if this is player one and [Snd] if this is
     player 2. *)
 type player_num =
