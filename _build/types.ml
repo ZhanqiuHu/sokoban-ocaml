@@ -1,10 +1,7 @@
-(** [player_num] is [Fst] if this is player one and [Snd] if this is
-    player 2. *)
 type player_num =
   | Fst
   | Snd
 
-(** [player] is the type for a player object. *)
 type player = {
   position : int * int;
   on_exit : bool;
@@ -12,29 +9,28 @@ type player = {
   player_img : string;
 }
 
-(** [block] is the type for a block that is pushable. *)
 type block = {
   position : int * int;
   in_hole : bool;
 }
 
-(** [hole] is the type for a hole. *)
 type hole = { position : int * int }
 
-(** [ttypes] is the type for any tile. It is either an obstacle
-    (nonmovable block), exit, or normal walkable tile. *)
-type ttypes =
-  | Obstacle
-  | Normal
-  | Exit
-
-(** [breakable1] is the type for a breakable object. *)
 type breakable1 = {
   position : int * int;
   mutable hp : int;
 }
 
-(** [button] is the type for a pushable button. *)
+type ttypes =
+  | Obstacle
+  | Normal
+  | Exit
+
+type tile = {
+  position : int * int;
+  ttype : ttypes;
+}
+
 type button = {
   mutable position : int * int;
   mutable width : int;
@@ -44,8 +40,6 @@ type button = {
   mutable enable : bool;
 }
 
-(** [select] is the type for a selectable button. It can be selected or
-    not selected. *)
 type select = {
   mutable position : int * int;
   mutable width : int;
@@ -58,14 +52,6 @@ type select = {
   mutable exclusives : select list;
 }
 
-(** [tile] is the type for a single tile of the background. *)
-type tile = {
-  position : int * int;
-  ttype : ttypes;
-}
-
-(** [game_object] is the type for a single object. It can be a player,
-    block, hole, breakable, tile (background), button, or select. *)
 type game_object =
   | Player of player
   | Block of block
@@ -75,7 +61,6 @@ type game_object =
   | Button of button
   | Select of select
 
-(** [room] is the type for a single map of the game. *)
 type room = {
   room_id : string;
   width : int;
@@ -90,14 +75,11 @@ type room = {
   step_limit : int;
 }
 
-(** [modes] is the type for a block mode of the game. It can be normal,
-    sliding blocks, or step limit. *)
 type modes =
   | Normal
   | Sliding
   | Limit
 
-(** [state] is the type for a state of the game. *)
 type state = {
   mutable mode : modes;
   mutable active : bool;
@@ -110,15 +92,11 @@ type state = {
   mutable steps_left : int;
 }
 
-(** [history] is the state history. It keeps track of previously visited
-    states and the current number of steps. *)
 type history = {
   mutable state_list : state list;
   mutable num_steps : int;
 }
 
-(** [direction] is the type for a player movement. It can be left,
-    right, up, down, or empty (none). *)
 type direction =
   | Left
   | Right
@@ -126,9 +104,6 @@ type direction =
   | Down
   | Empty
 
-(** [command] is the type for player input to the game. It can be start,
-    player one movement, player two movement, quit, back, pause, resume,
-    or return. *)
 type command =
   | Start
   | Fst of direction

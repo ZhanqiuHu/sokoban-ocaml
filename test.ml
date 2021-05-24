@@ -69,6 +69,31 @@
    get_tile_list_tests; move_tests; command_tests ]
 
    let _ = run_test_tt_main suite *)
+
+(** test plan:
+
+    - Explain which parts of the system were automatically tested by
+      OUnit vs. manually tested. For the move system: manually tested is
+      visually clear about whether the position of the player gets
+      updated, but these corner cases and need to be go through OUnit
+      test: 1. whether the win condition is correctly implemented, more
+      specifically, for example, when pushing the blocks on and off from
+      the holes, does win condition firmly holds? 2. whether cascading
+      multiple blocks move correctly
+
+    - Explain what modules were tested by OUnit and how test cases were
+      developed (black box, glass box, randomized, etc.). Black box
+      testing was mostly heavily used: test the corner cases by only
+      calling the functions in the mli and see if they fully work as
+      specified.
+
+    - Provide an argument for why the testing approach demonstrates the
+      correctness of the system. Since we are developing a game, almost
+      all bugs come out of the visible and unprecedanted moves, so we
+      only need the basic functionality specified in the docs to test
+      out whether the moves gets each thing onto correct position and
+      whether the players win exactly when they should win. *)
+
 open Camlimages
 open OUnit2
 open State
