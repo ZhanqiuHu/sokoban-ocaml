@@ -31,7 +31,8 @@
    understanding that being honest about my mistakes is more honorable than
    lying about my intellectual work:
 
-   - none
+   - We referenced the Settlers of Clarktan implementation of the GUI to base 
+   our [array_of_image] function in gui.ml
 
  ************************************************************)
 

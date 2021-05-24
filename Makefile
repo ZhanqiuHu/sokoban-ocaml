@@ -1,5 +1,5 @@
 
-MODULES= map_test map types command state main authors genmap gui text
+MODULES= map types command state main authors genmap gui text
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -41,6 +41,6 @@ docs-private: build
 
 
 zip:
-	zip MS2_1.zip *images/*.png* *.ml* *.sh *.txt *.md _tags .merlin .ocamlformat .ocamlinit Makefile	
+	zip MS3.zip *images/*.png* *.ml* *.sh *.txt *.md _tags .merlin .ocamlformat .ocamlinit Makefile	
 	
 

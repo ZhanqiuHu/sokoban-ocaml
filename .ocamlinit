@@ -5,3 +5,4 @@
 #load "command.cmo";;
 #load "state.cmo";;
 #load "types.cmo";;
+#load "genmap.cmo";;

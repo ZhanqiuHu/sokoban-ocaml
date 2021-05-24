@@ -41,8 +41,8 @@ let generate_path_pos_labyrinth =
   let path_seq_9 = loop 3 5 path_seq_8 7 "snd" in
   let path_seq_10 = loop 7 9 path_seq_9 5 "fst" in
   loop 3 7 path_seq_10 8 "snd"
-
-(* let map3 = { room_id = "labyrinth"; width = 15; height = 14;
+(* 
+let map3 = { room_id = "labyrinth"; width = 15; height = 15;
    map_tile_list = map_to_list (Genmap.set_with_same_pos map_labyrinth 7
    3 { position = (7, 3); ttype = Exit }); init_blocks = [ { position =
    (1, 1); in_hole = false }; { position = (1, 2); in_hole = false }; ];

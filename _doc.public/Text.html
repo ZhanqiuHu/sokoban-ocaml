@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Gui.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Map" rel="Chapter" href="Map.html">
+<link title="Types" rel="Chapter" href="Types.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Gui" rel="Chapter" href="Gui.html">
+<link title="Text" rel="Chapter" href="Text.html"><title>Text</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Gui.html" title="Gui">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Text.html">Text</a></h1>
+
+<pre><span id="MODULEText"><span class="keyword">module</span> Text</span>: <code class="code">sig</code> <a href="Text.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="VALget_hw"><span class="keyword">val</span> get_hw</span> : <code class="type">string -> <a href="Types.html#TYPEstate">Types.state</a> -> int -> int * int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_hw room_id st tile_size</code> takes the height and width of the room
+    given by <code class="code">room_id</code> in the given <code class="code">st</code> and scales them according to
+    <code class="code">tile_size</code>. Returns the tuple of the scaled height and width.</p>
+</div>
+</div>
+
+<pre><span id="VALparse_dialogue"><span class="keyword">val</span> parse_dialogue</span> : <code class="type">string -> string list -> int -> string list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">parse_dialogue dialogue acc width</code> takes a string <code class="code">dialogue</code> and
+    breaks it into a string list <code class="code">acc</code> according to the <code class="code">width</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALdraw_dialogue"><span class="keyword">val</span> draw_dialogue</span> : <code class="type">string list -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">draw_dialogue dia_list pos</code> moves the cursor to <code class="code">pos</code> and draws
+    each string in <code class="code">dia_list</code> onto the screen.</p>
+</div>
+</div>
+
+<pre><span id="VALdraw_box"><span class="keyword">val</span> draw_box</span> : <code class="type">int * int -> string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">draw_box room_width dialogue</code> takes a string <code class="code">dialogue</code> and draws
+    it to the screen after drawing a box and setting the text color.</p>
+</div>
+</div>
+</body></html>

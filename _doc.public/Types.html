@@ -1,0 +1,727 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Map.html">
+<link rel="next" href="Command.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Map" rel="Chapter" href="Map.html">
+<link title="Types" rel="Chapter" href="Types.html">
+<link title="Command" rel="Chapter" href="Command.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Authors" rel="Chapter" href="Authors.html">
+<link title="Gui" rel="Chapter" href="Gui.html">
+<link title="Text" rel="Chapter" href="Text.html"><title>Types</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Map.html" title="Map">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Command.html" title="Command">Next</a>
+</div>
+<h1>Module <a href="type_Types.html">Types</a></h1>
+
+<pre><span id="MODULETypes"><span class="keyword">module</span> Types</span>: <code class="code">sig</code> <a href="Types.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p><code class="code">player_num</code> is <code class="code">Fst</code> if this is player one and <code class="code">Snd</code> if this is
+    player 2.</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><code><span id="TYPEplayer_num"><span class="keyword">type</span> <code class="type"></code>player_num</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTplayer_num.Fst"><span class="constructor">Fst</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTplayer_num.Snd"><span class="constructor">Snd</span></span></code></td>
+
+</tr></table>
+
+
+
+<pre><code><span id="TYPEplayer"><span class="keyword">type</span> <code class="type"></code>player</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTplayer.position">position</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTplayer.on_exit">on_exit</span>&nbsp;: <code class="type">bool</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTplayer.player_num">player_num</span>&nbsp;: <code class="type"><a href="Types.html#TYPEplayer_num">player_num</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTplayer.player_img">player_img</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">player</code> is the type for a player object.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEblock"><span class="keyword">type</span> <code class="type"></code>block</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTblock.position">position</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTblock.in_hole">in_hole</span>&nbsp;: <code class="type">bool</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">block</code> is the type for a block that is pushable.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEhole"><span class="keyword">type</span> <code class="type"></code>hole</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELThole.position">position</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">hole</code> is the type for a hole.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEttypes"><span class="keyword">type</span> <code class="type"></code>ttypes</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTttypes.Obstacle"><span class="constructor">Obstacle</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTttypes.Normal"><span class="constructor">Normal</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTttypes.Exit"><span class="constructor">Exit</span></span></code></td>
+
+</tr></table>
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">ttypes</code> is the type for any tile. It is either an obstacle
+    (nonmovable block), exit, or normal walkable tile.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEbreakable1"><span class="keyword">type</span> <code class="type"></code>breakable1</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTbreakable1.position">position</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbreakable1.hp">hp</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">breakable1</code> is the type for a breakable object.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEbutton"><span class="keyword">type</span> <code class="type"></code>button</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbutton.position">position</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbutton.width">width</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbutton.height">height</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbutton.image">image</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbutton.name">name</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTbutton.enable">enable</span>&nbsp;: <code class="type">bool</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">button</code> is the type for a pushable button.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEselect"><span class="keyword">type</span> <code class="type"></code>select</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.position">position</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.width">width</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.height">height</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.image_select">image_select</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.image_deselect">image_deselect</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.name">name</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.enable">enable</span>&nbsp;: <code class="type">bool</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.select">select</span>&nbsp;: <code class="type">bool</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTselect.exclusives">exclusives</span>&nbsp;: <code class="type"><a href="Types.html#TYPEselect">select</a> list</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">select</code> is the type for a selectable button. It can be selected or
+    not selected.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEtile"><span class="keyword">type</span> <code class="type"></code>tile</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTtile.position">position</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTtile.ttype">ttype</span>&nbsp;: <code class="type"><a href="Types.html#TYPEttypes">ttypes</a></code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">tile</code> is the type for a single tile of the background.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEgame_object"><span class="keyword">type</span> <code class="type"></code>game_object</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_object.Player"><span class="constructor">Player</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEplayer">player</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_object.Block"><span class="constructor">Block</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEblock">block</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_object.Hole"><span class="constructor">Hole</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEhole">hole</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_object.Break1"><span class="constructor">Break1</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEbreakable1">breakable1</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_object.Tile"><span class="constructor">Tile</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEtile">tile</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_object.Button"><span class="constructor">Button</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEbutton">button</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_object.Select"><span class="constructor">Select</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEselect">select</a></code></code></td>
+
+</tr></table>
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">game_object</code> is the type for a single object. It can be a player,
+    block, hole, breakable, tile (background), button, or select.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEroom"><span class="keyword">type</span> <code class="type"></code>room</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.room_id">room_id</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.width">width</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.height">height</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTroom.map_tile_list">map_tile_list</span>&nbsp;: <code class="type"><a href="Types.html#TYPEtile">tile</a> list list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.init_blocks">init_blocks</span>&nbsp;: <code class="type"><a href="Types.html#TYPEblock">block</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.holes">holes</span>&nbsp;: <code class="type"><a href="Types.html#TYPEhole">hole</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.num_holes">num_holes</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.exit_pos">exit_pos</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.init_pos">init_pos</span>&nbsp;: <code class="type">int * int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.init_breaks">init_breaks</span>&nbsp;: <code class="type"><a href="Types.html#TYPEbreakable1">breakable1</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTroom.step_limit">step_limit</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">room</code> is the type for a single map of the game.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEmodes"><span class="keyword">type</span> <code class="type"></code>modes</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTmodes.Normal"><span class="constructor">Normal</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTmodes.Sliding"><span class="constructor">Sliding</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTmodes.Limit"><span class="constructor">Limit</span></span></code></td>
+
+</tr></table>
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">modes</code> is the type for a block mode of the game. It can be normal,
+    sliding blocks, or step limit.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEstate"><span class="keyword">type</span> <code class="type"></code>state</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTstate.mode">mode</span>&nbsp;: <code class="type"><a href="Types.html#TYPEmodes">modes</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTstate.active">active</span>&nbsp;: <code class="type">bool</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTstate.current_room_id">current_room_id</span>&nbsp;: <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstate.all_rooms">all_rooms</span>&nbsp;: <code class="type"><a href="Types.html#TYPEroom">room</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTstate.players">players</span>&nbsp;: <code class="type"><a href="Types.html#TYPEplayer">player</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTstate.blocks">blocks</span>&nbsp;: <code class="type"><a href="Types.html#TYPEblock">block</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTstate.breaks">breaks</span>&nbsp;: <code class="type"><a href="Types.html#TYPEbreakable1">breakable1</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstate.filled_holes">filled_holes</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTstate.steps_left">steps_left</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">state</code> is the type for a state of the game.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEhistory"><span class="keyword">type</span> <code class="type"></code>history</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELThistory.state_list">state_list</span>&nbsp;: <code class="type"><a href="Types.html#TYPEstate">state</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span class="keyword">mutable&nbsp;</span><span id="TYPEELThistory.num_steps">num_steps</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">history</code> is the state history. It keeps track of previously visited
+    states and the current number of steps.</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEdirection"><span class="keyword">type</span> <code class="type"></code>direction</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdirection.Left"><span class="constructor">Left</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdirection.Right"><span class="constructor">Right</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdirection.Up"><span class="constructor">Up</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdirection.Down"><span class="constructor">Down</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdirection.Empty"><span class="constructor">Empty</span></span></code></td>
+
+</tr></table>
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">direction</code> is the type for a player movement. It can be left,
+    right, up, down, or empty (none).</p>
+</div>
+</div>
+
+
+<pre><code><span id="TYPEcommand"><span class="keyword">type</span> <code class="type"></code>command</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Start"><span class="constructor">Start</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Fst"><span class="constructor">Fst</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEdirection">direction</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Snd"><span class="constructor">Snd</span></span> <span class="keyword">of</span> <code class="type"><a href="Types.html#TYPEdirection">direction</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Quit"><span class="constructor">Quit</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Back"><span class="constructor">Back</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Pause"><span class="constructor">Pause</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Resume"><span class="constructor">Resume</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcommand.Return"><span class="constructor">Return</span></span></code></td>
+
+</tr></table>
+
+<div class="info ">
+<div class="info-desc">
+<p><code class="code">command</code> is the type for player input to the game. It can be start,
+    player one movement, player two movement, quit, back, pause, resume,
+    or return.</p>
+</div>
+</div>
+
+</body></html>

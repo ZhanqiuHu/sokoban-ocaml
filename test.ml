@@ -73,17 +73,25 @@
 (** test plan:
 
     - Explain which parts of the system were automatically tested by
-      OUnit vs. manually tested. For the move system: manually tested is
+      OUnit vs. manually tested. In general, most of the testing was manual.
+      For example, we tested block pushing, checking win condition, and 
+      other in-game interactions manually. Functions that were responsible
+      for drawing images to the screen (i.e, gui, text) were also tested 
+      manually. However, there are functions that could be tested using OUnit,
+      and we checked some corner cases with OUnit tests. 
+      For the move system: manually tested is
       visually clear about whether the position of the player gets
       updated, but these corner cases and need to be go through OUnit
-      test: 1. whether the win condition is correctly implemented, more
+      test: 
+      1. whether the win condition is correctly implemented, more
       specifically, for example, when pushing the blocks on and off from
-      the holes, does win condition firmly holds? 2. whether cascading
+      the holes, does win condition firmly holds? 
+      2. whether cascading
       multiple blocks move correctly
 
     - Explain what modules were tested by OUnit and how test cases were
       developed (black box, glass box, randomized, etc.). Black box
-      testing was mostly heavily used: test the corner cases by only
+      testing was most heavily used: test the corner cases by only
       calling the functions in the mli and see if they fully work as
       specified.
 
