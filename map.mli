@@ -8,10 +8,7 @@ val win : room
 val map2 : room
 
 (** [map_m] represents a maze room. *)
-val map_m : room
-
-(** [map3] represents a room. *)
-val map3 : room
+val map_maze : room
 
 (** [lose] represents the losing room. *)
 val lose : room

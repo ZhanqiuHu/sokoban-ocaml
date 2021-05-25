@@ -51,7 +51,7 @@ Pushing several moveable objects lined up together will result in a cascade effe
 
 In sliding blocks mode, players can push players, but blocks cannot push players. Upon colliding with a player, the block will stop sliding. Pushed blocks will not stop unless they encounter a solid obstacle (i.e, another player, block, breakeable, or obstacle.)
 
-In step limit mode, the number of steps (legal movements) the player can take in the level is limited. The steps left for the player will be displayed in the lower lefthand corner. Upon running out of steps, the player will lose, even if the blocks are all in the holes. 
+In step limit mode, the number of steps (legal movements) the player can take in the level is limited. The steps left for the player will be displayed in the lower lefthand corner. Upon running out of steps, the player will lose, even if the blocks are all in the holes. Step limit is shared between all players. 
 
 Click on the "RESET" button to reset the game, restarting from the first level.
 Click on the "QUIT" button to quit the game.

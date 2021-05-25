@@ -502,7 +502,11 @@ let draw_new_active_state st is_updated history =
   print_game st;
   Gui.draw_break_list st tile_size tile_size;
   Gui.draw_player st tile_size tile_size;
-  if st.mode = Limit && st.current_room_id <> "lose" then
+  if
+    st.mode = Limit
+    && st.current_room_id <> "lose"
+    && st.current_room_id <> "win"
+  then
     draw_box
       (get_hw st.current_room_id st tile_size)
       ("Steps left: " ^ string_of_int st.steps_left);

@@ -123,7 +123,7 @@ let player_two =
     player_img = "images/player60x60.png";
   }
 
-let room_list_1 = [ map2; win; lose ]
+let room_list_1 = [ map2; map_maze; win; lose ]
 
 let player_list_1 = [ player_one ]
 

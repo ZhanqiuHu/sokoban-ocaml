@@ -37,7 +37,7 @@ let player_one =
 
 let player_two =
   {
-    position = (8, 8);
+    position = (9, 8);
     on_exit = false;
     player_num = Snd;
     player_img = "images/player60x60.png";
@@ -50,14 +50,14 @@ let init_state (sel_list : string * string) : state =
       else if snd sel_list = "sliding" then Sliding
       else Limit);
     active = true;
-    current_room_id = "maze";
-    all_rooms = [ map_m; map2; win; lose ];
+    current_room_id = "random";
+    all_rooms = [ map2; map_maze; win; lose ];
     players =
       (if "one" = fst sel_list then [ player_one ]
       else [ player_one; player_two ]);
     filled_holes = 0;
-    blocks = map_m.init_blocks;
-    breaks = map_m.init_breaks;
+    blocks = map2.init_blocks;
+    breaks = map2.init_breaks;
     steps_left = map2.step_limit;
   }
 

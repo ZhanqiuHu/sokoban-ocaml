@@ -29,21 +29,21 @@ let predefined_path2 = [ (9, 8) ]
 
 let obstacle_prob2 = 0.2
 
-let breakable_prob2 = 0.2
+let breakable_prob2 = 0.4
 
 let breakable_hp2 = 1
 
 let room_id2 = "random"
 
-let step_limit2 = 200
+let step_limit2 = 100
 
 (** Start generating Map 2*)
 let path_pos_list2 =
   let pos_list =
     [ exit_position2 ] @ [ init_position2 ] @ hole_pos_list2
-    @ block_pos_list2
+    @ block_pos_list2 @ predefined_path2
   in
-  generate_path_pos pos_list @ predefined_path2
+  generate_path_pos pos_list
 
 let map_array2 =
   let map =
@@ -80,70 +80,71 @@ let map2 =
 (* Map Maze for sliding block *)
 
 (** Values defined for Map Maze*)
-let exit_position_m = (18, 7)
+let exit_position_maze = (18, 7)
 
-let init_position_m = (1, 1)
+let init_position_maze = (1, 1)
 
-let hole_pos_list_m = [ (11, 4); (10, 4) ]
+let hole_pos_list_maze = [ (11, 4); (10, 4) ]
 
-let block_pos_list_m = [ (2, 2); (2, 3); (8, 8) ]
+let block_pos_list_maze = [ (2, 2); (2, 3); (8, 8) ]
 
-let predefined_path_m = [ (9, 8) ]
+let predefined_path_maze = [ (9, 8) ]
 
-let obstacles_m =
+let obstacles_maze =
   [ (2, 8); (14, 1); (15, 7); (4, 2); (5, 5); (12, 4) ]
   @ generate_path_pos [ (3, 1); (3, 6); (13, 6); (13, 3); (6, 3) ]
 
-let obstacle_prob_m = 0.0
+let obstacle_prob_maze = 0.0
 
-let breakable_prob_m = 0.25
+let breakable_prob_maze = 0.1
 
-let breakable_hp_m = 1
+let breakable_hp_maze = 1
 
-let room_id_m = "maze"
+let room_id_maze = "maze"
 
-let step_limit_m = 200
+let step_limit_maze = 200
 
 (** Start generating Map 2*)
-let path_pos_list_m =
+let path_pos_list_maze =
   let pos_list =
-    [ exit_position_m ] @ [ init_position_m ] @ hole_pos_list_m
-    @ block_pos_list_m
+    [ exit_position_maze ] @ [ init_position_maze ] @ hole_pos_list_maze
+    @ block_pos_list_maze @ predefined_path_maze
   in
-  generate_path_pos pos_list @ predefined_path_m
+  generate_path_pos pos_list
 
-let map_array_m =
+let map_array_maze =
   let map =
     new_map_with_obstacles map_w map_h tile_val bound_val path_val
-      obstacle_val path_pos_list_m obstacle_prob_m
+      obstacle_val path_pos_list_maze obstacle_prob_maze
   in
-  let () = set_pos_list_with_same_pos map obstacles_m obstacle_val in
+  let () = set_pos_list_with_same_pos map obstacles_maze obstacle_val in
   map
 
-let breakable_pos_list_m =
-  generate_breakables map_array_m path_pos_list_m path_val tile_val
-    breakable_prob_m
+let breakable_pos_list_maze =
+  generate_breakables map_array_maze path_pos_list_maze path_val
+    tile_val breakable_prob_maze
 
-let breakable_list_m =
-  init_breakables breakable_pos_list_m breakable_hp_m
+let breakable_list_maze =
+  init_breakables breakable_pos_list_maze breakable_hp_maze
 
-let map_m =
+let map_maze =
   {
-    room_id = room_id_m;
+    room_id = room_id_maze;
     width = map_w;
     height = map_h;
     map_tile_list =
       map_to_list
-        (Genmap.set_with_same_pos map_array_m (fst exit_position_m)
-           (snd exit_position_m)
-           { position = exit_position_m; ttype = Exit });
-    init_blocks = init_blocks block_pos_list_m;
-    holes = init_holes hole_pos_list_m;
-    num_holes = List.length hole_pos_list_m;
-    exit_pos = exit_position_m;
-    init_pos = init_position_m;
-    init_breaks = breakable_list_m;
-    step_limit = step_limit_m;
+        (Genmap.set_with_same_pos map_array_maze
+           (fst exit_position_maze)
+           (snd exit_position_maze)
+           { position = exit_position_maze; ttype = Exit });
+    init_blocks = init_blocks block_pos_list_maze;
+    holes = init_holes hole_pos_list_maze;
+    num_holes = List.length hole_pos_list_maze;
+    exit_pos = exit_position_maze;
+    init_pos = init_position_maze;
+    init_breaks = breakable_list_maze;
+    step_limit = step_limit_maze;
   }
 
 (** Testing Map: use for testing *)
@@ -180,57 +181,7 @@ let testing_map =
     step_limit = 3;
   }
 
-(* Map 3 *)
-let path_val3 = { position = (0, 0); ttype = Obstacle }
-
-let init_block_pos3 = [ (16, 7); (12, 4) ]
-
-let init_hole_pos3 = [ (6, 6); (15, 8) ]
-
-let exit_pos3 = (18, 8)
-
-let path_pos_list3 =
-  generate_path_pos
-    ([ exit_pos3 ] @ [ (1, 1) ] @ init_block_pos3 @ init_hole_pos3)
-
-let tile_val3 = { position = (0, 0); ttype = Normal }
-
-let map_array3 =
-  let map_w = 20 in
-  let map_h = 10 in
-  let bound_val = { position = (0, 0); ttype = Obstacle } in
-  let obstacle_val = { position = (0, 0); ttype = Obstacle } in
-  let obstacle_prob = 0.2 in
-  let map =
-    new_map_with_obstacles map_w map_h tile_val bound_val path_val
-      obstacle_val path_pos_list3 obstacle_prob
-  in
-  map
-
-let breakable_pos_list3 =
-  generate_breakables map_array3 path_pos_list3 path_val3 tile_val3 0.3
-
-let breakable_list3 = init_breakables breakable_pos_list3 1
-
-let map3 =
-  {
-    room_id = "random3";
-    width = 20;
-    height = 10;
-    map_tile_list =
-      map_to_list
-        (Genmap.set_with_same_pos map_array3 (fst exit_pos3)
-           (snd exit_pos3)
-           { position = (0, 0); ttype = Exit });
-    init_blocks = init_blocks init_block_pos3;
-    holes = init_holes init_hole_pos3;
-    num_holes = List.length init_hole_pos3;
-    exit_pos = exit_pos3;
-    init_pos = (1, 1);
-    init_breaks = breakable_list3;
-    step_limit = 100;
-  }
-
+(** The win state map *)
 let win =
   {
     room_id = "win";
