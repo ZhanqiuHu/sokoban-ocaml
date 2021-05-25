@@ -25,7 +25,7 @@ let hole_pos_list2 = [ (18, 8); (17, 8) ]
 
 let block_pos_list2 = [ (2, 2); (3, 2); (4, 6) ]
 
-let predefined_path2 = []
+let predefined_path2 = [ (9, 8) ]
 
 let obstacle_prob2 = 0.2
 
@@ -88,9 +88,11 @@ let hole_pos_list_m = [ (11, 4); (10, 4) ]
 
 let block_pos_list_m = [ (2, 2); (2, 3); (8, 8) ]
 
-let predefined_path_m = generate_path_pos []
+let predefined_path_m = [ (9, 8) ]
 
-let obstacles_m = [ (2, 8); (14, 1); (14, 7); (4, 2); (5, 5); (12, 4) ]
+let obstacles_m =
+  [ (2, 8); (14, 1); (15, 7); (4, 2); (5, 5); (12, 4) ]
+  @ generate_path_pos [ (3, 1); (3, 6); (13, 6); (13, 3); (6, 3) ]
 
 let obstacle_prob_m = 0.0
 

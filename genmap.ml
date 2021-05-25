@@ -191,24 +191,24 @@ let new_map_with_obstacles
   in
   map
 
-let rec generate_path_pos_helper pos_lst path_lst =
-  match pos_lst with
-  | (x1, y1) :: (x2, y2) :: t ->
-      let x_start = if x1 <= x2 then x1 else x2 in
-      let x_end = if x1 <= x2 then x1 else x2 in
-      let y_start = if y1 <= y2 then y1 else y2 in
-      let y_end = if y1 <= y2 then y1 else y2 in
-      for x = x_start to x_end do
-        path_lst.list <- (x, y_start) :: path_lst.list
-      done;
-      for y = y_start to y_end do
-        path_lst.list <- (x_end, y) :: path_lst.list
-      done;
-      generate_path_pos_helper ((x2, y2) :: t) path_lst
-  | _ -> path_lst.list
-
 let generate_path_pos pos_list =
   let path_list = { list = pos_list } in
+  let rec generate_path_pos_helper pos_lst path_lst =
+    match pos_lst with
+    | (x1, y1) :: (x2, y2) :: t ->
+        let x_start = min x1 x2 in
+        let x_end = max x1 x2 in
+        let y_start = min y1 y2 in
+        let y_end = max y1 y2 in
+        for x = x_start to x_end do
+          path_lst.list <- (x, y_start) :: path_lst.list
+        done;
+        for y = y_start to y_end do
+          path_lst.list <- (x_end, y) :: path_lst.list
+        done;
+        generate_path_pos_helper ((x2, y2) :: t) path_lst
+    | _ -> path_lst.list
+  in
   generate_path_pos_helper pos_list path_list
 
 let rec check_valid_object_position map position_list =
