@@ -163,8 +163,8 @@ let map3 =
 let win =
   {
     room_id = "win";
-    width = 10;
-    height = 10;
+    width = map_w;
+    height = map_h;
     init_blocks = [];
     holes = [];
     num_holes = 1;
@@ -174,7 +174,7 @@ let win =
     step_limit = 1000;
     map_tile_list =
       init_boundary
-        (map_init 10 10 { position = (0, 0); ttype = Normal })
+        (map_init map_w map_h { position = (0, 0); ttype = Normal })
         { position = (0, 0); ttype = Obstacle }
       |> map_to_list;
   }
