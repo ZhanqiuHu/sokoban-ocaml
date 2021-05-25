@@ -122,15 +122,6 @@ let iterate map func =
     done
   done
 
-(* let choose_obstacles map path_list path_val tile_val obstacle_val
-   true_prob = let path_map = define_path_map map path_list path_val in
-   let y_end = Array.length map - 1 in let x_end = Array.length map.(0)
-   - 1 in for x = 0 to x_end do for y = 0 to y_end do if
-   map.(y).(x).ttype = tile_val.ttype && path_map.(y).(x).ttype <>
-   path_val.ttype then if random_bool true_prob then map.(y).(x) <- {
-   position = map.(y).(x).position; ttype = obstacle_val.ttype; } else
-   () else () done done *)
-
 let choose_obstacles
     map
     path_lst
@@ -239,9 +230,3 @@ let rec check_valid_boundary map =
     done
   done;
   bool_box.bool_val
-
-(* let map_try = let map_w = 10 in let map_h = 5 in let tile_val =
-   "tile" in let bound_val = "bound" in let path_val = "path" in let
-   obstacle_val = "obstacle" in let path_pos_list = [] in let
-   obstacle_prob = 0.5 in new_map_with_obstacles map_w map_h tile_val
-   bound_val path_val obstacle_val path_pos_list obstacle_prob *)

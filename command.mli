@@ -1,4 +1,4 @@
-(* Parsing of player commands. *)
+(** Parsing of player commands. *)
 open Types
 
 (** Raised when an empty command is parsed. *)

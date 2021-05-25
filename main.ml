@@ -13,8 +13,6 @@ let map_h = 10
 (** [tile_size ] is the pixel size of a tile. *)
 let tile_size = 60
 
-(* let step_limit = 90 let counter = ref step_limit *)
-
 (** [empty_page] is an empty map used for the background of the start
     and pause pages. *)
 let empty_page =
@@ -315,9 +313,6 @@ let read_key_button () =
   else
     let key_char = s.key in
     Char.escaped key_char
-
-(* let interact () = (* let s = Graphics.wait_next_event [ Key_pressed ]
-   in *) let key = Graphics.read_key () in if key = ' ' then *)
 
 (** [update_back history] returns the state corresponding to taking one
     step if there are steps left or the state with 0 steps left. *)

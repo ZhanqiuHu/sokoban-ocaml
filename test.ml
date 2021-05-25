@@ -1,3 +1,58 @@
+(** Test plan:
+
+    - Before we were able to successfully implement the GUI, we used
+      OUnit to test our state file by testing the following basic
+      functionalities and corner cases:
+
+    1. pushing a block into a legal position
+
+    2. pushing a block into an illegal position
+
+    3. pushing two blocks next to each other
+
+    4. pushing a block onto a hole
+
+    5. pushing a block off of a hole
+
+    6. legal player movement
+
+    7. illegal player movement
+
+    8. winning the game
+
+    9. losing the game
+
+    10. registering a command
+
+    etc.
+
+    We further tested registering a text command and making sure that
+    our genmap function was creating solvable maps.
+
+    Overall we tested the state, genmap, text, and command modules using
+    OUnit tests. We used blackbox testing to make sure each function
+    being tested was returning the correct value. e.g. we tested to make
+    sure [move] returned the correct new state. Because our functions
+    use many other helper functions, we decided not to prioritize
+    glassbox testing.
+
+    In general, most of the testing was further done manually once the
+    GUI was working. For example, we tested block pushing, checking win
+    condition, buttons, select modes, menus and other in-game
+    interactions manually. Functions that were responsible for drawing
+    images to the screen (i.e. gui) were also tested manually.
+
+    - Since we are developing a game, almost all the bugs can be caught
+      from visible and unprecedanted moves, so while we focused on
+      automated testing before the GUI was working and using it to make
+      sure the basic functionality of the game was working (pushing,
+      moving, winning), we later transitioned to much more manual
+      testing. Thus, we believe our approach demonstrates the
+      correctness of the program because we have solidified the
+      correctness of our state transitions using OUnit tests and have
+      ensured the user experience is accurate using manual testing which
+      is what games are all about. *)
+
 open Camlimages
 open OUnit2
 open State
@@ -101,6 +156,9 @@ let some_state_2_player =
 let state_mov_norm =
   state_gen "test" Normal room_list_2 testing_map player_list_1
 
+let state_mov_norm_limit =
+  state_gen "test" Limit room_list_2 testing_map player_list_1
+
 let state_mov_norm_two_player =
   state_gen "test" Normal room_list_2 testing_map player_list_2
 
@@ -112,9 +170,23 @@ let get_state_tests name state func expected_value =
 
 let some_room = get_room_by_id "random" some_state
 
-let p2_3_3 = move state_mov_norm_two_player Down testing_map Snd
+let p2_3_2 () =
+  match move state_mov_norm_two_player Down testing_map Snd with
+  | Legal st -> st
+  | Illegal -> state_mov_norm_two_player
 
-let p2_3_2 = move state_mov_norm_two_player Down testing_map Snd
+let p1_1_2 () =
+  match move state_mov_norm_two_player Up testing_map Fst with
+  | Legal st -> st
+  | Illegal -> state_mov_norm_two_player
+
+let p1_3_1 () =
+  match move state_mov_norm_two_player Right testing_map Fst with
+  | Legal st -> (
+      match move st Right testing_map Fst with
+      | Legal st2 -> st2
+      | Illegal -> st)
+  | Illegal -> state_mov_norm_two_player
 
 let compare_command
     (name : string)
@@ -156,7 +228,13 @@ let move_test_player (name : string) result player_num expected_result :
 let move_test_illegal (name : string) result : test =
   name >:: fun _ -> assert_equal Illegal result
 
-(* let rec rec_move *)
+let rec rec_move result dir_list room player_num =
+  List.fold_left
+    (fun init dir ->
+      match init with
+      | Illegal -> Illegal
+      | Legal st -> move st dir room player_num)
+    result dir_list
 
 let move_test_room_id (name : string) result id : test =
   name >:: fun _ ->
@@ -174,7 +252,83 @@ let move_test_block (name : string) result expected_result : test =
   match result with
   | Illegal -> failwith "Illegal"
   | Legal state ->
-      assert_equal (List.mem state.blocks expected_result) true
+      assert_equal (List.mem expected_result state.blocks) true
+
+let normal_tile_00 : tile = { position = (0, 0); ttype = Normal }
+
+let set_pos (tile : tile) (pos : int * int) =
+  { tile with position = pos }
+
+let set_type (tile : tile) tile_type = { tile with ttype = tile_type }
+
+let normal_tile_01 = set_pos normal_tile_00 (0, 1)
+
+let normal_tile_02 = set_pos normal_tile_00 (0, 2)
+
+let normal_tile_10 = set_pos normal_tile_00 (1, 0)
+
+let normal_tile_11 = set_pos normal_tile_00 (1, 1)
+
+let normal_tile_12 = set_pos normal_tile_00 (1, 2)
+
+let normal_tile_20 = set_pos normal_tile_00 (2, 0)
+
+let normal_tile_21 = set_pos normal_tile_00 (2, 1)
+
+let normal_tile_22 = set_pos normal_tile_00 (2, 2)
+
+let bound_tile_00 = set_type normal_tile_00 Obstacle
+
+let bound_tile_01 = set_type normal_tile_01 Obstacle
+
+let bound_tile_02 = set_type normal_tile_02 Obstacle
+
+let bound_tile_10 = set_type normal_tile_10 Obstacle
+
+let bound_tile_11 = set_type normal_tile_11 Obstacle
+
+let bound_tile_12 = set_type normal_tile_12 Obstacle
+
+let bound_tile_20 = set_type normal_tile_20 Obstacle
+
+let bound_tile_21 = set_type normal_tile_21 Obstacle
+
+let bound_tile_22 = set_type normal_tile_22 Obstacle
+
+let init_map2x1_exp : tile array array =
+  [| [| normal_tile_00; normal_tile_10 |] (* row 0*) |]
+
+let init_map2x2_exp : tile array array =
+  [|
+    [| normal_tile_01; normal_tile_11 |] (* row 1*);
+    [| normal_tile_00; normal_tile_10 |] (* row 0*);
+  |]
+
+let init_map3x3_exp : tile array array =
+  [|
+    [| normal_tile_02; normal_tile_12; normal_tile_22 |] (* row 2*);
+    [| normal_tile_01; normal_tile_11; normal_tile_21 |] (* row 1*);
+    [| normal_tile_00; normal_tile_10; normal_tile_20 |] (* row 0*);
+  |]
+
+let init_map2x1 : tile array array = map_init 2 1 normal_tile_00
+
+let init_map2x2 : tile array array = map_init 2 2 normal_tile_00
+
+let init_map3x3 : tile array array = map_init 3 3 normal_tile_00
+
+let bound_map3x3_exp : tile array array =
+  [|
+    [| bound_tile_02; bound_tile_12; bound_tile_22 |] (* row 2*);
+    [| bound_tile_01; normal_tile_11; bound_tile_21 |] (* row 1*);
+    [| bound_tile_00; bound_tile_10; bound_tile_20 |] (* row 0*);
+  |]
+
+let bound_map3x3 =
+  init_boundary (map_init 3 3 normal_tile_00) bound_tile_00
+
+let genmap_test name generated_map expected_map =
+  name >:: fun _ -> assert_equal expected_map generated_map
 
 let tests =
   [
@@ -245,43 +399,75 @@ let tests =
     compare_exception "Empty Command 1" empty1 Empty;
     compare_exception "Empty Command 2" empty2 Empty;
     (* Move player tests *)
-    move_test_player "Move up"
+    move_test_player "Move up Fst player"
       (move state_mov_norm Up testing_map Fst)
       Fst (1, 2);
-    move_test_player "Move right"
+    move_test_player "Move right Fst player"
       (move state_mov_norm Right testing_map Fst)
       Fst (2, 1);
-    move_test_illegal "Move down"
+    move_test_illegal "Move down Fst player illegal"
       (move state_mov_norm Down testing_map Fst);
-    move_test_illegal "Move left"
+    move_test_illegal "Move left Fst player illegal"
       (move state_mov_norm Left testing_map Fst);
-    move_test_player "Move up p2"
+    move_test_player "Move up p2 Snd player"
       (move state_mov_norm_two_player Up testing_map Snd)
       Snd (3, 4);
-    move_test_player "Move right p2"
+    move_test_player "Move right p2 Snd player"
       (move state_mov_norm_two_player Right testing_map Snd)
       Snd (4, 3);
-    move_test_player "Move down p2"
+    move_test_player "Move down p2 Snd player"
       (move state_mov_norm_two_player Down testing_map Snd)
       Snd (3, 2);
-    move_test_player "Move left p2"
+    move_test_player "Move left p2 Snd player"
       (move state_mov_norm_two_player Left testing_map Snd)
       Snd (2, 3);
-    move_test_room_id "Move win rm_id = win";
+    (* Test win/lose/illegal conditions *)
+    move_test_room_id "Move win rm_id = win"
+      (rec_move (Legal state_mov_norm)
+         [ Right; Right; Up; Down; Left; Left ]
+         testing_map Fst)
+      "win";
+    move_test_illegal "Move Illegal"
+      (rec_move (Legal state_mov_norm)
+         [ Right; Right; Up; Left; Left; Down ]
+         testing_map Fst);
+    move_test_room_id "Move lose rm_id = lose"
+      (rec_move (Legal state_mov_norm_limit) [ Up; Up; Down; Up ]
+         testing_map Fst)
+      "lose";
+    move_test_room_id
+      "Pushing a block on and then off a hole, the win \n\
+      \      condition should fail to satisfy"
+      (rec_move (Legal state_mov_norm)
+         [ Right; Right; Up; Right; Up; Left; Down; Down; Left; Left ]
+         testing_map Fst)
+      "test";
     (* Move block tests *)
-    move_test_block "Move down block at (3,2)" ()
-      { pos = (3, 1); in_hole = false };
+    move_test_block "Move down block at (3,2)"
+      (move state_mov_norm_two_player Down testing_map Snd)
+      { position = (3, 1); in_hole = false };
+    move_test_block "Move left block at (2,2)"
+      (move (p2_3_2 ()) Left testing_map Snd)
+      { position = (1, 2); in_hole = false };
+    move_test_illegal "Move block onto border"
+      (move (p2_3_2 ()) Down testing_map Snd);
+    move_test_block "Move double blocks, one at (2,2)"
+      (move (p1_1_2 ()) Right testing_map Fst)
+      { position = (3, 2); in_hole = false };
+    move_test_block "Move double blocks, other at (3,2)"
+      (move (p1_1_2 ()) Right testing_map Fst)
+      { position = (4, 2); in_hole = false };
+    move_test_block "Move block at (3,2) into hole"
+      (move (p1_3_1 ()) Up testing_map Fst)
+      { position = (3, 3); in_hole = true };
+    (* Genmap tests *)
+    genmap_test "map_init of size 2x1" init_map2x1 init_map2x1_exp;
+    genmap_test "map_init of size 2x2" init_map2x2 init_map2x2_exp;
+    genmap_test "map_init of size 3x3" init_map3x3 init_map3x3_exp;
+    genmap_test "init_boundary of size 3x3" bound_map3x3
+      bound_map3x3_exp;
   ]
 
 let suite = "test suite for Final project" >::: List.flatten [ tests ]
 
 let _ = run_test_tt_main suite
-
-(* Normal mode,one player, success, room_id = "win"; Normal mode,one
-   player, pushed on and off, room_id != "win"; Normal mode,one player,
-   cascading blocks, player pos does not change; Normal mode,two
-   players, success, room_id = "win"; Normal mode,two player: player
-   pushing each other; Sliding mode,one players; 4 Sliding mode,two
-   players; 4 Sliding mode,two player: player pushing each other; Limit
-   mode, one player, fail and room_id = "lose"; Limit mode, two players,
-   fail and room_id = "lose"; *)

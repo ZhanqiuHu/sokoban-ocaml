@@ -101,3 +101,15 @@ texture = cord= {1,1}
   ]
 
 }
+
+
+
+let rec rec_move state dir_list room player_num = 
+   List.fold_left(fun dir, init -> 
+   match init with 
+   | Illegal -> Illegal
+   | Legal st -> 
+    move st dir room player_num)
+   state dir_list
+
+   rec_move state_mov_norm [Right; Right; Up; Left; Left; Down] testing_map Fst

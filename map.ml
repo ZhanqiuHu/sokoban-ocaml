@@ -1,79 +1,81 @@
 open Types
 open Genmap
 
-(* Map 2 *)
+(* Definition of types and constants *)
 let path_val = { position = (0, 0); ttype = Obstacle }
 
-let path_pos_list =
-  [
-    (1, 1);
-    (1, 2);
-    (1, 8);
-    (2, 2);
-    (2, 1);
-    (3, 1);
-    (4, 1);
-    (5, 1);
-    (5, 3);
-    (5, 2);
-    (4, 2);
-    (3, 2);
-    (5, 4);
-    (8, 8);
-    (7, 1);
-  ]
-
-let rec loop lo hi acc constant tuple_pos =
-  if lo > hi then acc
-  else if tuple_pos = "fst" then
-    loop (lo + 1) hi ((lo, constant) :: acc) constant tuple_pos
-  else loop (lo + 1) hi ((constant, lo) :: acc) constant tuple_pos
-
-let generate_path_pos_labyrinth =
-  let path_seg_1 = loop 0 12 [] 1 "snd" in
-  let path_seg_2 = loop 1 13 path_seg_1 12 "fst" in
-  let path_seq_3 = loop 1 12 path_seg_2 13 "snd" in
-  let path_seq_4 = loop 4 13 path_seq_3 1 "fst" in
-  let path_seq_5 = loop 1 9 path_seq_4 4 "snd" in
-  let path_seq_6 = loop 4 10 path_seq_5 9 "fst" in
-  let path_seq_7 = loop 4 9 path_seq_6 10 "snd" in
-  let path_seq_8 = loop 7 10 path_seq_7 4 "fst" in
-  let path_seq_9 = loop 3 5 path_seq_8 7 "snd" in
-  let path_seq_10 = loop 7 9 path_seq_9 5 "fst" in
-  loop 3 7 path_seq_10 8 "snd"
-
-(* let map3 = { room_id = "labyrinth"; width = 15; height = 15;
-   map_tile_list = map_to_list (Genmap.set_with_same_pos map_labyrinth 7
-   3 { position = (7, 3); ttype = Exit }); init_blocks = [ { position =
-   (1, 1); in_hole = false }; { position = (1, 2); in_hole = false }; ];
-   (*{ position = (3, 2); in_hole = false } *) holes = [ { position =
-   (8, 3) }; { position = (8, 7) } ]; num_holes = 2; exit_pos = (7, 3);
-   init_pos = (0, 0); init_breaks = [ { position = (1, 13); hp = 1 }; {
-   position = (14, 12); hp = 1 }; { position = (3, 1); hp = 1 }; {
-   position = (4, 10); hp = 1 }; { position = (11, 9); hp = 1 }; {
-   position = (10, 3); hp = 1 }; { position = (6, 4); hp = 1 }; {
-   position = (7, 6); hp = 1 }; ]; step_limit = 20; } *)
-
 let tile_val = { position = (0, 0); ttype = Normal }
+
+let bound_val = { position = (0, 0); ttype = Obstacle }
+
+let obstacle_val = { position = (0, 0); ttype = Obstacle }
 
 let map_w = 20
 
 let map_h = 10
 
+(* Map 2 : generated using functions in genmap.ml *)
+
+(** Values defined for Map 2*)
+let exit_position2 = (1, 7)
+
+let init_position2 = (1, 1)
+
+let hole_pos_list2 = [ (18, 8); (17, 8) ]
+
+let block_pos_list2 = [ (2, 2); (3, 2); (4, 6) ]
+
+let predefined_path2 = []
+
+let obstacle_prob2 = 0.2
+
+let breakable_prob2 = 0.2
+
+let breakable_hp2 = 1
+
+let room_id2 = "random"
+
+let step_limit2 = 200
+
+(** Start generating Map 2*)
 let path_pos_list2 =
-  generate_path_pos [ (12, 8); (11, 4) ] [ (1, 7) ]
-    [ (2, 2); (3, 2); (4, 6) ]
-    [ (1, 1) ]
+  generate_path_pos [ exit_position2 ] [ init_position2 ] hole_pos_list2
+    block_pos_list2
+  @ predefined_path2
 
 let map_array2 =
-  let bound_val = { position = (0, 0); ttype = Obstacle } in
-  let obstacle_val = { position = (0, 0); ttype = Obstacle } in
-  let obstacle_prob = 0.25 in
   let map =
     new_map_with_obstacles map_w map_h tile_val bound_val path_val
-      obstacle_val path_pos_list2 obstacle_prob
+      obstacle_val path_pos_list2 obstacle_prob2
   in
   map
+
+let breakable_pos_list2 =
+  generate_breakables map_array2 path_pos_list2 path_val tile_val
+    breakable_prob2
+
+let breakable_list2 = init_breakables breakable_pos_list2 breakable_hp2
+
+let map2 =
+  {
+    room_id = room_id2;
+    width = map_w;
+    height = map_h;
+    map_tile_list =
+      map_to_list
+        (Genmap.set_with_same_pos map_array2 (fst exit_position2)
+           (snd exit_position2)
+           { position = exit_position2; ttype = Exit });
+    init_blocks = init_blocks block_pos_list2;
+    holes = init_holes hole_pos_list2;
+    num_holes = List.length hole_pos_list2;
+    exit_pos = exit_position2;
+    init_pos = init_position2;
+    init_breaks = breakable_list2;
+    step_limit = step_limit2;
+  }
+
+(** Testing Map: use for testing *)
 
 let map_test =
   let bound_val = { position = (0, 0); ttype = Obstacle } in
@@ -84,11 +86,6 @@ let map_test =
       obstacle_val [] obstacle_prob
   in
   map
-
-let breakable_pos_list =
-  generate_breakables map_array2 path_pos_list path_val tile_val 0.2
-
-let breakable_list = init_breakables breakable_pos_list 1
 
 let testing_map =
   {
@@ -104,37 +101,12 @@ let testing_map =
         { position = (2, 2); in_hole = false };
         { position = (3, 2); in_hole = false };
       ];
-    (*{ position = (3, 2); in_hole = false } *)
     holes = [ { position = (3, 3) } ];
     num_holes = 1;
     exit_pos = (1, 1);
     init_pos = (3, 1);
     init_breaks = [ { position = (4, 1); hp = 1 } ];
-    step_limit = 15;
-  }
-
-let map2 =
-  {
-    room_id = "random";
-    width = map_w;
-    height = map_h;
-    map_tile_list =
-      map_to_list
-        (Genmap.set_with_same_pos map_array2 1 7
-           { position = (1, 7); ttype = Exit });
-    init_blocks =
-      [
-        { position = (2, 2); in_hole = false };
-        { position = (3, 2); in_hole = false };
-        { position = (4, 6); in_hole = false };
-      ];
-    (*{ position = (3, 2); in_hole = false } *)
-    holes = [ { position = (12, 8) }; { position = (11, 4) } ];
-    num_holes = 2;
-    exit_pos = (1, 7);
-    init_pos = (1, 1);
-    init_breaks = breakable_list;
-    step_limit = 100;
+    step_limit = 3;
   }
 
 (* Map 3 *)
@@ -201,129 +173,10 @@ let win =
     init_breaks = [];
     step_limit = 1000;
     map_tile_list =
-      [
-        (*First row*)
-        [
-          { position = (0, 0); ttype = Obstacle };
-          { position = (1, 0); ttype = Obstacle };
-          { position = (2, 0); ttype = Obstacle };
-          { position = (3, 0); ttype = Obstacle };
-          { position = (4, 0); ttype = Obstacle };
-          { position = (5, 0); ttype = Obstacle };
-          { position = (6, 0); ttype = Obstacle };
-          { position = (7, 0); ttype = Obstacle };
-          { position = (8, 0); ttype = Obstacle };
-          { position = (9, 0); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 1); ttype = Obstacle };
-          { position = (1, 1); ttype = Normal };
-          { position = (2, 1); ttype = Normal };
-          { position = (3, 1); ttype = Normal };
-          { position = (4, 1); ttype = Normal };
-          { position = (5, 1); ttype = Normal };
-          { position = (6, 1); ttype = Normal };
-          { position = (7, 1); ttype = Normal };
-          { position = (8, 1); ttype = Normal };
-          { position = (9, 1); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 2); ttype = Obstacle };
-          { position = (1, 2); ttype = Normal };
-          { position = (2, 2); ttype = Normal };
-          { position = (3, 2); ttype = Normal };
-          { position = (4, 2); ttype = Normal };
-          { position = (5, 2); ttype = Normal };
-          { position = (6, 2); ttype = Normal };
-          { position = (7, 2); ttype = Normal };
-          { position = (8, 2); ttype = Normal };
-          { position = (9, 2); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 3); ttype = Obstacle };
-          { position = (1, 3); ttype = Normal };
-          { position = (2, 3); ttype = Normal };
-          { position = (3, 3); ttype = Normal };
-          { position = (4, 3); ttype = Normal };
-          { position = (5, 3); ttype = Normal };
-          { position = (6, 3); ttype = Normal };
-          { position = (7, 3); ttype = Normal };
-          { position = (8, 3); ttype = Normal };
-          { position = (9, 3); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 4); ttype = Obstacle };
-          { position = (1, 4); ttype = Normal };
-          { position = (2, 4); ttype = Normal };
-          { position = (3, 4); ttype = Normal };
-          { position = (4, 4); ttype = Normal };
-          { position = (5, 4); ttype = Normal };
-          { position = (6, 4); ttype = Normal };
-          { position = (7, 4); ttype = Normal };
-          { position = (8, 4); ttype = Normal };
-          { position = (9, 4); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 5); ttype = Obstacle };
-          { position = (1, 5); ttype = Normal };
-          { position = (2, 5); ttype = Normal };
-          { position = (3, 5); ttype = Normal };
-          { position = (4, 5); ttype = Normal };
-          { position = (5, 5); ttype = Normal };
-          { position = (6, 5); ttype = Normal };
-          { position = (7, 5); ttype = Normal };
-          { position = (8, 5); ttype = Normal };
-          { position = (9, 5); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 6); ttype = Obstacle };
-          { position = (1, 6); ttype = Normal };
-          { position = (2, 6); ttype = Normal };
-          { position = (3, 6); ttype = Normal };
-          { position = (4, 6); ttype = Normal };
-          { position = (5, 6); ttype = Normal };
-          { position = (6, 6); ttype = Normal };
-          { position = (7, 6); ttype = Normal };
-          { position = (8, 6); ttype = Normal };
-          { position = (9, 6); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 7); ttype = Obstacle };
-          { position = (1, 7); ttype = Normal };
-          { position = (2, 7); ttype = Normal };
-          { position = (3, 7); ttype = Normal };
-          { position = (4, 7); ttype = Normal };
-          { position = (5, 7); ttype = Normal };
-          { position = (6, 7); ttype = Normal };
-          { position = (7, 7); ttype = Normal };
-          { position = (8, 7); ttype = Normal };
-          { position = (9, 7); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 8); ttype = Obstacle };
-          { position = (1, 8); ttype = Normal };
-          { position = (2, 8); ttype = Normal };
-          { position = (3, 8); ttype = Normal };
-          { position = (4, 8); ttype = Normal };
-          { position = (5, 8); ttype = Normal };
-          { position = (6, 8); ttype = Normal };
-          { position = (7, 8); ttype = Normal };
-          { position = (8, 8); ttype = Normal };
-          { position = (9, 8); ttype = Obstacle };
-        ];
-        [
-          { position = (0, 9); ttype = Obstacle };
-          { position = (1, 9); ttype = Obstacle };
-          { position = (2, 9); ttype = Obstacle };
-          { position = (3, 9); ttype = Obstacle };
-          { position = (4, 9); ttype = Obstacle };
-          { position = (5, 9); ttype = Obstacle };
-          { position = (6, 9); ttype = Obstacle };
-          { position = (7, 9); ttype = Obstacle };
-          { position = (8, 9); ttype = Obstacle };
-          { position = (9, 9); ttype = Obstacle };
-        ];
-      ];
+      init_boundary
+        (map_init 10 10 { position = (0, 0); ttype = Normal })
+        { position = (0, 0); ttype = Obstacle }
+      |> map_to_list;
   }
 
 let lose = { win with room_id = "lose" }

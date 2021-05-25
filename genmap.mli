@@ -1,3 +1,4 @@
+(** genmap.mli contains the functions used for generating a random map. *)
 open Types
 
 (** type for a mutable list *)
