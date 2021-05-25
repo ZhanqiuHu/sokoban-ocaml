@@ -50,14 +50,14 @@ let init_state (sel_list : string * string) : state =
       else if snd sel_list = "sliding" then Sliding
       else Limit);
     active = true;
-    current_room_id = "random";
-    all_rooms = [ map2; win; lose ];
+    current_room_id = "maze";
+    all_rooms = [ map_m; map2; win; lose ];
     players =
       (if "one" = fst sel_list then [ player_one ]
       else [ player_one; player_two ]);
     filled_holes = 0;
-    blocks = map2.init_blocks;
-    breaks = map2.init_breaks;
+    blocks = map_m.init_blocks;
+    breaks = map_m.init_breaks;
     steps_left = map2.step_limit;
   }
 
@@ -67,10 +67,6 @@ let rec init_breaks hp breaks_list =
       h.hp <- hp;
       init_breaks hp t
   | _ -> ()
-
-let initialize_state init_state breaks_hp =
-  init_breaks breaks_hp init_state.breaks;
-  init_state
 
 let get_tile_by_loc loc room =
   List.find
@@ -682,8 +678,8 @@ let check_next_obj_player (pushed_player : player) st room dir :
       | _ -> raise (Failure "Impossible"))
   | _ -> raise (Failure "Impossible")
 
-(** Returns a turple of (result, next_pushed_object) with the movement
-    in direction [dir] given that the pushed(moved) object is a block *)
+(** Returns a tuple of (result, next_pushed_object) with the movement in
+    direction [dir] given that the pushed(moved) object is a block *)
 let check_next_obj_block (pushed_block : block) st room dir :
     result * game_object option =
   match
@@ -701,8 +697,8 @@ let check_next_obj_block (pushed_block : block) st room dir :
       | Legal _, None, _ -> (Legal st, None)
       | _ -> raise (Failure "Impossible"))
 
-(** Returns a turple of (result, next_pushed_object) with the movement
-    in direction [dir] *)
+(** Returns a tuple of (result, next_pushed_object) with the movement in
+    direction [dir] *)
 let check_next_obj game_object st room dir : result * game_object option
     =
   match game_object with

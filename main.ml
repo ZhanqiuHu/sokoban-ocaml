@@ -419,7 +419,7 @@ let prompt_command_active (st : state) history (command : command) =
       change_state st dir (get_room_by_id st.current_room_id st) Fst
   | Snd dir ->
       change_state st dir (get_room_by_id st.current_room_id st) Snd
-  | Start -> State.initialize_state (init_state (selected ())) 1
+  | Start -> init_state (selected ())
   | Back -> update_back history
   | Pause ->
       st.active <- false;

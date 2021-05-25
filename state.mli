@@ -36,10 +36,6 @@ val get_breaks : state -> breakable1 list
     the [room_id] in the current [state]. *)
 val get_room_by_id : string -> state -> room
 
-(** [initialize_state st] returns the [st] with breakeable hp
-    intialized. *)
-val initialize_state : state -> int -> state
-
 (** [duplicate_state st] returns the [state] with the same fields and
     field contents as [st]. *)
 val duplicate_state : state -> state

@@ -7,6 +7,9 @@ val win : room
 (** [map2] represents the initial room. *)
 val map2 : room
 
+(** [map_m] represents a maze room. *)
+val map_m : room
+
 (** [map3] represents a room. *)
 val map3 : room
 

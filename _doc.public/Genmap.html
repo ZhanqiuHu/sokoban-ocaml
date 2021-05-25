@@ -134,6 +134,14 @@
 </div>
 </div>
 
+<pre><span id="VALset_pos_list_with_same_pos"><span class="keyword">val</span> set_pos_list_with_same_pos</span> : <code class="type"><a href="Types.html#TYPEtile">Types.tile</a> array array -> (int * int) list -> <a href="Types.html#TYPEtile">Types.tile</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_pos_list_with_same_pos map pos_list new_val</code> sets tiles in
+    <code class="code">map</code> with positions in <code class="code">pos_list</code> to <code class="code">new_val</code>, keeping their
+    original positions</p>
+</div>
+</div>
+
 <pre><span id="VALcopy_map"><span class="keyword">val</span> copy_map</span> : <code class="type">'a array array -> 'a array array</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">copy_map map</code> returns a copy of map</p>
@@ -183,13 +191,10 @@
 </div>
 </div>
 
-<pre><span id="VALgenerate_path_pos"><span class="keyword">val</span> generate_path_pos</span> : <code class="type">(int * int) list -><br>       (int * int) list -> (int * int) list -> (int * int) list -> (int * int) list</code></pre><div class="info ">
+<pre><span id="VALgenerate_path_pos"><span class="keyword">val</span> generate_path_pos</span> : <code class="type">(int * int) list -> (int * int) list</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">generate_path_pos exit_pos_list init_pos_list hole_pos_list
-    block_pos_list</code>
-    returns a path so all exits <code class="code">exit_pos_list</code>, inital positions
-    <code class="code">init_pos_list</code>, holes <code class="code">hole_pos_list</code>, and blocks <code class="code">blocks_pos_list</code>
-    are connected by the path.</p>
+<p><code class="code">generate_path_pos pos_list</code> returns a path so all positions in
+    <code class="code">pos_list</code> are connected by the path.</p>
 </div>
 </div>
 </body></html>

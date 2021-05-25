@@ -31,8 +31,8 @@
 
 <pre><span id="MODULEGui"><span class="keyword">module</span> Gui</span>: <code class="code">sig</code> <a href="Gui.html">..</a> <code class="code">end</code></pre><div class="info module top">
 <div class="info-desc">
-<p>Representation of gui. This Gui processes images through OCaml Graphics 
-and prints out objects onto canvas</p>
+<p>Representation of gui. This Gui processes images through OCaml
+    Graphics and prints out objects onto canvas.</p>
 </div>
 </div>
 <hr width="100%">
@@ -45,49 +45,50 @@ and prints out objects onto canvas</p>
 
 <pre><span id="VALdraw_select"><span class="keyword">val</span> draw_select</span> : <code class="type"><a href="Types.html#TYPEselect">Types.select</a> list -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">draw_select select_list</code> draws the select list <code class="code">select_list</code> onto the canvas</p>
+<p><code class="code">draw_select select_list</code> draws the select list <code class="code">select_list</code> onto
+    the canvas</p>
 </div>
 </div>
 
 <pre><span id="VALdraw_tiles"><span class="keyword">val</span> draw_tiles</span> : <code class="type">int -> int -> <a href="Types.html#TYPEtile">Types.tile</a> list list -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">draw_tiles width height tile_list</code> draws the tile list list <code class="code">tile_list</code> 
-onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
+<p><code class="code">draw_tiles width height tile_list</code> draws the tile list list
+    <code class="code">tile_list</code> onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
 </div>
 </div>
 
 <pre><span id="VALdraw_rect_images"><span class="keyword">val</span> draw_rect_images</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">draw_rect_images st width height</code> draws the tile list list within state 
-<code class="code">st</code> onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
+<p><code class="code">draw_rect_images st width height</code> draws the tile list list within
+    state <code class="code">st</code> onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
 </div>
 </div>
 
 <pre><span id="VALdraw_player"><span class="keyword">val</span> draw_player</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">draw_player st wt ht</code> draws the current players in the state <code class="code">st</code> to the 
-screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+<p><code class="code">draw_player st wt ht</code> draws the current players in the state <code class="code">st</code>
+    to the screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
 </div>
 </div>
 
 <pre><span id="VALdraw_block_list"><span class="keyword">val</span> draw_block_list</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">draw_block_list st wt ht</code> draws the blocks in the state <code class="code">st</code> to the screen 
-given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+<p><code class="code">draw_block_list st wt ht</code> draws the blocks in the state <code class="code">st</code> to the
+    screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
 </div>
 </div>
 
 <pre><span id="VALdraw_hole_list"><span class="keyword">val</span> draw_hole_list</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">draw_hole_list st width height</code> draws the holes in the state <code class="code">st</code> to the 
-screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+<p><code class="code">draw_hole_list st width height</code> draws the holes in the state <code class="code">st</code>
+    to the screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
 </div>
 </div>
 
 <pre><span id="VALdraw_break_list"><span class="keyword">val</span> draw_break_list</span> : <code class="type"><a href="Types.html#TYPEstate">Types.state</a> -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">draw_break_list st wt ht</code> draws the current breakables in the state <code class="code">st</code> 
-to the screen given tile width <code class="code">wt</code> and tile height <code class="code">ht</code>.</p>
+<p><code class="code">draw_break_list st wt ht</code> draws the current breakables in the state
+    <code class="code">st</code> to the screen given tile width <code class="code">wt</code> and tile height <code class="code">ht</code>.</p>
 </div>
 </div>
 </body></html>

@@ -32,14 +32,31 @@ Once the window is open, press any key to start the game.
 
 Note that a move that causes the player to end up on an obstacle/boundary will not take place.
 Also, if the input command is anything other than the above characters, a warning will be printed and ask you to retype an input. 
+
 The objective of the game is to push all blocks (yellow) into holes (black X). 
-Once all the holes have been filled, both players must step on the exit to teleport to the next level (gate image).
+Once all the holes have been filled, the player (if playing alone) or both players (if playing two player) must step on the exit to teleport to the next level (gate image).
 You can push multiple blocks in a row, and other players, but all players will be able to step on the exit simultaneously to go to the next level.
 There are breakable objects which are depicted as gray blocks. You can try to "walk" on them twice (press the key that would otherwise cause you to collide with the object) to break them and turn that tile into a walkable tile. You do not need to break all these objects to finish the level.
+
 The last room is a "win" room which has no exit and a win message displayed.
 
-Click on the "RESET" button to reset the game, restarting from first level.
+There are two player modes to choose from, and 3 game modes to choose from. Select one player mode and one game mode, then press start to begin. Note that the game will not begin until one button from each category is selected. 
+
+The two player modes include single player and two player. 
+
+The three game modes include normal mode, sliding blocks, and step limit. 
+
+In normal mode, players can push each other, and blocks can push each other. 
+Pushing several moveable objects lined up together will result in a cascade effect, with each object moving one space. 
+
+In sliding blocks mode, players can push players, but blocks cannot push players. Upon colliding with a player, the block will stop sliding. Pushed blocks will not stop unless they encounter a solid obstacle (i.e, another player, block, breakeable, or obstacle.)
+
+In step limit mode, the number of steps (legal movements) the player can take in the level is limited. The steps left for the player will be displayed in the lower lefthand corner. Upon running out of steps, the player will lose, even if the blocks are all in the holes. 
+
+Click on the "RESET" button to reset the game, restarting from the first level.
 Click on the "QUIT" button to quit the game.
+Click the yellow arrow at the top of the screen to undo your most recent action.
+Click the pause button in the upper right corner to pause the game and return to the main menu. Click the pause button again to return to the game. 
 
 # Getting the GUI to Work
 ## For Mac:
@@ -133,7 +150,7 @@ NOTE: All of the terminal commands from step 1 to step 4 are included in the scr
 Note: you will need to change open_graph function to be 
 `Graphics.open_graph ("localhost:0.0 " ^ (string_of_int map_w) ^ "x" ^ (string_of_int map_h))` 
 in the main.ml file inside the open_graph function. This is noted in a comment 
-right below the Mac implementation which is what it will be by default.
+right above the Mac implementation which is what it will be by default.
 
 
 # Modules implemented

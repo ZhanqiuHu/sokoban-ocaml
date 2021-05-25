@@ -35,6 +35,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_with_same_pos&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Types</span>.tile&nbsp;array&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Types</span>.tile&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Types</span>.tile&nbsp;array&nbsp;array<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_pos_list_with_same_pos&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Types</span>.tile&nbsp;array&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Types</span>.tile&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;copy_map&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;array&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;array&nbsp;array<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;define_path_map&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Types</span>.tile&nbsp;array&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span><br>
@@ -54,8 +56,5 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Types</span>.tile&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Types</span>.tile&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Types</span>.tile&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Types</span>.tile&nbsp;array&nbsp;array<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate_path_pos&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate_path_pos&nbsp;:&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;*&nbsp;int)&nbsp;list<br>
 <span class="keyword">end</span></code></body></html>

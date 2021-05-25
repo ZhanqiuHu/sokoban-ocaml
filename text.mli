@@ -1,4 +1,4 @@
-(* * This module draws text boxes and text onto the screen. *)
+(** This module draws text boxes and text onto the screen. *)
 open Types
 
 (** [get_hw room_id st tile_size] takes the height and width of the room

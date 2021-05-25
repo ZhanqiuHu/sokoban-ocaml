@@ -49,8 +49,8 @@
 </td></tr>
 <tr><td><a href="Gui.html#VALdraw_block_list">draw_block_list</a> [<a href="Gui.html">Gui</a>]</td>
 <td><div class="info">
-<p><code class="code">draw_block_list st wt ht</code> draws the blocks in the state <code class="code">st</code> to the screen 
-given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+<p><code class="code">draw_block_list st wt ht</code> draws the blocks in the state <code class="code">st</code> to the
+    screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
 
 </div>
 </td></tr>
@@ -63,8 +63,8 @@ given tile width <code class="code">width</code> and tile height <code class="co
 </td></tr>
 <tr><td><a href="Gui.html#VALdraw_break_list">draw_break_list</a> [<a href="Gui.html">Gui</a>]</td>
 <td><div class="info">
-<p><code class="code">draw_break_list st wt ht</code> draws the current breakables in the state <code class="code">st</code> 
-to the screen given tile width <code class="code">wt</code> and tile height <code class="code">ht</code>.</p>
+<p><code class="code">draw_break_list st wt ht</code> draws the current breakables in the state
+    <code class="code">st</code> to the screen given tile width <code class="code">wt</code> and tile height <code class="code">ht</code>.</p>
 
 </div>
 </td></tr>
@@ -83,35 +83,36 @@ to the screen given tile width <code class="code">wt</code> and tile height <cod
 </td></tr>
 <tr><td><a href="Gui.html#VALdraw_hole_list">draw_hole_list</a> [<a href="Gui.html">Gui</a>]</td>
 <td><div class="info">
-<p><code class="code">draw_hole_list st width height</code> draws the holes in the state <code class="code">st</code> to the 
-screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+<p><code class="code">draw_hole_list st width height</code> draws the holes in the state <code class="code">st</code>
+    to the screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Gui.html#VALdraw_player">draw_player</a> [<a href="Gui.html">Gui</a>]</td>
 <td><div class="info">
-<p><code class="code">draw_player st wt ht</code> draws the current players in the state <code class="code">st</code> to the 
-screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
+<p><code class="code">draw_player st wt ht</code> draws the current players in the state <code class="code">st</code>
+    to the screen given tile width <code class="code">width</code> and tile height <code class="code">height</code>.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Gui.html#VALdraw_rect_images">draw_rect_images</a> [<a href="Gui.html">Gui</a>]</td>
 <td><div class="info">
-<p><code class="code">draw_rect_images st width height</code> draws the tile list list within state 
-<code class="code">st</code> onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
+<p><code class="code">draw_rect_images st width height</code> draws the tile list list within
+    state <code class="code">st</code> onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
 
 </div>
 </td></tr>
 <tr><td><a href="Gui.html#VALdraw_select">draw_select</a> [<a href="Gui.html">Gui</a>]</td>
 <td><div class="info">
-<p><code class="code">draw_select select_list</code> draws the select list <code class="code">select_list</code> onto the canvas</p>
+<p><code class="code">draw_select select_list</code> draws the select list <code class="code">select_list</code> onto
+    the canvas</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Gui.html#VALdraw_tiles">draw_tiles</a> [<a href="Gui.html">Gui</a>]</td>
 <td><div class="info">
-<p><code class="code">draw_tiles width height tile_list</code> draws the tile list list <code class="code">tile_list</code> 
-onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
+<p><code class="code">draw_tiles width height tile_list</code> draws the tile list list
+    <code class="code">tile_list</code> onto the canvas of <code class="code">width</code> and <code class="code">height</code></p>
 
 </div>
 </td></tr>
@@ -134,11 +135,8 @@ onto the canvas of <code class="code">width</code> and <code class="code">height
 </td></tr>
 <tr><td><a href="Genmap.html#VALgenerate_path_pos">generate_path_pos</a> [<a href="Genmap.html">Genmap</a>]</td>
 <td><div class="info">
-<p><code class="code">generate_path_pos exit_pos_list init_pos_list hole_pos_list
-    block_pos_list</code>
-    returns a path so all exits <code class="code">exit_pos_list</code>, inital positions
-    <code class="code">init_pos_list</code>, holes <code class="code">hole_pos_list</code>, and blocks <code class="code">blocks_pos_list</code>
-    are connected by the path.</p>
+<p><code class="code">generate_path_pos pos_list</code> returns a path so all positions in
+    <code class="code">pos_list</code> are connected by the path.</p>
 
 </div>
 </td></tr>
@@ -238,13 +236,6 @@ onto the canvas of <code class="code">width</code> and <code class="code">height
 
 </div>
 </td></tr>
-<tr><td><a href="State.html#VALinitialize_state">initialize_state</a> [<a href="State.html">State</a>]</td>
-<td><div class="info">
-<p><code class="code">initialize_state st</code> returns the <code class="code">st</code> with breakeable hp
-    intialized.</p>
-
-</div>
-</td></tr>
 <tr><td align="left"><div>K</div></td></tr>
 <tr><td><a href="Authors.html#VALkz_hours_worked">kz_hours_worked</a> [<a href="Authors.html">Authors</a>]</td>
 <td></td></tr>
@@ -272,6 +263,12 @@ onto the canvas of <code class="code">width</code> and <code class="code">height
 <td><div class="info">
 <p><code class="code">map_init map_w map_h init_val</code> create a map with width <code class="code">map_w</code>
     height <code class="code">map_h</code> and initial value <code class="code">init_val</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Map.html#VALmap_m">map_m</a> [<a href="Map.html">Map</a>]</td>
+<td><div class="info">
+<p><code class="code">map_m</code> represents a maze room.</p>
 
 </div>
 </td></tr>
@@ -317,6 +314,14 @@ onto the canvas of <code class="code">width</code> and <code class="code">height
 <td><div class="info">
 <p><code class="code">set map x_pos y_pos new_val</code> set the value in <code class="code">map</code> with position
     <code class="code">x_pos</code> and <code class="code">y_pos</code> to <code class="code">new_val</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Genmap.html#VALset_pos_list_with_same_pos">set_pos_list_with_same_pos</a> [<a href="Genmap.html">Genmap</a>]</td>
+<td><div class="info">
+<p><code class="code">set_pos_list_with_same_pos map pos_list new_val</code> sets tiles in
+    <code class="code">map</code> with positions in <code class="code">pos_list</code> to <code class="code">new_val</code>, keeping their
+    original positions</p>
 
 </div>
 </td></tr>

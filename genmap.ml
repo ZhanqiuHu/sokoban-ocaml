@@ -77,6 +77,16 @@ let set_with_same_pos (map : tile array array) x_pos y_pos new_val =
     };
   map
 
+let rec set_pos_list_with_same_pos
+    (map : tile array array)
+    pos_list
+    new_val =
+  match pos_list with
+  | h :: t ->
+      let _ = set_with_same_pos map (fst h) (snd h) new_val in
+      set_pos_list_with_same_pos map t new_val
+  | [] -> ()
+
 let get map x_pos y_pos =
   let y_end = Array.length map - 1 in
   map.(y_end - y_pos).(x_pos)
@@ -197,16 +207,9 @@ let rec generate_path_pos_helper pos_lst path_lst =
       generate_path_pos_helper ((x2, y2) :: t) path_lst
   | _ -> path_lst.list
 
-let generate_path_pos
-    exit_pos_list
-    init_pos_list
-    hole_pos_list
-    block_pos_list =
-  let new_list =
-    exit_pos_list @ init_pos_list @ hole_pos_list @ block_pos_list
-  in
-  let path_list = { list = new_list } in
-  generate_path_pos_helper new_list path_list
+let generate_path_pos pos_list =
+  let path_list = { list = pos_list } in
+  generate_path_pos_helper pos_list path_list
 
 let rec check_valid_object_position map position_list =
   match position_list with

@@ -39,9 +39,11 @@ let step_limit2 = 200
 
 (** Start generating Map 2*)
 let path_pos_list2 =
-  generate_path_pos [ exit_position2 ] [ init_position2 ] hole_pos_list2
-    block_pos_list2
-  @ predefined_path2
+  let pos_list =
+    [ exit_position2 ] @ [ init_position2 ] @ hole_pos_list2
+    @ block_pos_list2
+  in
+  generate_path_pos pos_list @ predefined_path2
 
 let map_array2 =
   let map =
@@ -73,6 +75,73 @@ let map2 =
     init_pos = init_position2;
     init_breaks = breakable_list2;
     step_limit = step_limit2;
+  }
+
+(* Map Maze for sliding block *)
+
+(** Values defined for Map Maze*)
+let exit_position_m = (18, 7)
+
+let init_position_m = (1, 1)
+
+let hole_pos_list_m = [ (11, 4); (10, 4) ]
+
+let block_pos_list_m = [ (2, 2); (2, 3); (8, 8) ]
+
+let predefined_path_m = generate_path_pos []
+
+let obstacles_m = [ (2, 8); (14, 1); (14, 7); (4, 2); (5, 5); (12, 4) ]
+
+let obstacle_prob_m = 0.0
+
+let breakable_prob_m = 0.25
+
+let breakable_hp_m = 1
+
+let room_id_m = "maze"
+
+let step_limit_m = 200
+
+(** Start generating Map 2*)
+let path_pos_list_m =
+  let pos_list =
+    [ exit_position_m ] @ [ init_position_m ] @ hole_pos_list_m
+    @ block_pos_list_m
+  in
+  generate_path_pos pos_list @ predefined_path_m
+
+let map_array_m =
+  let map =
+    new_map_with_obstacles map_w map_h tile_val bound_val path_val
+      obstacle_val path_pos_list_m obstacle_prob_m
+  in
+  let () = set_pos_list_with_same_pos map obstacles_m obstacle_val in
+  map
+
+let breakable_pos_list_m =
+  generate_breakables map_array_m path_pos_list_m path_val tile_val
+    breakable_prob_m
+
+let breakable_list_m =
+  init_breakables breakable_pos_list_m breakable_hp_m
+
+let map_m =
+  {
+    room_id = room_id_m;
+    width = map_w;
+    height = map_h;
+    map_tile_list =
+      map_to_list
+        (Genmap.set_with_same_pos map_array_m (fst exit_position_m)
+           (snd exit_position_m)
+           { position = exit_position_m; ttype = Exit });
+    init_blocks = init_blocks block_pos_list_m;
+    holes = init_holes hole_pos_list_m;
+    num_holes = List.length hole_pos_list_m;
+    exit_pos = exit_position_m;
+    init_pos = init_position_m;
+    init_breaks = breakable_list_m;
+    step_limit = step_limit_m;
   }
 
 (** Testing Map: use for testing *)
@@ -119,8 +188,8 @@ let init_hole_pos3 = [ (6, 6); (15, 8) ]
 let exit_pos3 = (18, 8)
 
 let path_pos_list3 =
-  generate_path_pos [ exit_pos3 ] [ (1, 1) ] init_block_pos3
-    init_hole_pos3
+  generate_path_pos
+    ([ exit_pos3 ] @ [ (1, 1) ] @ init_block_pos3 @ init_hole_pos3)
 
 let tile_val3 = { position = (0, 0); ttype = Normal }
 

@@ -1,0 +1,7 @@
+Inside the map.ml file, we have the maps that we use for the game. 
+However, instead of hard coding them, we used the Genmap module to generate
+different maps to use. Because we used a function to define the maps, we 
+decided not to try to factor out the code into a json file because it was no
+longer "hardcoded". Similarly in main.ml we defined the buttons and selects
+that were needed for the game but because of how the autoformatter handled it,
+the records they were defined from were very long.

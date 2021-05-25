@@ -146,9 +146,6 @@ let draw_player (st : state) width height =
   let player_list = get_player st in
   draw_helper player_list
 
-(* Graphics.draw_image (get_img_transparent "link60x60.png") (fst
-   player_pos * 60) (snd player_pos * 60) *)
-
 let draw_block_list (st : state) width height =
   let rec draw_helper (block_list : block list) =
     match block_list with
@@ -180,15 +177,13 @@ let draw_hole_list (st : state) width height =
   draw_helper hole_list
 
 let call_draw pos (s : string) w h =
-  draw_image (get_img_transparent s)
-    (fst pos * w)
-    (snd pos * h)
+  draw_image (get_img_transparent s) (fst pos * w) (snd pos * h)
 
 let draw_break_list (st : state) wt ht =
   let rec draw_helper (break_list : breakable1 list) =
     match break_list with
     | h :: t ->
-      let pos = h.position in
+        let pos = h.position in
         if h.hp > 0 then call_draw pos "images/cracks60x60.png" wt ht
         else if h.hp = 0 then (
           call_draw pos "images/grass60x60.png" wt ht;

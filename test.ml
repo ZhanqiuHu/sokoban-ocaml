@@ -43,7 +43,7 @@
     images to the screen (i.e. gui) were also tested manually.
 
     - Since we are developing a game, almost all the bugs can be caught
-      from visible and unprecedanted moves, so while we focused on
+      from visible and unprecedented moves, so while we focused on
       automated testing before the GUI was working and using it to make
       sure the basic functionality of the game was working (pushing,
       moving, winning), we later transitioned to much more manual
@@ -107,9 +107,6 @@ let height_test name room_id st tile_size expected_value =
     (fst (get_hw room_id st tile_size))
     ~printer:string_of_int
 
-(* let init_state_test name input expected_value = name >:: fun ctxt ->
-   assert_equal expected_value (parse_dialogue dialogue [] width)
-   ~printer:(pp_list pp_string) *)
 let player_one =
   {
     position = (1, 1);

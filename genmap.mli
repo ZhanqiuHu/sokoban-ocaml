@@ -55,6 +55,12 @@ val set_with_same_pos :
   Types.tile ->
   Types.tile array array
 
+(** [set_pos_list_with_same_pos map pos_list new_val] sets tiles in
+    [map] with positions in [pos_list] to [new_val], keeping their
+    original positions *)
+val set_pos_list_with_same_pos :
+  Types.tile array array -> (int * int) list -> Types.tile -> unit
+
 (** [copy_map map] returns a copy of map *)
 val copy_map : 'a array array -> 'a array array
 
@@ -112,14 +118,6 @@ val new_map_with_obstacles :
   float ->
   Types.tile array array
 
-(** [generate_path_pos exit_pos_list init_pos_list hole_pos_list
-    block_pos_list]
-    returns a path so all exits [exit_pos_list], inital positions
-    [init_pos_list], holes [hole_pos_list], and blocks [blocks_pos_list]
-    are connected by the path. *)
-val generate_path_pos :
-  (int * int) list ->
-  (int * int) list ->
-  (int * int) list ->
-  (int * int) list ->
-  (int * int) list
+(** [generate_path_pos pos_list] returns a path so all positions in
+    [pos_list] are connected by the path. *)
+val generate_path_pos : (int * int) list -> (int * int) list
