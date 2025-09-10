@@ -1,5 +1,10 @@
 # CS3110-final-project
 
+## Demo
+
+![Demo](demo.mp4)
+
+*A video demonstration of the Sokoban game in action*
 
 # Installation
 - Step 0: Install the graphics and camlimages packages; see below for more details
