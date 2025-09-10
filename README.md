@@ -2,12 +2,9 @@
 
 ## Demo
 
-<video width="800" controls>
-  <source src="demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Sokoban Game Demo](demo.gif)
 
-*A video demonstration of the Sokoban game in action*
+*Sokoban game demonstration showing gameplay mechanics*
 
 # Installation
 - Step 0: Install the graphics and camlimages packages; see below for more details
